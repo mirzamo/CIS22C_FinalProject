@@ -25,6 +25,10 @@
 /* Begin PBXFileReference section */
 		1911AB8D1A0E17650059637F /* cis22c_FinalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cis22c_FinalProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		1911AB901A0E17650059637F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		19EA63711A0E21C100A8B2C4 /* Date.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Date.h; sourceTree = "<group>"; };
+		19EA63721A0E21C100A8B2C4 /* Athlete.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Athlete.h; sourceTree = "<group>"; };
+		19EA63731A0E21C100A8B2C4 /* singlyNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = singlyNode.h; sourceTree = "<group>"; };
+		19EA63741A0E222A00A8B2C4 /* OlympicAthleteMedals.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OlympicAthleteMedals.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,10 @@
 			isa = PBXGroup;
 			children = (
 				1911AB901A0E17650059637F /* main.cpp */,
+				19EA63711A0E21C100A8B2C4 /* Date.h */,
+				19EA63721A0E21C100A8B2C4 /* Athlete.h */,
+				19EA63731A0E21C100A8B2C4 /* singlyNode.h */,
+				19EA63741A0E222A00A8B2C4 /* OlympicAthleteMedals.txt */,
 			);
 			path = cis22c_FinalProject;
 			sourceTree = "<group>";
@@ -232,6 +240,7 @@
 				1911AB961A0E17650059637F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
