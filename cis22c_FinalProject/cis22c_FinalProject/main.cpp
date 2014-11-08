@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include "FileIO.h"
 
 //#define FILE_NAME "OlympicAthleteMedals.txt"
 #define FILE_NAME "/Users/Mahsa/Documents/College/CIS22C/CIS22C_FinalProject/cis22c_FinalProject/cis22c_FinalProject/OlympicAthleteMedals.txt"

@@ -8,30 +8,30 @@
 
 #define BST_H
 
-#include "Movie.h"
+#include "Athlete.h"
 #include "BST_Node.h"
 #include "Queue.h"
 #include <iomanip>
 
 using namespace std;
 
-template <class T , class R>
+//template <class T , class R>
 class BST
 {
 private:
 
-    BST_Node<T,R> *root;       // root of the tree
+    BST_Node *root;       // root of the tree
     int count;            // number of nodes in the tree
     
     
     BST_Node<T,R> *_search(int target);
-    void _BST_InorderTraverse( BST_Node<T,R> *root ) const;
-    void _BST_PreorderTraverse( BST_Node<T,R> *root ) const;
-    void _BST_PostorderTraverse( BST_Node<T,R> *root ) const;
-    void _BST_BreadthFisrtTraversal( BST_Node<T,R> *root ) const;
-    void _BST_Indented_List(BST_Node<T,R> *root , int) const;
-    void _find_keys_Greater(T target , BST_Node<T,R> *);
-    void _BST_Destroy(BST_Node<T , R> *root);
+    void _BST_InorderTraverse( BST_Node *root ) const;
+   // void _BST_PreorderTraverse( BST_Node<T,R> *root ) const;
+    //void _BST_PostorderTraverse( BST_Node<T,R> *root ) const;
+    //void _BST_BreadthFisrtTraversal( BST_Node<T,R> *root ) const;
+    //void _BST_Indented_List(BST_Node<T,R> *root , int) const;
+    //void _find_keys_Greater(T target , BST_Node<T,R> *);
+    void _BST_Destroy(BST_Node *root);
 
     
 public:
@@ -42,14 +42,14 @@ public:
     ~BST();
 
     // Binary Tree operations
-    void BST_insert(Movie<T,R> dataIn);
-    bool Search(int target, Movie<T,R> &movie);
+    void BST_insert(Athlete dataIn);
+    bool Search(int target, Athlete &anathlete);
     void BST_InorderTraverse() const;
-    void BST_PreorderTraverse() const;
-    void BST_PostorderTraverse() const;
-    void BST_BreadthFisrtTraversal() const;
-    void find_keys_Greater(T target);
-    void BST_Indented_List() const;
+   // void BST_PreorderTraverse() const;
+    //void BST_PostorderTraverse() const;
+    //void BST_BreadthFisrtTraversal() const;
+    //void find_keys_Greater(T target);
+    //void BST_Indented_List() const;
     bool isEmpty() const	{return count == 0;}
     int size() const	    {return count;}
     
@@ -64,7 +64,7 @@ public:
  This function calls a recursive function to traverse the
  tree in inorder
  *~**/
-template <class T , class R>
+//template <class T , class R>
 void BST<T,R>::BST_InorderTraverse() const
 {
     
@@ -75,8 +75,8 @@ void BST<T,R>::BST_InorderTraverse() const
  Inorder Traversal of the Binary Tree:
  Left-Root-Right
  *~**/
-template <class T , class R>
-void BST<T,R>::_BST_InorderTraverse(BST_Node<T,R> *root) const
+//template <class T , class R>
+void BST::_BST_InorderTraverse(BST_Node *root) const
 {
     if (root)
     {
@@ -92,6 +92,7 @@ void BST<T,R>::_BST_InorderTraverse(BST_Node<T,R> *root) const
  This function calls a recursive function to traverse the
  tree in Preorder
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::BST_PreorderTraverse() const
 {
@@ -102,6 +103,7 @@ void BST<T,R>::BST_PreorderTraverse() const
  Preorder Traversal of the Binary Tree:
  Root-Left-Right
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::_BST_PreorderTraverse(BST_Node<T,R> *root) const
 {
@@ -119,6 +121,7 @@ void BST<T,R>::_BST_PreorderTraverse(BST_Node<T,R> *root) const
  This function calls a recursive function to traverse the
  tree in Postorder
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::BST_PostorderTraverse() const
 {
@@ -129,6 +132,7 @@ void BST<T,R>::BST_PostorderTraverse() const
  Postorder Traversal of the Binary Tree:
  Left-Right-Root
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::_BST_PostorderTraverse(BST_Node<T,R> *root) const
 {
@@ -147,6 +151,7 @@ void BST<T,R>::_BST_PostorderTraverse(BST_Node<T,R> *root) const
  This function calls a recursive function to traverse the
  tree in breadth order
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::BST_BreadthFisrtTraversal() const
 {
@@ -157,6 +162,7 @@ void BST<T,R>::BST_BreadthFisrtTraversal() const
  Bredth Traversal of the Binary Tree:
  (using a queue)
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::_BST_BreadthFisrtTraversal(BST_Node<T,R> *root) const
 {
@@ -184,6 +190,7 @@ void BST<T,R>::_BST_BreadthFisrtTraversal(BST_Node<T,R> *root) const
  This function calls a recursive function to traverse the
  tree as an indentent list
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::BST_Indented_List() const
 {
@@ -193,6 +200,7 @@ void BST<T,R>::BST_Indented_List() const
 /**~*~*
  Indentent List of the Binary Tree:
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::_BST_Indented_List(BST_Node<T,R> *root , int i) const
 {
@@ -212,17 +220,17 @@ void BST<T,R>::_BST_Indented_List(BST_Node<T,R> *root , int i) const
 /**~*~*
  Insert movie into a BST
  *~**/
-template <class T , class R>
-void BST<T,R>::BST_insert(Movie<T,R> newmovie)
+//template <class T , class R>
+void BST::BST_insert(Athlete newAthlete)
 {
-    BST_Node<T,R> *newNode;
-    BST_Node<T,R> *pWalk;
-    BST_Node<T,R> *parent;
+    BST_Node *newNode;
+    BST_Node *pWalk;
+    BST_Node *parent;
     
     // allocate the new node
-    newNode = new BST_Node<T,R>;
-    newNode->movie.setname(newmovie.getname());
-    newNode->movie.setyear(newmovie.getyear());
+    newNode = new BST_Node;
+    newNode->movie.setname(newAthlete.getname());
+    newNode->movie.setyear(newAthlete.getyear());
     newNode->left  = NULL;
     newNode->right = NULL;
     
@@ -333,6 +341,7 @@ BST_Node<T,R>* BST<T,R>::_search(int target)
  This function calls a recursive function that finds
  all the values greater than a given ky
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::find_keys_Greater(T target)
 {
@@ -343,6 +352,7 @@ void BST<T,R>::find_keys_Greater(T target)
 /**~*~*
  This function find all the values greater than a given ky
  *~**/
+/*
 template <class T , class R>
 void BST<T,R>::_find_keys_Greater(T target , BST_Node<T,R> *root)
 {

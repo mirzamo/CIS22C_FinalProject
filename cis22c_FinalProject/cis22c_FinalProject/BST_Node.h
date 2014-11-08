@@ -9,13 +9,13 @@
 #ifndef bst_2_BST_Node_h
 #define bst_2_BST_Node_h
 
-#include "Movie.h"
+#include "Athlete.h"
 
-template <class T , class R>
+//template <class T , class R>
 class BST_Node
 {
 public:
-    Movie<T , R> movie;         // The value in this node
+    Athlete anAthlete;         // The value in this node
 
     BST_Node *left;    // To point to the left node
     BST_Node *right;   // To point to the right node
