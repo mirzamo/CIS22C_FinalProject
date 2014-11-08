@@ -8,8 +8,11 @@
 
 #include <iostream>
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+//#define FILE_NAME "OlympicAthleteMedals.txt"
+#define FILE_NAME "/Users/Mahsa/Documents/College/CIS22C/CIS22C_FinalProject/cis22c_FinalProject/cis22c_FinalProject/OlympicAthleteMedals.txt"
+
+
+int main()
+{
     return 0;
 }

@@ -29,6 +29,8 @@
 		19EA63721A0E21C100A8B2C4 /* Athlete.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Athlete.h; sourceTree = "<group>"; };
 		19EA63731A0E21C100A8B2C4 /* singlyNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = singlyNode.h; sourceTree = "<group>"; };
 		19EA63741A0E222A00A8B2C4 /* OlympicAthleteMedals.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OlympicAthleteMedals.txt; sourceTree = "<group>"; };
+		19EA63751A0E236B00A8B2C4 /* BST_Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BST_Node.h; sourceTree = "<group>"; };
+		19EA63761A0E236B00A8B2C4 /* BST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BST.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,9 +67,19 @@
 				19EA63711A0E21C100A8B2C4 /* Date.h */,
 				19EA63721A0E21C100A8B2C4 /* Athlete.h */,
 				19EA63731A0E21C100A8B2C4 /* singlyNode.h */,
+				19EA63781A0E239400A8B2C4 /* Tree */,
 				19EA63741A0E222A00A8B2C4 /* OlympicAthleteMedals.txt */,
 			);
 			path = cis22c_FinalProject;
+			sourceTree = "<group>";
+		};
+		19EA63781A0E239400A8B2C4 /* Tree */ = {
+			isa = PBXGroup;
+			children = (
+				19EA63751A0E236B00A8B2C4 /* BST_Node.h */,
+				19EA63761A0E236B00A8B2C4 /* BST.h */,
+			);
+			name = Tree;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
