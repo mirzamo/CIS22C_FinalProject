@@ -17,14 +17,15 @@ class Athlete
 private:
     std::string _name;
     int _age;
-    Medal[3] _medals;
+    Medal _medals;
     Sport _winningStats;
+    
 public:
     std::string getName();
     int getAge();
     int getMedalCount(Medal);
-    getWinningStats(Sport);
-    Athlete(name,age,medals,winningStats): _name(name),_age(age),_medals(medals),_winningStats(winningStats) {};
+    Sport getWinningStats(Sport);        //return type was missed. not sure what type it should be
+    Athlete(name , age , medals , winningStats): _name(name),_age(age),_medals(medals),_winningStats(winningStats) {};
     ~Athlete(){};
 };
 
