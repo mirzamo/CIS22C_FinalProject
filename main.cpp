@@ -19,6 +19,7 @@
 #include <iomanip>
 #include <iostream>
 #include "Athlete.h"
+#include "BST.h"
 #include "validation.h"
 #include <vector>
 #include <string>
@@ -26,7 +27,7 @@
 using namespace std;
 
 const string FNAME = "OlympicAthletes.txt";
-bool readData(vector<Athlete*>*, int&);
+bool readData(vector<Athlete*>*, int&, BST*);
 void testPrint(const vector<Athlete*>*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
 void processCommand(); // input will be hash table and BST
@@ -36,8 +37,10 @@ int hashSize(int);
 int main()
 {
     vector<Athlete*>* testVec = new vector<Athlete*>;
+    BST* bst = new BST;
     int hashSize =0;
-    readData(testVec, hashSize);
+    readData(testVec, hashSize, bst);
+    //bst->BST_InorderTraverse();
     //testPrint(testVec);
     processCommand();
     delete testVec;
@@ -49,7 +52,7 @@ int main()
     If able to read file, it dynamically allocates Athletes in memory.
     It fills all data structures with pointers to these Athletes.
 */
-bool readData(vector<Athlete*>* testVec, int& hashSi)
+bool readData(vector<Athlete*>* testVec, int& hashSi, BST* bst)
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
@@ -67,6 +70,7 @@ bool readData(vector<Athlete*>* testVec, int& hashSi)
             Sport winStats(country,year,sport,date);
             Athlete* athlete = new Athlete(name, age, medals, winStats);
             testVec->push_back(athlete);
+            bst->BST_insert(athlete);
             numObjects++;
         }
         fileHandle.close();
