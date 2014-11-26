@@ -6,6 +6,7 @@
 #define ATHLETE_H
 
 #include <string>
+#include <iostream>
 /**
     Enum used for clear access to correct entry in array of medals inside Athlete class.
 */
@@ -21,10 +22,10 @@ enum class Medal
 struct Sport
 {
     std::string _country;
-    int year;
+    int _year;
     std::string _sportType;
     std::string _ceremonyDate;
-    Sport(std::string country, int year, std::string sport, std::string date): _country(country), _sportType(sport), _ceremonyDate(date) {};
+    Sport(std::string country, int year, std::string sport, std::string date): _country(country), _year(year), _sportType(sport), _ceremonyDate(date) {};
 };
 
 /**
@@ -54,6 +55,10 @@ public:
     Sport& getWinStats()
     {
         return _winStats;
+    }
+    void print()
+    {
+        std::cout<< _name << " from " << _winStats._country<< " for " << _winStats._sportType<<std::endl;
     }
     //Constructor and Destructor
     Athlete(std::string name, int age, int medals[3], Sport winStats):

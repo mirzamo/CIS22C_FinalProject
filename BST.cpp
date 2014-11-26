@@ -10,14 +10,14 @@ void BST::BST_insert(Athlete* anAthlete)
     BST_Node* newNode = new BST_Node(anAthlete);
     BST_Node *pWalk;
     BST_Node *parent;
-    
+
     if (!root)          // tree is empty
         root = newNode;
-    
+
     else
     {
         pWalk = root;
-        
+
         while( pWalk )
         {
             parent = pWalk;
@@ -26,21 +26,21 @@ void BST::BST_insert(Athlete* anAthlete)
             else
                 pWalk = pWalk->right;
         }
-        
+
         if (newNode->anAthlete < parent->anAthlete )
             parent->left  = newNode;
-        
+
         else
             parent->right = newNode;
     }
-    
+
     count++;
 }
 
 
 
 
-// 
+//
 // //template <class T , class R>
 // bool BST::Search(int target, Athlete &foundedItem)
 // {
@@ -49,7 +49,7 @@ void BST::BST_insert(Athlete* anAthlete)
 // {
 // foundmovie.setname( found->anAthlete.getname());
 // foundmovie.setyear( found->anAthlete.getyear());
-// 
+//
 // return true;
 // }
 // return false;
@@ -61,10 +61,10 @@ void BST::BST_insert(Athlete* anAthlete)
 // {
 //     if (!root)         //tree is empty
 //         return NULL;
-// 
+//
 //  //tree is not empty
 //     BST_Node *pWalk = root;
-//     
+//
 //     while( pWalk )
 //     {
 //         if (target < pWalk->anAthlete->getName())
@@ -75,10 +75,10 @@ void BST::BST_insert(Athlete* anAthlete)
 //             else
 //                 return pWalk;      //found
 //     }
-// 
+//
 // return NULL;   //not found
 // }
-// 
+//
 //
 
 
@@ -101,10 +101,7 @@ void BST::_BST_Indented_List(BST_Node *root , int i) const
 {
     if (root)
     {
-       // std::cout << setw(i*10) << i << ".  ";
-        
-        //root->anAthlete->print();
-        
+        root->anAthlete->print();
         _BST_Indented_List(root->right , ++i);
         _BST_Indented_List(root->left , i);
     }

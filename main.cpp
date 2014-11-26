@@ -5,13 +5,6 @@
     Columns of data in input file have this order:
     Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals
 
-    NOTES FOR THE GROUP IF YOU HAVE ANY/ DESCRIPTION FOR WHAT YOURE DOING:
-
-    Elena : Athlete, testing functions done
-    Misha:
-    Mahsa: I/O functions done
-    Kelly:
-
 */
 
 #include <fstream>
@@ -27,23 +20,20 @@
 using namespace std;
 
 const string FNAME = "OlympicAthletes.txt";
-bool readData(vector<Athlete*>*, int&, BST*);
-void testPrint(const vector<Athlete*>*);
+bool readData(int&, BST*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
-void processCommand(); // input will be hash table and BST
+void processCommand(BST*); // input will be hash table and BST
 bool isPrime (int);
 int hashSize(int);
+void projectInfo();
 
 int main()
 {
-    vector<Athlete*>* testVec = new vector<Athlete*>;
     BST* bst = new BST;
     int hashSize =0;
-    readData(testVec, hashSize, bst);
-    //bst->BST_InorderTraverse();
-    //testPrint(testVec);
-    processCommand();
-    delete testVec;
+    readData(hashSize, bst);
+    processCommand(bst);
+    delete bst;
     return 0;
 }
 
@@ -52,7 +42,7 @@ int main()
     If able to read file, it dynamically allocates Athletes in memory.
     It fills all data structures with pointers to these Athletes.
 */
-bool readData(vector<Athlete*>* testVec, int& hashSi, BST* bst)
+bool readData(int& hashSi, BST* bst)
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
@@ -69,7 +59,6 @@ bool readData(vector<Athlete*>* testVec, int& hashSi, BST* bst)
             parseInput(line,name,country,sport,date,age,medals,year);
             Sport winStats(country,year,sport,date);
             Athlete* athlete = new Athlete(name, age, medals, winStats);
-            testVec->push_back(athlete);
             bst->BST_insert(athlete);
             numObjects++;
         }
@@ -82,28 +71,12 @@ bool readData(vector<Athlete*>* testVec, int& hashSi, BST* bst)
 }
 
 /**
-    Function to test that code to build Athlete structures works correctly.
-    Prints out certain dynamically allocated Athlete object fields.
-*/
-
-void testPrint(const vector<Athlete*>* testVec)
-{
-    int si = testVec->size();
-    for (int i=0; i < si ; i++)
-    {
-        cout<< testVec->at(i)->getName()<<"\t" <<  testVec->at(i)->getAge()<<"\t" <<
-        testVec->at(i)->getMedalCount(Medal::BRONZE)<<"\t" <<
-        testVec->at(i)->getWinStats()._country << endl;
-    }
-
-}
-
-/**
     Function that cuts up inputted line read from file into chunks and changes correct values by reference.
 */
 
 void parseInput(string& line, string& name, string& country, string& sport, string& date, int& age, int* medals, int& year)
 {
+    //Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals
     unsigned int cut = line.find_first_of("1234567890");
     name = line.substr(0,cut-1);
     line = line.substr(cut);
@@ -115,9 +88,10 @@ void parseInput(string& line, string& name, string& country, string& sport, stri
     year = stoi(line.substr(0,5));
     line = line.substr(5);
     cut = line.find_first_not_of("1234567890/");
-    sport = line.substr(0,cut);
+    date = line.substr(0,cut);
     line = line.substr(cut+1);
     cut = line.find_first_of("1234567890");
+    sport = line.substr(0,cut-1);
     line = line.substr(cut);
     medals[0] = stoi(line.substr(0,1));
     medals[1] = stoi(line.substr(2,3));
@@ -153,7 +127,7 @@ void menu()
 */
 bool validChoice(string choice)
 {
-    string allowable = "123456";
+    string allowable = "0123456";
     if (choice.size()==1 && (allowable.find(toupper(choice[0])) != std::string::npos))
         return true;
     else
@@ -167,14 +141,12 @@ bool validChoice(string choice)
 /**
     Processes user command for the data entries.
 */
-void processCommand() // input will be hash table and BST
+void processCommand(BST* bst) // input will be hash table and BST
 {
-    //create hash function pointer here
-
-    menu();
     bool inProgress = true;
     while (inProgress)
     {
+        menu();
         string choice;
         do
         {
@@ -186,7 +158,7 @@ void processCommand() // input will be hash table and BST
         {
         case '0':
         {
-            // display dataset info
+            projectInfo();
             break;
         }
         case '1':
@@ -201,7 +173,7 @@ void processCommand() // input will be hash table and BST
         }
         case '3':
         {
-            // Display entries in an indented list
+            bst->BST_Indented_List();
             break;
         }
         case '4':
@@ -251,4 +223,17 @@ bool isPrime (int num)
                 return false;
         return true;
     }
+}
+
+void projectInfo()
+{
+    cout << "\n**********Group Info**********" << endl
+        <<"Mahsa M, Elena M, Kelly D, Misha Y" <<endl
+        << "CIS 22C Fall 2014" <<endl;
+
+
+    cout << "\n**********Dataset Info**********" << endl
+        << "Dataset used: Olympic Medal Winners "<<endl
+        << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
+        << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
 }
