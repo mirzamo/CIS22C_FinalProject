@@ -13,6 +13,7 @@
 #include <iostream>
 #include "Athlete.h"
 #include "BST.h"
+#include "LinkedStack.h"
 #include "validation.h"
 #include <vector>
 #include <string>
@@ -22,18 +23,20 @@ using namespace std;
 const string FNAME = "OlympicAthletes.txt";
 bool readData(int&, BST*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
-void processCommand(BST*); // input will be hash table and BST
-bool isPrime (int);
+void processCommand(BST*, LinkedStack<Athlete>*); // input will be hash table and BST
 int hashSize(int);
 void projectInfo();
+bool deleteNode(string&, LinkedStack<Athlete>*);
 
 int main()
 {
     BST* bst = new BST;
+    LinkedStack<Athlete>* Stack = new LinkedStack<Athlete>;
     int hashSize =0;
     readData(hashSize, bst);
-    processCommand(bst);
+    processCommand(bst, Stack);
     delete bst;
+    delete Stack;
     return 0;
 }
 
@@ -69,6 +72,40 @@ bool readData(int& hashSi, BST* bst)
         printErrorMsg(Error::BAD_IFILE);
     return ableToPopulate;
 }
+
+bool getNodetoDelete(string& delNode); // asks user to input name of an Athlete to delete,
+//searches bst for whether its present, displays error message if not found
+
+/**
+    Deletes all pointers to node in data structures, copies value into stack, and deletes node itself.
+*/
+
+bool deleteNode(string& delNode, LinkedStack<Athlete>* Stack)
+{
+    bool ableToDelete = false;
+
+    //search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
+    /**
+    Athlete* athlete = new Athlete(name, age, medals, winStats);
+    Stack->push(athlete);
+    */
+    // bst delete ptr
+    //hash func delete ptr + node
+    return ableToDelete;
+}
+
+bool undoDelete(LinkedStack<Athlete>* Stack, BST* bst)
+{
+    Athlete oldAthlete;
+    Stack->pop(oldAthlete);
+    cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
+    Athlete* athleteNew = new Athlete(oldAthlete);
+    bst->BST_insert(athleteNew);
+    //hash table insert
+    return true; // should fix this bool
+
+}
+
 
 /**
     Function that cuts up inputted line read from file into chunks and changes correct values by reference.
@@ -141,7 +178,7 @@ bool validChoice(string choice)
 /**
     Processes user command for the data entries.
 */
-void processCommand(BST* bst) // input will be hash table and BST
+void processCommand(BST* bst, LinkedStack<Athlete>* Stack) // input will be hash table and BST
 {
     bool inProgress = true;
     while (inProgress)
@@ -169,6 +206,8 @@ void processCommand(BST* bst) // input will be hash table and BST
         case '2':
         {
             // delete an entry
+            string delNode = "Michael Phelps"; //substitute this with user input
+            deleteNode(delNode, Stack);
             break;
         }
         case '3':
@@ -197,13 +236,6 @@ void processCommand(BST* bst) // input will be hash table and BST
 //****************
 // Deterine hash size
 //****************
-int hashSize(int numAthletes)
-{
-    int hashSize = numAthletes * 2;
-    for (hashSize + 1 ; !isPrime(hashSize) ; hashSize++ ) {};
-    return hashSize;
-}
-
 
 //****************
 // Checks if a number is prime
@@ -224,6 +256,14 @@ bool isPrime (int num)
         return true;
     }
 }
+
+int hashSize(int numAthletes)
+{
+    int hashSize = numAthletes * 2;
+    for (hashSize + 1 ; !isPrime(hashSize) ; hashSize++ ) {};
+    return hashSize;
+}
+
 
 void projectInfo()
 {

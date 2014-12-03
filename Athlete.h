@@ -26,6 +26,14 @@ struct Sport
     std::string _sportType;
     std::string _ceremonyDate;
     Sport(std::string country, int year, std::string sport, std::string date): _country(country), _year(year), _sportType(sport), _ceremonyDate(date) {};
+    Sport (): _country(" "), _year(0), _sportType(" "), _ceremonyDate(" "){};
+    Sport (const Sport& oldSport)
+    {
+        _country = oldSport._country;
+        _year = oldSport._year;
+        _sportType = oldSport._sportType;
+        _ceremonyDate = oldSport._ceremonyDate;
+    }
 };
 
 /**
@@ -52,7 +60,7 @@ public:
     {
         return _medals[static_cast<int>(mType)];
     }
-    Sport& getWinStats()
+    Sport getWinStats() const
     {
         return _winStats;
     }
@@ -61,12 +69,23 @@ public:
         std::cout<< _name << " from " << _winStats._country<< " for " << _winStats._sportType<<std::endl;
     }
     //Constructor and Destructor
+    Athlete(const Athlete& oldAthlete)
+    {
+    _name = oldAthlete.getName();
+    _age = oldAthlete.getAge();
+    _medals[0] = getMedalCount(Medal::GOLD); _medals[1] = getMedalCount(Medal::SILVER); _medals[2] = getMedalCount(Medal::BRONZE);
+    _winStats = oldAthlete.getWinStats();
+    }
+
     Athlete(std::string name, int age, int medals[3], Sport winStats):
         _name(name),_age(age),_winStats(winStats)
     {
         for (int i=0; i<3; i++)
             _medals[i] = medals[i];
     }
+
+    Athlete(): _name(" "),_age(0){};
+
     ~Athlete() {};
 
     // Overload Operators
