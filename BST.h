@@ -19,15 +19,25 @@ private:
 
 public:
 
-    BST() {root = NULL;    count = 0;}
+    BST()
+    {
+        root = NULL;
+        count = 0;
+    }
 
     // Binary Tree operations
     void BST_insert(Athlete* dataIn);
     bool Search(int target, Athlete &anathlete);
     bool BST_Delete (const Athlete & anEntry);
     void BST_Indented_List() const;
-    bool isEmpty() const	{return count == 0;}
-    int size() const	    {return count;}
+    bool isEmpty() const
+    {
+        return count == 0;
+    }
+    int size() const
+    {
+        return count;
+    }
 
     ~BST();
 };

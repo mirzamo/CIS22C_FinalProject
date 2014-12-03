@@ -6,7 +6,7 @@
 #define LINKED_STACK_H
 
 #include <iostream>
-#include "singlyNode.h"
+#include "Stack_singlyNode.h"
 template<class T>
 class LinkedStack
 {

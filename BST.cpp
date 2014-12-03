@@ -1,10 +1,9 @@
-
 #include "BST.h"
 #include <iomanip>
 
- /**~*~*
- Insert a new Node into a BST
- *~**/
+/**~*~*
+Insert a new Node into a BST
+*~**/
 void BST::BST_insert(Athlete* anAthlete)
 {
     BST_Node* newNode = new BST_Node(anAthlete);

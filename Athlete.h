@@ -26,7 +26,7 @@ struct Sport
     std::string _sportType;
     std::string _ceremonyDate;
     Sport(std::string country, int year, std::string sport, std::string date): _country(country), _year(year), _sportType(sport), _ceremonyDate(date) {};
-    Sport (): _country(" "), _year(0), _sportType(" "), _ceremonyDate(" "){};
+    Sport (): _country(" "), _year(0), _sportType(" "), _ceremonyDate(" ") {};
     Sport (const Sport& oldSport)
     {
         _country = oldSport._country;
@@ -71,10 +71,12 @@ public:
     //Constructor and Destructor
     Athlete(const Athlete& oldAthlete)
     {
-    _name = oldAthlete.getName();
-    _age = oldAthlete.getAge();
-    _medals[0] = getMedalCount(Medal::GOLD); _medals[1] = getMedalCount(Medal::SILVER); _medals[2] = getMedalCount(Medal::BRONZE);
-    _winStats = oldAthlete.getWinStats();
+        _name = oldAthlete.getName();
+        _age = oldAthlete.getAge();
+        _medals[0] = getMedalCount(Medal::GOLD);
+        _medals[1] = getMedalCount(Medal::SILVER);
+        _medals[2] = getMedalCount(Medal::BRONZE);
+        _winStats = oldAthlete.getWinStats();
     }
 
     Athlete(std::string name, int age, int medals[3], Sport winStats):
@@ -84,7 +86,7 @@ public:
             _medals[i] = medals[i];
     }
 
-    Athlete(): _name(" "),_age(0){};
+    Athlete(): _name(" "),_age(0) {};
 
     ~Athlete() {};
 
