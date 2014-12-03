@@ -73,37 +73,68 @@ bool readData(int& hashSi, BST* bst)
     return ableToPopulate;
 }
 
-bool getNodetoDelete(string& delNode); // asks user to input name of an Athlete to delete,
-//searches bst for whether its present, displays error message if not found
+/**
+    MISHA:
+    Function asks user to input name of an Athlete to delete,
+    searches bst for whether that athlete is present, displays error message if not found
+
+    returns true/false depending on whether found
+    changes delNode by reference
+*/
+bool getNodetoDelete(string& delNode);
 
 /**
-    Deletes all pointers to node in data structures, copies value into stack, and deletes node itself.
+    MISHA:
+    Function will allow user to input a new Athlete into the database.
+    Feel free to write this and any other validation functions to validate that user input from keyboard is valid.
+*/
+bool insertUserNode();
+
+/**
+    Misha:
+    Function will save all the nodes present to a file.
+*/
+bool saveToFile();
+
+
+/**
+    Mahsa, Kelly :
+    Searches bst to see if node is found (thus returning bool on whether its found or not),
+    copies data into stack, deletes all pointers to node in data structures, and deletes node itself.
 */
 
 bool deleteNode(string& delNode, LinkedStack<Athlete>* Stack)
 {
     bool ableToDelete = false;
 
-    //search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
+    //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
     /**
     Athlete* athlete = new Athlete(name, age, medals, winStats);
     Stack->push(athlete);
     */
-    // bst delete ptr
-    //hash func delete ptr + node
+    // Mahsa: bst delete ptr
+    //Kelly: hash func delete ptr + node
     return ableToDelete;
 }
 
+
 bool undoDelete(LinkedStack<Athlete>* Stack, BST* bst)
 {
-    Athlete oldAthlete;
-    Stack->pop(oldAthlete);
-    cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
-    Athlete* athleteNew = new Athlete(oldAthlete);
-    bst->BST_insert(athleteNew);
-    //hash table insert
-    return true; // should fix this bool
+    bool ableToReturn = false;
 
+    if (!Stack->isEmpty())
+    {
+        Athlete oldAthlete;
+        Stack->pop(oldAthlete);
+        cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
+        Athlete* athleteNew = new Athlete(oldAthlete);
+        bst->BST_insert(athleteNew);
+        //Kelly: hash table insert
+        ableToReturn = true; // should fix this bool
+    }
+    else
+        printErrorMsg(Error::EMPTY_STACK);
+    return ableToReturn;
 }
 
 
@@ -156,7 +187,8 @@ void menu()
     cout << setw(w1) << left << "3: " <<  setw(w2) << left << "Display entries in an indented list"<< endl;
     cout << setw(w1) << left << "4: " <<  setw(w2) << left << "Search for an entry"<< endl;
     cout << setw(w1) << left << "5: " <<  setw(w2) << left << "Show hash table statistics"<< endl;
-    cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Quit"<<endl;
+    cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Undo delete"<<endl;
+    cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Quit"<<endl;
 }
 
 /**
@@ -164,7 +196,7 @@ void menu()
 */
 bool validChoice(string choice)
 {
-    string allowable = "0123456";
+    string allowable = "01234567";
     if (choice.size()==1 && (allowable.find(toupper(choice[0])) != std::string::npos))
         return true;
     else
@@ -178,7 +210,7 @@ bool validChoice(string choice)
 /**
     Processes user command for the data entries.
 */
-void processCommand(BST* bst, LinkedStack<Athlete>* Stack) // input will be hash table and BST
+void processCommand(BST* bst, LinkedStack<Athlete>* Stack)  // Kelly: add bst here
 {
     bool inProgress = true;
     while (inProgress)
@@ -200,12 +232,12 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack) // input will be hash
         }
         case '1':
         {
-            // Insert new entry
+            // Misha: this for your function to insert user input
             break;
         }
         case '2':
         {
-            // delete an entry
+            // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
             string delNode = "Michael Phelps"; //substitute this with user input
             deleteNode(delNode, Stack);
             break;
@@ -217,15 +249,20 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack) // input will be hash
         }
         case '4':
         {
-            // Search for an entry
+            // Kelly: Search for an entry
             break;
         }
         case '5':
-            {
-                // Show hash table statistics
-                break;
-            }
+        {
+            // Kelly: Show hash table statistics
+            break;
+        }
         case '6':
+        {
+            undoDelete(Stack, bst);
+            break;
+        }
+        case '7':
             inProgress = false;
         }
 
@@ -233,13 +270,6 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack) // input will be hash
 }
 
 
-//****************
-// Deterine hash size
-//****************
-
-//****************
-// Checks if a number is prime
-//****************
 bool isPrime (int num)
 {
     if (num <= 1)
@@ -268,12 +298,12 @@ int hashSize(int numAthletes)
 void projectInfo()
 {
     cout << "\n**********Group Info**********" << endl
-        <<"Mahsa M, Elena M, Kelly D, Misha Y" <<endl
-        << "CIS 22C Fall 2014" <<endl;
+         <<"Mahsa M, Elena M, Kelly D, Misha Y" <<endl
+         << "CIS 22C Fall 2014" <<endl;
 
 
     cout << "\n**********Dataset Info**********" << endl
-        << "Dataset used: Olympic Medal Winners "<<endl
-        << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
-        << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
+         << "Dataset used: Olympic Medal Winners "<<endl
+         << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
+         << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
 }
