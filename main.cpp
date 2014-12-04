@@ -38,10 +38,16 @@ int hashSize(int);
 void projectInfo();
 unsigned int hashMap(const string&, const int);
 int getNumObjects();
-bool saveOutput(BST* bst);
+bool out_file_name_is_valid (string name);
+
+
+
+
+
 //
 bool deleteNode(string& delNode, BST*, /*LinkedStack<Athlete>**/ Stack*, hashedDict<string,Athlete*>*,unsigned int (*)(const std::string&));
-void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable );
+void insert_input( BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
+                  unsigned int (*hashFuncPtr)(const std::string&, const int));
 
 
 
@@ -310,7 +316,8 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
             }
             case '1':
             {
-                insert_input(bst , hashTable);
+                insert_input(bst, myStack, hashTable, hashFuncPtr);
+                
                 break;
             }
             case '2':
@@ -327,11 +334,6 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 break;
             }
             case '4':
-            {
-                hashTable->printHashed(true);
-                break;
-            }
-            case '5':
             {
                 string key = " ";
                 cout << "Please enter athlete name to search: ";
@@ -354,6 +356,17 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
             case '7':
             {
                 undoDelete(myStack, bst);
+                break;
+            }
+            case '7':
+            {
+                string name;
+                cout << "Enter a name for output file (followed by .txt)" << endl;
+                cin.ignore();
+                getline(cin , name);
+                
+                if (out_file_name_is_valid (name))      //check is out file name is the right format
+                { hashTable->saveFile(name);}
                 break;
             }
             case '8':
@@ -400,7 +413,9 @@ int hashSize(int numAthletes)
 }
 
 
-void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
+//void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
+void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
+                   unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
     string name = " ", country = " ", sport = " ", date = " ";
     int age =0, year=0;
@@ -423,12 +438,7 @@ void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
     
     cout << "Enter year ";
     cin >> year;
-    //
-    //    cout << "Enter Age ";
-    //    cin >> age;
-    //
-    //    cout << "Enter Age ";
-    //    cin >> age;
+    
     
     cout << "Enter number of gold medals: ";
     cin >> medals[0];
@@ -440,7 +450,10 @@ void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
     
-    unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
+    // unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
+    
+    if (hashTable->searchNode(name, hashFuncPtr))
+    {cout << "Duplication!!" << std::endl; return;}
     
     //        if (bst->Search(*athlete))
     //        {cout << "Duplication!!" << std::endl; return;}
@@ -469,33 +482,27 @@ void projectInfo()
     << "Data Structures Used: Stack (Linked), BST , Hash Dictionary"<<endl;
 }
 
-/**
- Saves contents of bst into ouput file.
- */
-/*
- bool saveOutput(BST* bst)
- {
- fstream fileHandle;
- fileHandle.open(OUTPUT_FNAME, fstream::out);
- bool ableToSave = fileHandle.good();
- 
- if (ableToSave)
- {
- BST_Node* currPtr = bst->
- int nodesLeft = bst->size();
- while (nodesLeft)
- {
- fileHandle << currPtr->_line <<"\n";
- currPtr = currPtr->_fwd;
- nodesLeft--;
- }
- 
- cout << "Output Saved!" << endl;
- }
- 
- else
- printErrorMsg(Error::BAD_OFILE);
- fileHandle.close();
- return ableToSave;
- }
- */
+
+
+//*******************************
+//OUTPUT FILE NAME VALIDATION
+//if the neame is not followed by .txt, it is invalid
+//**************************
+
+bool out_file_name_is_valid (string name)
+{
+    size_t pos = 0;
+    string token;
+    
+    if (name[0] == '.')
+    {cout << "Invalid name\n";    return false;}
+    
+    
+    pos = name.find('.');
+    name.erase(0 , pos + 1);
+    
+    if (name != "txt")
+    {cout << "Invalid name\n";    return false;}
+    
+    return true;
+}
