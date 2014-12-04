@@ -52,13 +52,13 @@ int main()
     int numObjects = getNumObjects();
     int hash_size = hashSize(numObjects);
     BST* bst = new BST;
-
+    
     //LinkedStack<Athlete>* Stack = new LinkedStack<Athlete>;
     Stack* myStack = new Stack;
-
+    
     hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(hash_size);
     readData(hash_size, bst, hashTable);
-
+    
     processCommand(bst, myStack, hashTable);
     delete bst;
     delete myStack;
@@ -71,7 +71,7 @@ int getNumObjects()
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
-
+    
     bool ableToPopulate = fileHandle.good();
     int numObjects =0;
     if (ableToPopulate)
@@ -93,9 +93,9 @@ bool readData(int hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
-
+    
     bool ableToPopulate = fileHandle.good();
-
+    
     if (ableToPopulate)
     {
         unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
@@ -149,23 +149,23 @@ bool saveToFile();
 bool deleteNode(string& delNode, BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                 unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
-
+    
     bool ableToDelete = false;
-   // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
-
+    // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
+    
     //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
     ableToDelete = hashTable->searchNode(delNode, hashFuncPtr);
-
+    
     Sport winStats(" ",0," ",0);
     Athlete athlete(delNode , 0 , {0} , winStats);
     myStack->push(athlete);
-
-
+    
+    
     if (ableToDelete)
     {
         bst->BST_Delete(athlete);
     }
-
+    
     /**
      Athlete* athlete = new Athlete(name, age, medals, winStats);
      Stack->push(athlete);
@@ -179,7 +179,7 @@ bool deleteNode(string& delNode, BST* bst, /*LinkedStack<Athlete>* Stack*/Stack 
 bool undoDelete(/*LinkedStack<Athlete>**/Stack *myStack, BST* bst)
 {
     bool ableToReturn = false;
-
+    
     if (!myStack->isEmpty())
     {
         Athlete oldAthlete;
@@ -275,12 +275,12 @@ unsigned int hashMap(const string& key, const int hash_size)
     unsigned len = key.size()+1;
     char Key[len];
     strcpy(Key,key.c_str());
-
+    
     unsigned h = 0, i = 0;
-
+    
     for ( i = 0; i < len; i++ )
         h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
-
+    
     return h % hash_size;
 }
 
@@ -328,8 +328,8 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
             }
             case '4':
             {
-            hashTable->printHashed(true);
-            break;
+                hashTable->printHashed(true);
+                break;
             }
             case '5':
             {
@@ -364,12 +364,12 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 break;
             }
             case '9':
-                {
-                    //saveOutput(bst);
-                    inProgress = false;
-                }
+            {
+                //saveOutput(bst);
+                inProgress = false;
+            }
         }
-
+        
     }
 }
 
@@ -405,7 +405,7 @@ void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
     string name = " ", country = " ", sport = " ", date = " ";
     int age =0, year=0;
     int medals[3] = {0};
-
+    
     cout << "Enter Athlete's Name and family name: ";
     getline (cin , name);
     cin.ignore();
@@ -417,38 +417,38 @@ void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
     cin.ignore();
     cout << "Enter date ";
     cin >> date;
-
+    
     cout << "Enter Age ";
     cin >> age;
-
+    
     cout << "Enter year ";
     cin >> year;
-//
-//    cout << "Enter Age ";
-//    cin >> age;
-//
-//    cout << "Enter Age ";
-//    cin >> age;
-
+    //
+    //    cout << "Enter Age ";
+    //    cin >> age;
+    //
+    //    cout << "Enter Age ";
+    //    cin >> age;
+    
     cout << "Enter number of gold medals: ";
     cin >> medals[0];
     cout << "Enter number of gold medals: ";
     cin >> medals[1];
     cout << "Enter number of gold medals: ";
     cin >> medals[2];
-
+    
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
-
+    
     unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
-
-//        if (bst->Search(*athlete))
-//        {cout << "Duplication!!" << std::endl; return;}
-//
-
+    
+    //        if (bst->Search(*athlete))
+    //        {cout << "Duplication!!" << std::endl; return;}
+    //
+    
     bst->BST_insert(athlete);
     hashTable->addNode(name, athlete, hashFuncPtr);
-
+    
     cout << athlete->getName() << " added successfully." << endl;
 }
 
@@ -458,44 +458,44 @@ void projectInfo()
     cout << "\n**********Group Info: Team #9**********" << endl
     <<"Team Members: Mahsa M, Elena M, Kelly D, Misha Y" <<endl
     << "Purpose: CIS 22C Fall 2014 Final Project" <<endl;
-
-
+    
+    
     cout << "\n**********Dataset Info**********" << endl
     << "Dataset used: Olympic Medal Winners "<<endl
     << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
     << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
-
+    
     cout << "\n**********Implementation Info**********" << endl
     << "Data Structures Used: Stack (Linked), BST , Hash Dictionary"<<endl;
 }
 
 /**
  Saves contents of bst into ouput file.
-*/
+ */
 /*
-bool saveOutput(BST* bst)
-{
-    fstream fileHandle;
-    fileHandle.open(OUTPUT_FNAME, fstream::out);
-    bool ableToSave = fileHandle.good();
-
-    if (ableToSave)
-    {
-        BST_Node* currPtr = bst->
-        int nodesLeft = bst->size();
-        while (nodesLeft)
-        {
-            fileHandle << currPtr->_line <<"\n";
-            currPtr = currPtr->_fwd;
-            nodesLeft--;
-        }
-
-        cout << "Output Saved!" << endl;
-    }
-
-    else
-        printErrorMsg(Error::BAD_OFILE);
-    fileHandle.close();
-    return ableToSave;
-}
-*/
+ bool saveOutput(BST* bst)
+ {
+ fstream fileHandle;
+ fileHandle.open(OUTPUT_FNAME, fstream::out);
+ bool ableToSave = fileHandle.good();
+ 
+ if (ableToSave)
+ {
+ BST_Node* currPtr = bst->
+ int nodesLeft = bst->size();
+ while (nodesLeft)
+ {
+ fileHandle << currPtr->_line <<"\n";
+ currPtr = currPtr->_fwd;
+ nodesLeft--;
+ }
+ 
+ cout << "Output Saved!" << endl;
+ }
+ 
+ else
+ printErrorMsg(Error::BAD_OFILE);
+ fileHandle.close();
+ return ableToSave;
+ }
+ */
