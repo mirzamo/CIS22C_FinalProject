@@ -86,7 +86,7 @@ bool LinkedStack<T>:: push(const T data)
         insertPtr->setNodeF(_top);
         _top = insertPtr;
         _count++;
-        std::cout<<"Pushed "<<insertPtr->getNodeData()<<" on stack"<<std::endl;
+        std::cout<<"Pushed "<< insertPtr->getNodeData()<<" on stack"<<std::endl;
     }
     return ableToPush;
 }
