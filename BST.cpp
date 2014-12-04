@@ -15,7 +15,7 @@ void BST::BST_insert(Athlete* anAthlete)
 
     if (!root)          // tree is empty
         root = newNode;
-    
+
 //    if (_search(anAthlete->getName()))
 //    {std::cout << "Duplication!!" << std::endl; return;}
 
@@ -82,10 +82,10 @@ BST_Node* BST::_search(Athlete target)
          {std::cout << pWalk->anAthlete->getName();
 
              pWalk = pWalk->left;              }
-         
+
          else if (target.getName() > pWalk->anAthlete->getName() )
                  pWalk = pWalk->right;
-         
+
              else
                  return pWalk;      //found
      }
@@ -110,19 +110,17 @@ void BST::BST_Indented_List() const
     _BST_Indented_List(root , 1) ;
 }
 
-
 void BST::_BST_Indented_List(BST_Node *root , int i) const
 {
     if (root )
     {
         std::cout << std::right << std::setw(i) << i << ".  ";
-        
+
         root->anAthlete->print();
         _BST_Indented_List(root->right , ++i);
         _BST_Indented_List(root->left , i);
     }
 }
-
 
 
 
@@ -140,27 +138,27 @@ void BST::_BST_Delete (BST_Node* n , Athlete target)
 {
     BST_Node *targetNodePtr = _search(target);
 
-    
+
 //    if (!root)       //  tree is empty
 //        return NULL;
    // LinkedStack<Athlete> myStack;
     //Stack myStack;
-    
-    
+
+
     bool found = false;
     BST_Node *pWalk = n;
     BST_Node *parent = nullptr;
-    
+
     if (!pWalk)
     {std::cout << "Tree is empty" << std::endl;  return;}
-    
+
     while( pWalk )
     {
         if (pWalk->anAthlete->getName() == target.getName())
         {found = true;
             break;
         }
-        
+
         else
         {
             parent = pWalk;
@@ -169,39 +167,39 @@ void BST::_BST_Delete (BST_Node* n , Athlete target)
             else
                 pWalk = pWalk->left;
         }
-        
-        
+
+
         if (!found)
         {
             std::cout << target.getName() << "not in tree." << std::endl;
             return;
         }
-        
-        
+
+
 //        if (target < pWalk->anAthlete->getName())
 //        {
 //            std::cout << pWalk->anAthlete->getName();
-//            
+//
 //            parent = pWalk;
-//            
+//
 //            pWalk = pWalk->left;
 //        }
-//        
+//
 //        else if (target > pWalk->anAthlete->getName())
 //        {
 //            parent = pWalk;
 //
 //            pWalk = pWalk->right;
 //        }
-//        
+//
 //        else
 //            return pWalk;    //  found
-        
+
        // leaf
         if (!pWalk->right && !pWalk->left)
         {parent = NULL;}
-        
-        
+
+
         //has one child
          else if ((pWalk->right == nullptr && pWalk->left != nullptr) || (pWalk->left != nullptr && pWalk->right == nullptr))
              // Right Leaf Present, No Left Leaf
@@ -325,29 +323,29 @@ void BST::_BST_Delete (BST_Node* n , Athlete target)
 //             else   has left child
 //                 parent = pWalk->left;
 //         }
-//        
-//        
+//
+//
 //        //has two children
 //        else if (pWalk->right && pWalk->left)
 //        {
 //           //find largest n left subtree
 //            BST_Node *findLarge = pWalk->left;
 //            if ()
-//            
+//
 //        }
 //    }
-//    
+//
 //    return NULL;   not found
-//    
-//    
-//    
-//    
-//    
+//
+//
+//
+//
+//
 //    if (targetNodePtr)
 //    {
 //    }
 //    else
-//    
+//
 //}
 //
 //
@@ -360,7 +358,7 @@ void BST::_BST_Delete (BST_Node* n , Athlete target)
 //void BST::find_keys_Greater(T target)
 //{
 //    _find_keys_Greater(target , root);
-//    
+//
 //}
 
 /**~*~*
@@ -369,16 +367,16 @@ void BST::_BST_Delete (BST_Node* n , Athlete target)
 //void BST::_find_Greatest(BST_Node *root)
 //{
 //    Athlete largest = root->anAthlete->getName();
-//    
+//
 //    if (root)
 //    {
-//        
+//
 ////        _find_Greatet(target , root->left);
 ////        if (root->movie.getyear() > target)
 ////        {root->movie.print();}
 ////        _find_Greatet(target,root->right);
 //    }
-//    
+//
 //}
 
 

@@ -221,13 +221,13 @@ void hashedDict<keyT,itemT>:: printHashed(bool indent) const
         {
             if (indent)
                 std::cout<< std::right << std::setw(5);
-            std::cout << _nodes[i]->getItem()<<std::endl;
+            _nodes[i]->getItem()->print();
             HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
             while (nextNode)
             {
                 if (indent)
                     std::cout<< std::right << std::setw(20);
-                std::cout << nextNode->getItem() <<std::endl;
+                    nextNode->getItem()->print();
                 nextNode = nextNode->getFwd();
             }
         }
