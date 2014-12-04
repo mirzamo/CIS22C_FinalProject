@@ -22,19 +22,8 @@
 
 using namespace std;
 
-<<<<<<< HEAD
-
-const string FNAME = "/Users/Mahsa/Documents/College/CIS22C/CIS22C_FinalProject/test random.txt";
-//const string FNAME = "OlympicAthletes.txt";
-bool readData(int&, BST*);
-=======
 const string FNAME = "OlympicAthletes.txt";
-<<<<<<< HEAD
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
-=======
-bool readData(int&, BST*,hashedDict<string,Athlete*>*);
->>>>>>> FETCH_HEAD
->>>>>>> e78f4c2493fe55f74ee9dfbed34388d125e61608
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
 void processCommand(BST*, LinkedStack<Athlete>*,hashedDict<string,Athlete*>*);
 int hashSize(int);
@@ -295,19 +284,10 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Ath
         }
         case '2':
         {
-<<<<<<< HEAD
             string key = " ";
             cout << "Please enter athlete name to delete: ";
             getline(cin, key);
             deleteNode(key, bst, Stack, hashTable, hashFuncPtr);
-=======
-            string name;
-            // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
-            //string delNode = "Michael Phelps"; //substitute this with user input
-            //deleteNode(delNode, Stack);
-//            getline (cin , name);
-//            bst->BST_Delete(name);
->>>>>>> e78f4c2493fe55f74ee9dfbed34388d125e61608
             break;
         }
         case '3':
@@ -317,26 +297,10 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Ath
         }
         case '4':
         {
-<<<<<<< HEAD
             string key = " ";
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
-=======
-//<<<<<<< HEAD
-////<<<<<<< Updated upstream
-//            // Kelly: Search for an entry
-//=======
-//            string target;
-//            getline (cin , target);
-//            //if (bst->Search(target , bst)
-//                bst->Search(target);
-//>>>>>>> Stashed changes
-=======
-            // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
-            string key = "Michael Phelps"; //substitute this with user input
->>>>>>> e78f4c2493fe55f74ee9dfbed34388d125e61608
             hashTable->searchNode(key,hashFuncPtr);
->>>>>>> FETCH_HEAD
             break;
         }
         case '5':
