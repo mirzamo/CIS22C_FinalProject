@@ -43,8 +43,8 @@ public:
     {
         _clearDict();
     }
-    bool addNode(const keyT&, itemT, unsigned int (*)(const keyT&));
-    bool searchNode(const keyT&, unsigned int (*)(const std::string&));
+    bool addNode(const keyT&, itemT, unsigned int (*)(const keyT&, const int));
+    bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int));
 
     // Aids for statistics for hash table
     int getCount() const;
@@ -75,21 +75,21 @@ public:
 
 template <class keyT, class itemT>
 int hashedDict<keyT,itemT> ::  getCount() const
-    {
-        return _count;
-    }
+{
+    return _count;
+}
 
 template <class keyT, class itemT>
 int hashedDict<keyT,itemT> :: getColl() const
-    {
-        return _numCollisions;
-    }
+{
+    return _numCollisions;
+}
 
 template <class keyT, class itemT>
 float hashedDict<keyT,itemT> :: getLoadFac() const
-    {
-        return (float)(_count - _numCollisions)*100 / _arSize;
-    }
+{
+    return (float)(_count - _numCollisions)*100 / _arSize;
+}
 
 template <class keyT, class itemT>
 int hashedDict<keyT, itemT> :: getNumLL() const
@@ -150,15 +150,16 @@ void hashedDict<keyT,itemT>::printLLnum() const
 */
 
 template <class keyT, class itemT>
-bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsigned int (*hashFuncPtr)(const keyT&))
+bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsigned int (*hashFuncPtr)(const keyT&, const int))
 {
     bool ableToHash = true;
     HsinglyNode<keyT, itemT>* newNode = new HsinglyNode <keyT, itemT> (newKey, newItem);
-    int hashIndex = hashFuncPtr(newKey);
-
+    const int Size = _arSize;
+    int hashIndex = hashFuncPtr(newKey, Size);
     if (_nodes[hashIndex] == nullptr)
+    {
         _nodes[hashIndex] = newNode;
-
+    }
     else
     {
         ableToHash = false;
@@ -176,11 +177,11 @@ bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsign
     Searches the hash at the given index, and searched the attached linked list in until it's found.
     Returns true if item is found, false otherwise.
 */
-
 template<class keyT, class itemT>
-bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&))
+bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
-    int index = hashFuncPtr(searchKey);
+    const int Size = _arSize;
+    int index = hashFuncPtr(searchKey, Size);
     bool ableToFind = false;
 
     HsinglyNode<keyT, itemT>* searchPtr = _nodes[index];
@@ -191,7 +192,7 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
         else
         {
             ableToFind = true;
-            std:: cout << searchPtr->getItem() << " " << searchPtr->getKey()<<std::endl;
+            searchPtr->getItem()->printFull();
             break;
         }
     }
@@ -242,8 +243,7 @@ template <class keyT, class itemT>
 void hashedDict<keyT, itemT>::_clearDict() const
 {
     for (int i =0; i< getCount(); i++)
-        //delete _nodes.at(i);
-    delete _nodes;
+        delete _nodes[i];
 }
 
 #endif // HASHED_DICT_H

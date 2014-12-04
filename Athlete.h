@@ -66,8 +66,15 @@ public:
     }
     void print()
     {
-        std::cout<< _name << " from " << _winStats._country<< " for " << _winStats._sportType<<std::endl;
+        std::cout<< _name << " from " << _winStats._country<< " for " << _winStats._sportType<< std::endl;
     }
+    void printFull()
+    {
+        std::cout << _name << "\nAge " <<_age<<"\n "<<_winStats._country << "\n"<<_winStats._sportType <<"\n"<<_winStats._year<<std::endl;
+        std::cout << "Ceremony Date: "<<_winStats._ceremonyDate;
+        std::cout <<"\nMedals: "<< _medals[0] <<" Gold, "<<_medals[1] <<" Silver, "<<_medals[2] <<" Bronze"<<std::endl;
+    }
+
     //Constructor and Destructor
     Athlete(const Athlete& oldAthlete)
     {

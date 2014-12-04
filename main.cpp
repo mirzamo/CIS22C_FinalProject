@@ -21,24 +21,26 @@
 #include <string>
 
 using namespace std;
-const int HASH_SIZE = 3100;
 
 const string FNAME = "OlympicAthletes.txt";
-bool readData(int&, BST*,hashedDict<string,Athlete*>*);
+bool readData(int, BST*,hashedDict<string,Athlete*>*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
 void processCommand(BST*, LinkedStack<Athlete>*,hashedDict<string,Athlete*>*);
 int hashSize(int);
 void projectInfo();
-bool deleteNode(string&, LinkedStack<Athlete>*);
-unsigned int hashMap(const string&);
+bool deleteNode(string& delNode, BST*, LinkedStack<Athlete>*, hashedDict<string,Athlete*>*,unsigned int (*)(const std::string&));
+unsigned int hashMap(const string&, const int);
+int getNumObjects();
 
 int main()
 {
+    int numObjects = getNumObjects();
+    int hash_size = hashSize(numObjects);
     BST* bst = new BST;
     LinkedStack<Athlete>* Stack = new LinkedStack<Athlete>;
-    hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(HASH_SIZE);
-    int hashSize =0;
-    readData(hashSize, bst, hashTable);
+    hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(hash_size);
+    readData(hash_size, bst, hashTable);
+
     processCommand(bst, Stack, hashTable);
     delete bst;
     delete Stack;
@@ -46,12 +48,30 @@ int main()
     return 0;
 }
 
+
+int getNumObjects()
+{
+    ifstream fileHandle;
+    fileHandle.open(FNAME);
+
+    bool ableToPopulate = fileHandle.good();
+     int numObjects =0;
+    if (ableToPopulate)
+    {
+        string line;
+        while (getline(fileHandle, line))
+            numObjects++;
+        fileHandle.close();
+    }
+    return numObjects;
+}
+
 /**
     Returns true if able to read (non-corrupt) file, else returns false.
     If able to read file, it dynamically allocates Athletes in memory.
     It fills all data structures with pointers to these Athletes.
 */
-bool readData(int& hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
+bool readData(int hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
@@ -60,9 +80,9 @@ bool readData(int& hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
 
     if (ableToPopulate)
     {
-        unsigned int (*hashFuncPtr)(const string&) = hashMap;
+        unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
         string line =" ", name = " ", country = " ", sport = " ", date = " ";
-        int age =0, year=0, numObjects =0;
+        int age =0, year=0;
         int medals[3] = {0};
         while (getline(fileHandle, line))
         {
@@ -71,10 +91,8 @@ bool readData(int& hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
             Athlete* athlete = new Athlete(name, age, medals, winStats);
             bst->BST_insert(athlete);
             hashTable->addNode(name, athlete, hashFuncPtr);
-            numObjects++;
         }
         fileHandle.close();
-        hashSi = hashSize(numObjects);
     }
     else
         printErrorMsg(Error::BAD_IFILE);
@@ -89,7 +107,7 @@ bool readData(int& hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
     returns true/false depending on whether found
     changes delNode by reference
 */
-bool getNodetoDelete(string& delNode);
+bool getUserNode(string& userNode);
 
 /**
     MISHA:
@@ -111,9 +129,11 @@ bool saveToFile();
     copies data into stack, deletes all pointers to node in data structures, and deletes node itself.
 */
 
-bool deleteNode(string& delNode, LinkedStack<Athlete>* Stack)
+bool deleteNode(string& delNode, BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Athlete*>* hashTable,
+                unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
     bool ableToDelete = false;
+    cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
 
     //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
     /**
@@ -189,14 +209,15 @@ void menu()
 {
     int w1 = 10, w2 = 10;
     cout<< endl;
-    cout << setw(w1) << left << "0: " << setw(w2) << left << "Display data set info" << endl;
+    cout << setw(w1) << left << "0: " << setw(w2) << left << "Display information about dataset and implementation" << endl;
     cout << setw(w1) << left << "1: " << setw(w2) << left << "Insert new entry" << endl;
     cout << setw(w1) << left << "2: " <<  setw(w2) << left << "Delete an entry"<< endl;
     cout << setw(w1) << left << "3: " <<  setw(w2) << left << "Display entries in an indented list"<< endl;
     cout << setw(w1) << left << "4: " <<  setw(w2) << left << "Search for an entry"<< endl;
     cout << setw(w1) << left << "5: " <<  setw(w2) << left << "Show hash table statistics"<< endl;
     cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Undo delete"<<endl;
-    cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Quit"<<endl;
+    cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Show number of nodes in data structures"<<endl;
+    cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Quit"<<endl;
 }
 
 /**
@@ -204,7 +225,7 @@ void menu()
 */
 bool validChoice(string choice)
 {
-    string allowable = "01234567";
+    string allowable = "012345678";
     if (choice.size()==1 && (allowable.find(toupper(choice[0])) != std::string::npos))
         return true;
     else
@@ -218,7 +239,7 @@ bool validChoice(string choice)
 /**
     Hash function set by user
 */
-unsigned int hashMap(const string& key)
+unsigned int hashMap(const string& key, const int hash_size)
 {
     unsigned len = key.size()+1;
     char Key[len];
@@ -229,8 +250,7 @@ unsigned int hashMap(const string& key)
     for ( i = 0; i < len; i++ )
         h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
 
-
-    return h % HASH_SIZE;
+    return h % hash_size;
 }
 
 /**
@@ -239,7 +259,7 @@ unsigned int hashMap(const string& key)
 void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Athlete*>* hashTable)
 {
     bool inProgress = true;
-    unsigned int (*hashFuncPtr)(const string&) = hashMap;
+    unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
     while (inProgress)
     {
         menu();
@@ -264,9 +284,10 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Ath
         }
         case '2':
         {
-            // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
-            string delNode = "Michael Phelps"; //substitute this with user input
-            deleteNode(delNode, Stack);
+            string key = " ";
+            cout << "Please enter athlete name to delete: ";
+            getline(cin, key);
+            deleteNode(key, bst, Stack, hashTable, hashFuncPtr);
             break;
         }
         case '3':
@@ -276,8 +297,9 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Ath
         }
         case '4':
         {
-            // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
-            string key = "Michael Phelps"; //substitute this with user input
+            string key = " ";
+            cout << "Please enter athlete name to search: ";
+            getline(cin, key);
             hashTable->searchNode(key,hashFuncPtr);
             break;
         }
@@ -299,6 +321,13 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Ath
             break;
         }
         case '7':
+        {
+            cout<<" #Items in BST: " << bst->size()<< endl;
+            cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
+            cout<<" #Items in Stack: " << Stack->getCount() << endl;
+            break;
+        }
+        case '8':
             inProgress = false;
         }
 
@@ -325,21 +354,25 @@ bool isPrime (int num)
 
 int hashSize(int numAthletes)
 {
-    int hashSize = numAthletes * 2;
-    for (hashSize + 1 ; !isPrime(hashSize) ; hashSize++ ) {};
+    int hashSize = numAthletes * 2+1;
+    while (!isPrime(hashSize))
+        hashSize++;
     return hashSize;
 }
 
 
 void projectInfo()
 {
-    cout << "\n**********Group Info**********" << endl
-         <<"Mahsa M, Elena M, Kelly D, Misha Y" <<endl
-         << "CIS 22C Fall 2014" <<endl;
+    cout << "\n**********Group Info: Team #9**********" << endl
+         <<"Team Members: Mahsa M, Elena M, Kelly D, Misha Y" <<endl
+         << "Purpose: CIS 22C Fall 2014 Final Project" <<endl;
 
 
     cout << "\n**********Dataset Info**********" << endl
          << "Dataset used: Olympic Medal Winners "<<endl
          << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
          << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
+
+    cout << "\n**********Implementation Info**********" << endl
+         << "Data Structures Used: Stack (Linked), BST , Hash Dictionary"<<endl;
 }
