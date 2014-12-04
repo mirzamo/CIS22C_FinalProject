@@ -20,7 +20,9 @@
 
 using namespace std;
 
-const string FNAME = "OlympicAthletes.txt";
+
+const string FNAME = "/Users/Mahsa/Documents/College/CIS22C/CIS22C_FinalProject/test random.txt";
+//const string FNAME = "OlympicAthletes.txt";
 bool readData(int&, BST*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
 void processCommand(BST*, LinkedStack<Athlete>*); // input will be hash table and BST
@@ -237,9 +239,12 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack)  // Kelly: add bst he
         }
         case '2':
         {
+            string name;
             // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
-            string delNode = "Michael Phelps"; //substitute this with user input
-            deleteNode(delNode, Stack);
+            //string delNode = "Michael Phelps"; //substitute this with user input
+            //deleteNode(delNode, Stack);
+//            getline (cin , name);
+//            bst->BST_Delete(name);
             break;
         }
         case '3':
@@ -249,7 +254,14 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack)  // Kelly: add bst he
         }
         case '4':
         {
-            // Kelly: Search for an entry
+////<<<<<<< Updated upstream
+//            // Kelly: Search for an entry
+//=======
+//            string target;
+//            getline (cin , target);
+//            //if (bst->Search(target , bst)
+//                bst->Search(target);
+//>>>>>>> Stashed changes
             break;
         }
         case '5':
