@@ -9,36 +9,47 @@
 
 #include <fstream>
 #include <cmath>
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 #include "Athlete.h"
 #include "BST.h"
 #include "LinkedStack.h"
+#include "hashedDict.h"
 #include "validation.h"
 #include <vector>
 #include <string>
 
 using namespace std;
+const int HASH_SIZE = 3100;
 
+<<<<<<< HEAD
 
 const string FNAME = "/Users/Mahsa/Documents/College/CIS22C/CIS22C_FinalProject/test random.txt";
 //const string FNAME = "OlympicAthletes.txt";
 bool readData(int&, BST*);
+=======
+const string FNAME = "OlympicAthletes.txt";
+bool readData(int&, BST*,hashedDict<string,Athlete*>*);
+>>>>>>> FETCH_HEAD
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
-void processCommand(BST*, LinkedStack<Athlete>*); // input will be hash table and BST
+void processCommand(BST*, LinkedStack<Athlete>*,hashedDict<string,Athlete*>*);
 int hashSize(int);
 void projectInfo();
 bool deleteNode(string&, LinkedStack<Athlete>*);
+unsigned int hashMap(const string&);
 
 int main()
 {
     BST* bst = new BST;
     LinkedStack<Athlete>* Stack = new LinkedStack<Athlete>;
+    hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(HASH_SIZE);
     int hashSize =0;
-    readData(hashSize, bst);
-    processCommand(bst, Stack);
+    readData(hashSize, bst, hashTable);
+    processCommand(bst, Stack, hashTable);
     delete bst;
     delete Stack;
+    delete hashTable;
     return 0;
 }
 
@@ -47,7 +58,7 @@ int main()
     If able to read file, it dynamically allocates Athletes in memory.
     It fills all data structures with pointers to these Athletes.
 */
-bool readData(int& hashSi, BST* bst)
+bool readData(int& hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
@@ -56,6 +67,7 @@ bool readData(int& hashSi, BST* bst)
 
     if (ableToPopulate)
     {
+        unsigned int (*hashFuncPtr)(const string&) = hashMap;
         string line =" ", name = " ", country = " ", sport = " ", date = " ";
         int age =0, year=0, numObjects =0;
         int medals[3] = {0};
@@ -65,6 +77,7 @@ bool readData(int& hashSi, BST* bst)
             Sport winStats(country,year,sport,date);
             Athlete* athlete = new Athlete(name, age, medals, winStats);
             bst->BST_insert(athlete);
+            hashTable->addNode(name, athlete, hashFuncPtr);
             numObjects++;
         }
         fileHandle.close();
@@ -210,11 +223,30 @@ bool validChoice(string choice)
 }
 
 /**
+    Hash function set by user
+*/
+unsigned int hashMap(const string& key)
+{
+    unsigned len = key.size()+1;
+    char Key[len];
+    strcpy(Key,key.c_str());
+
+    unsigned h = 0, i = 0;
+
+    for ( i = 0; i < len; i++ )
+        h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
+
+
+    return h % HASH_SIZE;
+}
+
+/**
     Processes user command for the data entries.
 */
-void processCommand(BST* bst, LinkedStack<Athlete>* Stack)  // Kelly: add bst here
+void processCommand(BST* bst, LinkedStack<Athlete>* Stack, hashedDict<string,Athlete*>* hashTable)
 {
     bool inProgress = true;
+    unsigned int (*hashFuncPtr)(const string&) = hashMap;
     while (inProgress)
     {
         menu();
@@ -254,6 +286,7 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack)  // Kelly: add bst he
         }
         case '4':
         {
+//<<<<<<< HEAD
 ////<<<<<<< Updated upstream
 //            // Kelly: Search for an entry
 //=======
@@ -262,11 +295,23 @@ void processCommand(BST* bst, LinkedStack<Athlete>* Stack)  // Kelly: add bst he
 //            //if (bst->Search(target , bst)
 //                bst->Search(target);
 //>>>>>>> Stashed changes
+=======
+            // Misha: for your function to get user input for which node to delete (string output of the Athlete name)
+            string key = "Michael Phelps"; //substitute this with user input
+            hashTable->searchNode(key,hashFuncPtr);
+>>>>>>> FETCH_HEAD
             break;
         }
         case '5':
         {
-            // Kelly: Show hash table statistics
+            cout<< "_____Hash table statistics____"<<endl;
+            cout<<"Total entries stored: " << hashTable->getCount()<<endl;
+            cout<<"Number of collisions: " << hashTable->getColl()<<endl;
+            cout<<"Load factor: " << setprecision(3)<< hashTable->getLoadFac()<<endl;
+            cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
+            cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
+            cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
+            cout<<"Number of nodes in each linked list: " << endl;;
             break;
         }
         case '6':
