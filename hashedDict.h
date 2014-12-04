@@ -199,8 +199,8 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
             break;
         }
     }
-    if (!ableToFind)
-        printErrorMsg(Error::BAD_SEARCH);
+//    if (!ableToFind)
+//        printErrorMsg(Error::BAD_SEARCH);
     return ableToFind;
 }
 

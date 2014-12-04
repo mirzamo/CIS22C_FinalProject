@@ -55,7 +55,6 @@ bool BST::Search(Athlete target)
     BST_Node *found = _search(target);
     if (found)
     {
-        std::cout << "found\n";
         found->anAthlete->print();
         
         return true;
@@ -93,7 +92,6 @@ BST_Node* BST::_search(Athlete target)
     
     return NULL;   //not found
 }
-
 
 
 

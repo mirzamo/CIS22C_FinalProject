@@ -344,7 +344,8 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 string key = " ";
                 cout << "Please enter athlete name to search: ";
                 getline(cin, key);
-                hashTable->searchNode(key,hashFuncPtr);
+                if (!hashTable->searchNode(key,hashFuncPtr))
+                    cout << key << "not found" << endl;
                 break;
             }
                 
@@ -429,14 +430,17 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     int medals[3] = {0};
     
     cout << "Enter Athlete's Name and family name: ";
+    cin.ignore();
     getline (cin , name);
-    cin.ignore();
+    
     cout << "Enter Country: ";
+    cin.ignore();
     getline (cin , country);
-    cin.ignore();
+    
     cout << "Enter Sport ";
-    getline (cin , sport);
     cin.ignore();
+    getline (cin , sport);
+
     cout << "Enter date ";
     cin >> date;
     
@@ -456,9 +460,7 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
-    
-    // unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
-    
+        
     if (hashTable->searchNode(name, hashFuncPtr))
     {cout << "Duplication!!" << std::endl; return;}
     
