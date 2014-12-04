@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+//<<<<<<< HEAD
 #ifndef BST_H
 #define BST_H
 
@@ -38,7 +38,7 @@ public:
 
 
 #endif // BST_H
-=======
+//=======
 #ifndef BST_H
 #define BST_H
 
@@ -88,4 +88,4 @@ public:
 
 
 #endif // BST_H
->>>>>>> FETCH_HEAD
+//>>>>>>> FETCH_HEAD
