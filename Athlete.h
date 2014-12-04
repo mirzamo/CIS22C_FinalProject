@@ -107,6 +107,11 @@ public:
     {
         return (_name > rhs.getName());
     }
+
+    bool operator<(const Athlete& rhs) const
+    {
+        return (_name < rhs.getName());
+    }
 };
 
 #endif // ATHLETE_H
