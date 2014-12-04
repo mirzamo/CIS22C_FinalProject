@@ -23,10 +23,9 @@ using namespace std;
 
 
 //file name
-//const string FNAME = "/Users/Mahsa/Documents/College/CIS22C/CIS22C_FinalProject/short.txt";
-
-const string FNAME = "OlympicAthletes.txt";
-const string OUTPUT_FNAME = "Output.txt";
+const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
+//const string FNAME = "OlympicAthletes.txt";
+//const string OUTPUT_FNAME = "Output.txt";
 
 
 
@@ -254,7 +253,9 @@ void menu()
     cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Show hash table statistics"<< endl;
     cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Undo delete"<<endl;
     cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Show number of nodes in data structures"<<endl;
-    cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file and Quit"<<endl;
+    cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file" <<endl;
+    cout << setw(w1) << left << "10: " <<  setw(w2) << left << "Quit" <<endl;
+
 }
 
 /**
@@ -335,12 +336,18 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
             }
             case '4':
             {
+                hashTable->printHashed(true);
+                break;
+            }
+            case '5':
+            {
                 string key = " ";
                 cout << "Please enter athlete name to search: ";
                 getline(cin, key);
                 hashTable->searchNode(key,hashFuncPtr);
                 break;
             }
+                
             case '6':
             {
                 cout<< "_____Hash table statistics____"<<endl;
@@ -358,7 +365,15 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 undoDelete(myStack, bst);
                 break;
             }
-            case '7':
+           
+            case '8':
+            {
+                cout<<" #Items in BST: " << bst->size()<< endl;
+                cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
+                cout<<" #Items in Stack: " << myStack->getCount() << endl;
+                break;
+            }
+            case '9':
             {
                 string name;
                 cout << "Enter a name for output file (followed by .txt)" << endl;
@@ -369,16 +384,8 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 { hashTable->saveFile(name);}
                 break;
             }
-            case '8':
+            case '10':
             {
-                cout<<" #Items in BST: " << bst->size()<< endl;
-                cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
-                cout<<" #Items in Stack: " << myStack->getCount() << endl;
-                break;
-            }
-            case '9':
-            {
-                //saveOutput(bst);
                 inProgress = false;
             }
         }

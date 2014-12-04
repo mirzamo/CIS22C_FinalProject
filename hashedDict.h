@@ -30,7 +30,7 @@ protected:
     void _clearDict() const;
     
 public:
-    void saveFile(std::string fileName , bool) const;
+    void saveFile(std::string fileName ) const;
     
     hashedDict(const int arSize): _numCollisions(0), _count(0), _arSize(arSize),
     _LLsize(new int[arSize]), _nodes(new HsinglyNode<keyT, itemT>*[arSize])
@@ -255,44 +255,29 @@ void hashedDict<keyT, itemT>::_clearDict() const
 //*************************
 /* SAVE the updated text  *
  to an putput file        *
- //************************/
+ ************************/
 template <class keyT, class itemT>
-void hashedDict<keyT, itemT>::saveFile(std::string fileName , bool indent) const
+void hashedDict<keyT, itemT>::saveFile(std::string fileName) const
 {
-    std::cout << "hello" << std::endl;
     std::ofstream outFile(fileName);
     
     if (outFile)
         for(int i = 0; i < _arSize; i++)
         {
-            if (indent)
-            {
-                std::cout << "Index "<< i <<": ";
-                if (_LLsize[i] == 0)
-                    std::cout << std::endl;
-            }
+           
+            
             if (_LLsize[i] >0)
             {
-                if (indent)
-                    std::cout<< std::right << std::setw(5);
-                std::cout << _nodes[i]->getItem()<<std::endl;
+                outFile << _nodes[i]->getItem() << std::endl;
                 HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
                 while (nextNode)
                 {
-                    if (indent)
-                        std::cout<< std::right << std::setw(20);
-                    std::cout << nextNode->getItem() <<std::endl;
+                   
+                    outFile << nextNode->getItem() <<std::endl;
                     nextNode = nextNode->getFwd();
                 }
             }
         }
-    
-    //
-    //        for (int i = 0 ; i < getCount() ; i++)
-    //        {std::cout << "walk";
-    //            outFile << _nodes[i]->keyT;}
-    
-    
     outFile.close();
 }
 
