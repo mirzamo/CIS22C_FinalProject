@@ -123,30 +123,51 @@ void BST::_BST_Indented_List(BST_Node *root , int i) const
 Delete
  *~**/
 
-//bool BST::BST_Delete (const std::string anEntry)
-//{
-//    if (_BST_Delete(anEntry))
-//        return true;
-//        
-//        else return false;
-//
-//}
-//
-//
-//void BST::_BST_Delete (std::string target)
-//{
-//    BST_Node *targetNodePtr = _search(target);
-//
-//    
+void BST::BST_Delete (const std::string anEntry)
+{
+    _BST_Delete(root , anEntry);
+}
+
+
+void BST::_BST_Delete (BST_Node* n , std::string target)
+{
+    BST_Node *targetNodePtr = _search(target);
+
+    
 //    if (!root)       //  tree is empty
 //        return NULL;
-//    
-//   // tree is not empty
-//    BST_Node *pWalk = root;
-//    BST_Node *parent = root;
-//    
-//    while( pWalk )
-//    {
+    
+    bool found = false;
+    BST_Node *pWalk = n;
+    BST_Node *parent = nullptr;
+    
+    if (!pWalk)
+    {std::cout << "Tree is empty" << std::endl;  return;}
+    
+    while( pWalk )
+    {
+        if (pWalk->anAthlete->getName() == target)
+        {found = true;
+            break;
+        }
+        
+        else
+        {
+            parent = pWalk;
+            if (target > pWalk->anAthlete->getName())
+                pWalk = pWalk->right;
+            else
+                pWalk = pWalk->left;
+        }
+        
+        
+        if (!found)
+        {
+            std::cout << target << "not in tree." << std::endl;
+            return;
+        }
+        
+        
 //        if (target < pWalk->anAthlete->getName())
 //        {
 //            std::cout << pWalk->anAthlete->getName();
@@ -165,14 +186,113 @@ Delete
 //        
 //        else
 //            return pWalk;    //  found
-//        
-//       // leaf
-//        if (!pWalk->right && !pWalk->left)
-//        {parent = NULL;}
-//        
-//        
-//        //has one child
-//         else if (!pWalk->right || !pWalk->left)
+        
+       // leaf
+        if (!pWalk->right && !pWalk->left)
+        {parent = NULL;}
+        
+        
+        //has one child
+         else if ((pWalk->right == nullptr && pWalk->left != nullptr) || (pWalk->left != nullptr && pWalk->right == nullptr))
+             // Right Leaf Present, No Left Leaf
+             if(pWalk->left== nullptr && pWalk->right != nullptr)
+             {
+                 // If parent's left tree equals Node n
+                 if(parent->left==pWalk)
+                 {
+                     // then parent's left tree becomes n's right tree
+                     // and delete n
+                     parent->left=pWalk->right;
+                     delete pWalk;
+                     pWalk=nullptr;
+                     std::cout << target <<" has been removed from the Tree." << std::endl;
+                 }
+                 // If parent's right tree equals Node n
+                 else
+                 {
+                     // then parent's right tree becomes n's right tree
+                     // and delete n
+                     parent->right=pWalk->right;
+                     delete pWalk;
+                     pWalk=nullptr;
+                     std::cout << target << " has been removed from the Tree." << std::endl;
+                 }
+             }
+             else // Left Leaf Present, No Right Leaf Present
+             {
+                 if(parent->left==pWalk)
+                 {
+                     parent->left=pWalk->left;
+                     delete pWalk;
+                     pWalk=nullptr;
+                     std::cout<< target <<" has been removed from the Tree."<< std::endl;
+                 }
+                 else
+                 {
+                     parent->right=pWalk->left;
+                     delete pWalk;
+                     pWalk=nullptr;
+                     std::cout << target <<" has been removed from the Tree."<< std::endl;
+                 }
+             }
+        return;
+    }
+    // CASE 2: Removing a Leaf Node
+    if(pWalk->left==nullptr && pWalk->right==nullptr)
+    {
+        if(parent->left==pWalk)
+            parent->left=nullptr;
+        else
+            parent->right=nullptr;
+        delete pWalk;
+        std::cout<<target<<" has been removed from the Tree."<<std::endl;
+        return;
+    }
+    // CASE 3: Node has two children
+    // Replace Node with smallest value in right subtree
+    if(pWalk->left != nullptr && pWalk->right != nullptr)
+    {
+        BST_Node* check=pWalk->right;
+        if((pWalk->left==nullptr)&&(pWalk->right==nullptr))
+        {
+            pWalk=check;
+            delete check;
+            pWalk->right == nullptr;
+            std::cout << target <<" has been removed from the Tree."<< std::endl;
+        }
+        else // Right child has children
+        {
+            // If the node's right child has a left child
+            // Move all the way down left to locate smallest element
+            if((pWalk->right)->left!=nullptr)
+            {
+                BST_Node* leftpWalk;
+                BST_Node* leftpWalkPred;
+                leftpWalkPred=pWalk->right;
+                leftpWalk=(pWalk->right)->left;
+                while(leftpWalk->left != nullptr)
+                {
+                    leftpWalkPred=leftpWalk;
+                    leftpWalk=leftpWalk->left;
+                }
+                pWalk->anAthlete =leftpWalk->anAthlete;    //?????
+                delete leftpWalk;
+                leftpWalkPred->left == nullptr;
+                std::cout<<target<<" has been removed from the Tree."<<std::endl;
+            }
+            else
+            {
+                BST_Node* temp=pWalk->right;
+                pWalk->anAthlete = temp->anAthlete;
+                pWalk->right=temp->right;
+                delete temp;
+                std::cout << target << " has been removed from the Tree."<<std::endl;
+            }
+        }
+        return;
+    }
+}
+
 //         {
 //             if (!pWalk->left)  has right child
 //                 parent = pWalk->right;
@@ -204,7 +324,7 @@ Delete
 //    
 //}
 //
-
+//
 
 
 ///**~*~*
