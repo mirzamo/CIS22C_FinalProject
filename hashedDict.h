@@ -30,7 +30,7 @@ protected:
     void _clearDict() const;
 
 public:
-    void saveFile(std::string fileName ) const;
+    void saveFile(std::ostream &fileName ) const;
     
 //    Athlete searchData()
 //    {
@@ -263,9 +263,9 @@ void hashedDict<keyT, itemT>::_clearDict() const
  to an putput file        *
  ************************/
 template <class keyT, class itemT>
-void hashedDict<keyT, itemT>::saveFile(std::string fileName) const
+void hashedDict<keyT, itemT>::saveFile(std::ostream &outFile) const
 {
-    std::ofstream outFile(fileName);
+   // std::ofstream outFile(fileName);
 
     if (outFile)
         for(int i = 0; i < _arSize; i++)
@@ -284,7 +284,7 @@ void hashedDict<keyT, itemT>::saveFile(std::string fileName) const
                 }
             }
         }
-    outFile.close();
+   // outFile.close();
 }
 
 

@@ -36,6 +36,8 @@ void projectInfo();
 unsigned int hashMap(const string&, const int);
 int getNumObjects();
 bool out_file_name_is_valid (string name);
+void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash);
+
 
 
 
@@ -44,6 +46,7 @@ bool out_file_name_is_valid (string name);
 bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
 void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                   unsigned int (*hashFuncPtr)(const std::string&, const int));
+
 
 
 int main()
@@ -272,7 +275,7 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Ath
     {
         bst->BST_Delete(delNode);
         //hashTable->
-        cout << " removed successfully." << endl;
+        cout << " Removed successfully." << endl;
     }
 
     else
@@ -373,14 +376,8 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             }
             case '9':
             {
-                string name;
-                cout << "Enter a name for output file (followed by .txt)" << endl;
-                cin.ignore();
-                getline(cin , name);
-
-                if (out_file_name_is_valid (name))      //check is out file name is the right format
-                { hashTable->saveFile(name);}
-
+                
+                makeOutputFile(bst, hashTable);
                 inProgress = false;
 
             }
@@ -511,3 +508,26 @@ bool out_file_name_is_valid (string name)
     return true;
 }
 
+
+
+
+//*******************
+//make output file
+//******************
+void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash)
+{
+    string fileName;
+    cout << "Enter a name for output file (followed by .txt)" << endl;
+    cin.ignore();
+    getline(cin , fileName);
+    if (out_file_name_is_valid (fileName))      //check is out file name is the right format
+    {
+        std::ofstream outFile(fileName);
+        
+        bst->saveFileInOrder(outFile);
+       // hash->saveFile(outFile);
+
+        outFile.close();
+    }
+    
+}
