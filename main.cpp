@@ -341,7 +341,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 string key = " ";
                 cout << "Please enter athlete name to search: ";
                 getline(cin, key);
-                if (!hashTable->searchNode(key,hashFuncPtr))
+               // if (!hashTable->searchNode(key,hashFuncPtr))
                     cout << key << "not found" << endl;
                 break;
             }

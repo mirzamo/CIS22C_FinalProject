@@ -60,7 +60,7 @@ BST_Node* BST:: _insertNode(BST_Node* subTree, BST_Node* newNode)
         count++;
     }
 
-    else if (newNode->getAthletePtr()<subTree->getAthletePtr())
+    else if (newNode->getAthletePtr()->getName() < subTree->getAthletePtr()->getName())
         subTree->setLeft(_insertNode(subTree->getLeft(), newNode));
 
     else
