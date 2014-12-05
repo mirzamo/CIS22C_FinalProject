@@ -8,6 +8,7 @@
 /**~*~*
  Insert a new Node into a BST
  *~**/
+ /*
 void BST::BST_insert(Athlete* anAthlete)
 {
     BST_Node* newNode = new BST_Node(anAthlete);
@@ -42,9 +43,30 @@ void BST::BST_insert(Athlete* anAthlete)
 
     count++;
 }
+*/
+
+void BST::BST_insert(Athlete* newAthlete)
+{
+    BST_Node* newNode = new BST_Node(newAthlete);
+    root = _insertNode(root, newNode);
+}
 
 
+BST_Node* BST:: _insertNode(BST_Node* subTree, BST_Node* newNode)
+{
+    if (subTree == nullptr)
+    {
+        subTree = newNode;
+        count++;
+    }
 
+    else if (newNode->getAthletePtr()<subTree->getAthletePtr())
+        subTree->setLeft(_insertNode(subTree->getLeft(), newNode));
+
+    else
+        subTree->setRight(_insertNode(subTree->getRight(), newNode));
+    return subTree;
+}
 
 //
 // //template <class T , class R>
@@ -112,7 +134,7 @@ void BST::BST_Indented_List() const
 
 void BST::_BST_Indented_List(BST_Node *root , int i) const
 {
-    if (root )
+    if (root && i<100)
     {
         std::cout << std::right << std::setw(i) << i << ".  ";
 
