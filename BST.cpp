@@ -121,6 +121,12 @@ void BST::BST_Indented_List()
 }
 
 
+
+
+/**~*~*
+ This function calls a recursive function to traverse the
+ tree as an indentent list
+ *~**/
 void BST::_indentedList(BST_Node* subTree, int level =1, int indent =0)
 {
     if (indent)
@@ -139,31 +145,7 @@ void BST::_indentedList(BST_Node* subTree, int level =1, int indent =0)
 }
 
 
-/**~*~*
- This function calls a recursive function to traverse the
- tree as an indentent list
- *~**/
-/*
-//template <class T , class R>
-void BST::BST_Indented_List() const
-{
-    _BST_Indented_List(root , 1) ;
-}
 
-
-void BST::_BST_Indented_List(BST_Node *root , int i) const
-{
-    if (root)
-    {
-        std::cout << std::right << std::setw(i) << i << ".  ";
-
-        root->anAthlete->print();
-        _BST_Indented_List(root->right , ++i);
-        _BST_Indented_List(root->left , i);
-    }
-}
-
-*/
 
 
 /**~*~*
@@ -324,10 +306,10 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
     
 
         // CASE 2: has one child
-        else if ((pWalk->right == nullptr && pWalk->left != nullptr) || (pWalk->right != nullptr && pWalk->left == nullptr))
+        else if ((pWalk->right == nullptr && pWalk->left) || (pWalk->right && pWalk->left == nullptr))
         {
             // Right Leaf Present, No Left Leaf
-            if (pWalk->left== nullptr && pWalk->right != nullptr)
+            if (pWalk->left == nullptr && pWalk->right)
             {
                 // If parent's left tree equals Node
                 if (parent->left == pWalk)
@@ -388,7 +370,7 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
     
     // CASE 3: Node has two children
     // Replace Node with smallest value in right subtree
-    if (!pWalk->left && !pWalk->right)
+    if (pWalk->left && pWalk->right)
     {
         //BST_Node* check = pWalk->right;
         BST_Node* smallest = pWalk->right;
