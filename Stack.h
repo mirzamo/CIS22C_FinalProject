@@ -26,6 +26,7 @@ public:
 
    bool push(Athlete);
    bool pop(Athlete &);
+   bool pop();
    bool isEmpty();
    int getCount();
    bool getTop(Athlete &);

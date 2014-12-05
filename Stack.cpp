@@ -63,17 +63,29 @@ bool Stack::pop(Athlete &item)
     return true;
 }
 
+bool Stack::pop()
+{
+    StackNode *temp;
+
+    // empty stack
+    if (count == 0)
+        return false;
+
+    // pop value off top of stack
+    temp = top->next;
+    delete top;
+    top = temp;
+    count--;
+    return true;
+}
+
 bool Stack::clear ()
 {
-    if (count == 0)
-        return true;
-
-    while (count != 0)
+    while(count)
     {
-        delete top;
-        count--;
+        pop ();
     }
-    return true;
+    return isEmpty();
 }
 
 /*
