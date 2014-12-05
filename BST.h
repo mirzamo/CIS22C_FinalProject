@@ -16,7 +16,7 @@ private:
     void _BST_Indented_List(BST_Node *root , int) const;
     void _BST_Destroy(BST_Node *root);
     void _BST_Delete (BST_Node* , const std::string taregetNodePtr);
-
+    void getAthlete(Athlete &);
 
 public:
 
@@ -29,6 +29,16 @@ public:
     void BST_Indented_List() const;
     bool isEmpty() const	{return count == 0;}
     int size() const	    {return count;}
+    
+    
+    
+    
+//    Athlete getAthlete(std::string entry)
+//    {
+//        
+//        return this_search(entry);
+//    }
+
 
     ~BST();
 };
