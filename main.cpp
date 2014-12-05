@@ -310,7 +310,7 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,A
     }
     
     else
-        cout << "The entered key does not exist" << endl;
+        cout << " cannot be removed becuase it does not exist" << endl;
     /**
      Athlete* athlete = new Athlete(name, age, medals, winStats);
      Stack->push(athlete);
