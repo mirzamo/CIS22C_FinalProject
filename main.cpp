@@ -120,38 +120,6 @@ bool readData(int hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
     return ableToPopulate;
 }
 
-/**
- MISHA:
- Function asks user to input name of an Athlete to delete,
- searches bst for whether that athlete is present, displays error message if not found
- returns true/false depending on whether found
- changes delNode by reference
- */
-bool getUserNode(string& userNode);
-
-/**
- MISHA:
- Function will allow user to input a new Athlete into the database.
- Feel free to write this and any other validation functions to validate that user input from keyboard is valid.
- */
-bool insertUserNode();
-
-/**
- Misha:
- Function will save all the nodes present to a file.
- */
-bool saveToFile();
-
-
-/**
- Mahsa, Kelly :
- Searches bst to see if node is found (thus returning bool on whether its found or not),
- copies data into stack, deletes all pointers to node in data structures, and deletes node itself.
- */
-
-
-
-
 bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* hashTable,
                 unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
@@ -162,9 +130,12 @@ bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* has
         Athlete oldAthlete;
         myStack->pop(oldAthlete);
         Athlete* athleteNew = new Athlete(oldAthlete);
+        oldAthlete.printFull();
+        athleteNew->printFull();
         bst->BST_insert(athleteNew);
         hashTable->addNode(athleteNew->getName(), athleteNew, hashFuncPtr);
-        cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
+        cout<< athleteNew->getName() <<" is returned to dataset." << endl;
+        //cout<<hashTable->searchNode(athleteNew->getName(),hashFuncPtr)<<endl;
     }
     else
         printErrorMsg(Error::EMPTY_STACK);
@@ -267,20 +238,19 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
 
 {
     bool ableToDelete = false;
-    // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
-
     ableToDelete = bst->Search(delNode);    //in search it prints out the information of athlete
 
     if (ableToDelete)
     {
         Athlete athleteCopy = hashTable->getAthleteCopy(delNode, hashFuncPtr);
         myStack->push(athleteCopy);
+
         bst->BST_Delete(delNode);
         hashTable->deleteNode(delNode, hashFuncPtr);
     }
 
     else
-        cout << " cannot be removed because it does not exist" << endl;
+        cout << " Athlete cannot be removed because it does not exist" << endl;
     /**
      Athlete* athlete = new Athlete(name, age, medals, winStats);
      Stack->push(athlete);

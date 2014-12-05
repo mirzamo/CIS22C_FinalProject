@@ -103,7 +103,7 @@ public:
 
     ~Athlete() {};
 
-    Athlete getAthleteCopy()
+    Athlete getAthlete()
     {
         Athlete AthleteCopy(_name,_age,_medals,_winStats);
         return AthleteCopy;

@@ -220,13 +220,13 @@ Athlete hashedDict<keyT,itemT> ::getAthleteCopy(const keyT& searchKey, unsigned 
         if (searchPtr->getKey() != searchKey)
         {
             searchPtr = searchPtr->getFwd();
-            athleteCopy = searchPtr->getItem()->getAthleteCopy();
         }
 
         else
         {
             searchPtr->getItem()->printFull();
-            // item = searchPtr->getItem();
+            athleteCopy = searchPtr->getItem()->getAthlete();
+
             break;
         }
     }

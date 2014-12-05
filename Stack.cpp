@@ -45,6 +45,7 @@ bool Stack::push(Athlete item)
   passed as an argument.
 *~**/
 //template <class T>
+/*
 bool Stack::pop(Athlete &item)
 {
     StackNode *temp;
@@ -61,6 +62,22 @@ bool Stack::pop(Athlete &item)
     count--;
 
     return true;
+}*/
+
+
+bool Stack:: pop(Athlete& data)
+{
+    bool ableToPop = !isEmpty();
+    if (ableToPop)
+    {
+        data = top->value;
+        StackNode* topF = top->next;
+        delete top;
+        count--;
+        top = topF;
+        std::cout<<"Popped "<<data.getName()<<" from stack"<<std::endl;
+    }
+    return ableToPop;
 }
 
 bool Stack::pop()

@@ -25,7 +25,7 @@ public:
    ~Stack();
 
    bool push(Athlete);
-   bool pop(Athlete &);
+   bool pop(Athlete&);
    bool pop();
    bool isEmpty();
    int getCount();
