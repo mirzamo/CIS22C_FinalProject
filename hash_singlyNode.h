@@ -16,7 +16,7 @@ private:
 public:
     HsinglyNode (): _fwd(nullptr) {};
     HsinglyNode (keyT key, itemT item): _key(key), _item(item),_fwd(nullptr) {};
-    ~HsinglyNode() {};
+    ~HsinglyNode(){};
 
     void setItem(const itemT& item)
     {

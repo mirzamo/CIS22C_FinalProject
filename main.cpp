@@ -37,7 +37,7 @@ void projectInfo();
 unsigned int hashMap(const string&, const int);
 int getNumObjects();
 bool out_file_name_is_valid (string name);
-void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack*);
+void makeOutputFile(BST*, hashedDict<std::string , Athlete*>* , Stack*);
 
 
 
@@ -152,19 +152,19 @@ bool saveToFile();
 
 
 
-bool undoDelete(/*LinkedStack<Athlete>**/Stack *myStack, BST* bst)
+bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* hashTable,
+                unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
-    bool ableToReturn = false;
+    bool ableToReturn = !myStack->isEmpty();
 
-    if (!myStack->isEmpty())
+    if (ableToReturn)
     {
         Athlete oldAthlete;
         myStack->pop(oldAthlete);
-        cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
         Athlete* athleteNew = new Athlete(oldAthlete);
         bst->BST_insert(athleteNew);
-        //Kelly: hash table insert
-        ableToReturn = true; // should fix this bool
+        hashTable->addNode(athleteNew->getName(), athleteNew, hashFuncPtr);
+        cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
     }
     else
         printErrorMsg(Error::EMPTY_STACK);
@@ -363,7 +363,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
         }
         case '7':
         {
-            undoDelete(myStack, bst);
+            undoDelete(myStack, bst, hashTable, hashFuncPtr);
             break;
         }
 
