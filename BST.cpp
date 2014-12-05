@@ -115,15 +115,35 @@ BST_Node* BST::_search(std::string target)
 }
 
 
+void BST::BST_Indented_List()
+{
+    _indentedList(root,1,0);
+}
 
 
+void BST::_indentedList(BST_Node* subTree, int level =1, int indent =0)
+{
+    if (indent)
+    {
+        std::cout << std::setw(indent) << ' ';
+        level++;
+    }
+    std::cout <<level<<". " << subTree->getAthletePtr()->getName() <<"\n ";
+    if(subTree != nullptr)
+    {
+        if(subTree->getLeft())
+            _indentedList(subTree->getLeft(), level, indent+4);
+        if(subTree->getRight())
+            _indentedList(subTree->getRight(), level, indent+4);
+    }
+}
 
 
 /**~*~*
  This function calls a recursive function to traverse the
  tree as an indentent list
  *~**/
-
+/*
 //template <class T , class R>
 void BST::BST_Indented_List() const
 {
@@ -143,7 +163,7 @@ void BST::_BST_Indented_List(BST_Node *root , int i) const
     }
 }
 
-
+*/
 
 
 /**~*~*

@@ -9,7 +9,7 @@ class BST
 {
 private:
 
-    BST_Node *root;
+    BST_Node* root;
     int count;
 
     BST_Node*_search(std::string );
@@ -20,6 +20,8 @@ protected:
     BST_Node* _insertNode(BST_Node*, BST_Node*);
     void getAthlete(Athlete &);
 
+    void _indentedList(BST_Node*, int, int);
+
 public:
 
     BST() {root = NULL;    count = 0;}
@@ -28,7 +30,7 @@ public:
     void BST_insert(Athlete* dataIn);
     bool Search(std::string anathlete);
     void BST_Delete (const std::string anEntry);
-    void BST_Indented_List() const;
+    void BST_Indented_List();
     bool isEmpty() const	{return count == 0;}
     int size() const	    {return count;}
     
