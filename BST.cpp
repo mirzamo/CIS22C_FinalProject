@@ -13,17 +13,17 @@ void BST::BST_insert(Athlete* anAthlete)
     BST_Node* newNode = new BST_Node(anAthlete);
     BST_Node *pWalk;
     BST_Node *parent;
-    
+
     if (!root)          // tree is empty
         root = newNode;
-    
+
     //    if (_search(anAthlete->getName()))
     //    {std::cout << "Duplication!!" << std::endl; return;}
-    
+
     else
     {
         pWalk = root;
-        
+
         while ( pWalk )
         {
             parent = pWalk;
@@ -32,14 +32,14 @@ void BST::BST_insert(Athlete* anAthlete)
             else
                 pWalk = pWalk->right;
         }
-        
+
         if (newNode->anAthlete < parent->anAthlete )
             parent->left  = newNode;
-        
+
         else
             parent->right = newNode;
     }
-    
+
     count++;
 }
 
@@ -56,11 +56,11 @@ bool BST::Search(std::string target)
     if (found)
     {
         found->anAthlete->print();
-        
+
         return true;
     }
     //std::cout << "found failed\n";
-    
+
     return false;
 }
 
@@ -72,24 +72,24 @@ BST_Node* BST::_search(std::string target)
 {
     if (!root)         //tree is empty
         return NULL;
-    
+
     //tree is not empty
     BST_Node *pWalk = root;
-    
+
     while( pWalk )
     {
         if (target < pWalk->anAthlete->getName())
-        {std::cout << pWalk->anAthlete->getName();
-            
+        {//std::cout << pWalk->anAthlete->getName();
+
             pWalk = pWalk->left;              }
-        
+
         else if (target > pWalk->anAthlete->getName() )
             pWalk = pWalk->right;
-        
+
         else
             return pWalk;      //found
     }
-    
+
     return NULL;   //not found
 }
 
@@ -115,7 +115,7 @@ void BST::_BST_Indented_List(BST_Node *root , int i) const
     if (root )
     {
         std::cout << std::right << std::setw(i) << i << ".  ";
-        
+
         root->anAthlete->print();
         _BST_Indented_List(root->right , ++i);
         _BST_Indented_List(root->left , i);
@@ -138,28 +138,28 @@ void BST::BST_Delete (const std::string anEntry)
 void BST::_BST_Delete (BST_Node* n , std::string target)
 {
     BST_Node *targetNodePtr = _search(target);
-    
-    
+
+
     //    if (!root)       //  tree is empty
     //        return NULL;
     // LinkedStack<Athlete> myStack;
     //Stack myStack;
-    
-    
+
+
     bool found = false;
     BST_Node *pWalk = n;
     BST_Node *parent = nullptr;
-    
+
     if (!pWalk)
     {std::cout << "Tree is empty" << std::endl;  return;}
-    
+
     while( pWalk )
     {
         if (pWalk->anAthlete->getName() == target)
         {found = true;
             break;
         }
-        
+
         else
         {
             parent = pWalk;
@@ -168,15 +168,15 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
             else
                 pWalk = pWalk->left;
         }
-        
-        
+
+
         if (!found)
         {
             //std::cout << target << "does not exist" << std::endl;
             return ;
         }
-        
-        
+
+
         //        if (target < pWalk->anAthlete->getName())
         //        {
         //            std::cout << pWalk->anAthlete->getName();
@@ -195,12 +195,12 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
         //
         //        else
         //            return pWalk;    //  found
-        
+
         // leaf
         if (!pWalk->right && !pWalk->left)
         {parent = NULL;}
-        
-        
+
+
         //has one child
         else if ((pWalk->right == nullptr && pWalk->left != nullptr) || (pWalk->left != nullptr && pWalk->right == nullptr))
             // Right Leaf Present, No Left Leaf
@@ -213,7 +213,7 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
                     // and delete n
                     parent->left=pWalk->right;
                     // myStack.push(*pWalk->anAthlete);
-                    
+
                     delete pWalk;
                     pWalk=nullptr;
                     std::cout << target <<" has been removed from the Tree." << std::endl;
@@ -236,8 +236,9 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
                 {
                     parent->left=pWalk->left;
                     //   myStack.push(*pWalk->anAthlete);
-                    
+
                     delete pWalk;
+                    count--;
                     pWalk=nullptr;
                     std::cout<< target <<" has been removed from the Tree."<< std::endl;
                 }
@@ -245,8 +246,9 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
                 {
                     parent->right=pWalk->left;
                     //   myStack.push(*pWalk->anAthlete);
-                    
+
                     delete pWalk;
+                    count--;
                     pWalk=nullptr;
                     std::cout << target <<" has been removed from the Tree."<< std::endl;
                 }
@@ -261,8 +263,8 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
         else
             parent->right=nullptr;
         //  myStack.push(*pWalk->anAthlete);
-        
-        delete pWalk;
+
+        delete pWalk;count--;
         std::cout << target <<" has been removed from the Tree."<<std::endl;
         return;
     }
@@ -275,9 +277,9 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
         {
             pWalk=check;
             //  myStack.push(*pWalk->anAthlete);
-            
-            delete check;
-            
+
+            delete check; count--;
+
             pWalk->right == nullptr;
             std::cout << target <<" has been removed from the Tree."<< std::endl;
         }
@@ -298,8 +300,8 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
                 }
                 pWalk->anAthlete =leftpWalk->anAthlete;    //?????
                 //       myStack.push(*pWalk->anAthlete);
-                
-                delete leftpWalk;
+
+                delete leftpWalk;count--;
                 leftpWalkPred->left == nullptr;
                 std::cout << target <<" has been removed from the Tree."<< std::endl;
             }
@@ -309,8 +311,8 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
                 pWalk->anAthlete = temp->anAthlete;
                 pWalk->right=temp->right;
                 //      myStack.push(*pWalk->anAthlete);
-                
-                delete temp;
+
+                delete temp;count--;
                 std::cout << target << " has been removed from the Tree."<<std::endl;
             }
         }
@@ -425,10 +427,10 @@ void BST::_BST_Destroy(BST_Node *root)
 //}
 //        {
 //            outFile << pWalk->anAthlete;
-//            
+//
 //            nodePtr = nodePtr->forw;
 //        }
-//    
+//
 //    outFile.close();
 //}
 
