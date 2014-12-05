@@ -377,7 +377,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
         case '9':
         {
 
-            //makeOutputFile(bst, hashTable , myStack);
+            makeOutputFile(bst, hashTable , myStack);
             inProgress = false;
         }
         }
@@ -540,9 +540,9 @@ bool out_file_name_is_valid (string name)
 void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack *mystack)
 {
     string fileName;
-    cout << "Enter a name for output file (followed by .txt)" << endl;
-    cin.ignore();
+    cout << "Enter a name for output file (followed by .txt):\t";
     getline(cin , fileName);
+
     if (out_file_name_is_valid (fileName))      //check is out file name is the right format
     {
         std::ofstream outFile(fileName);
@@ -552,7 +552,7 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
 
         //empty stack aftersaving
         mystack->clear();
-
+    cout<<" Output is saved in file called " <<fileName<<endl;
         outFile.close();
     }
 

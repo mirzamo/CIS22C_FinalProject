@@ -20,7 +20,7 @@ private:
     void _saveFileInOrder(BST_Node *root , std::ostream &outFile) const;
 
 
-   // BST_Node* _BST_Delete(BST_Node* root, std::string target);
+    // BST_Node* _BST_Delete(BST_Node* root, std::string target);
 
 protected:
     BST_Node* _insertNode(BST_Node*, BST_Node*);
@@ -30,25 +30,35 @@ protected:
 
 public:
 
-    BST() {root = NULL;    count = 0;}
+    BST()
+    {
+        root = NULL;
+        count = 0;
+    }
 
     // Binary Tree operations
     void BST_insert(Athlete* dataIn);
     bool Search(std::string anathlete);
     void BST_Delete (const std::string anEntry);
-   // void BST_InorderTraverse() const;
+    // void BST_InorderTraverse() const;
     void BST_Indented_List();
-    bool isEmpty() const	{return count == 0;}
-    int size() const	    {return count;}
+    bool isEmpty() const
+    {
+        return count == 0;
+    }
+    int size() const
+    {
+        return count;
+    }
     void saveFileInOrder(std::ostream &outFile) const;
 
-    
-    
-    
-    
+
+
+
+
 //    Athlete getAthlete(std::string entry)
 //    {
-//        
+//
 //        return this_search(entry);
 //    }
 
