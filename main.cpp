@@ -43,7 +43,7 @@ bool out_file_name_is_valid (string name);
 
 
 
-bool deleteNode(string , BST* , Stack*);//, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
+bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
 void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                   unsigned int (*hashFuncPtr)(const std::string&, const int));
 
@@ -264,10 +264,10 @@ unsigned int hashMap(const string& key, const int hash_size)
 }
 
 
-bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,Athlete*>* hashTable)
+bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Athlete*>* hashTable)
                 
 {
-    //unsigned int (*hashFuncPtr)(const std::string&, const int)
+    unsigned int (*hashFuncPtr)(const std::string&, const int);
     bool ableToDelete = false;
     // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
     
@@ -278,6 +278,7 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,A
     if (ableToDelete)
     {
         bst->BST_Delete(delNode);
+        //hashTable->
         cout << " removed successfully." << endl;
     }
     
@@ -328,7 +329,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 cout << "Please enter athlete name to delete: ";
                 getline(cin, key);
 
-                deleteNode(key, bst, myStack);//, hashTable, hashFuncPtr);
+                deleteNode(key, bst, myStack , hashTable);//, hashFuncPtr);
                 break;
             }
             case '3':
