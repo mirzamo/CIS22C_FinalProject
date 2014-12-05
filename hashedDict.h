@@ -213,7 +213,6 @@ Athlete hashedDict<keyT,itemT> ::getAthleteCopy(const keyT& searchKey, unsigned 
     Athlete athleteCopy;
     const int Size = _arSize;
     int index = hashFuncPtr(searchKey, Size);
-    bool ableToFind = false;
 
     HsinglyNode<keyT, itemT>* searchPtr = _nodes[index];
     for (int i = 0; i < _LLsize[index]; i++)
@@ -226,7 +225,6 @@ Athlete hashedDict<keyT,itemT> ::getAthleteCopy(const keyT& searchKey, unsigned 
 
         else
         {
-            ableToFind = true;
             searchPtr->getItem()->printFull();
             // item = searchPtr->getItem();
             break;

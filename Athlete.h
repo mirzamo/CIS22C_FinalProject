@@ -103,20 +103,10 @@ public:
 
     ~Athlete() {};
 
-    // Overload Operators
-    bool operator==(const Athlete& rhs) const
+    Athlete getAthleteCopy()
     {
-        return (_name == rhs.getName());
-    }
-
-    bool operator>(const Athlete& rhs) const
-    {
-        return (_name > rhs.getName());
-    }
-
-    bool operator<(const Athlete& rhs) const
-    {
-        return (_name < rhs.getName());
+        Athlete AthleteCopy(_name,_age,_medals,_winStats);
+        return AthleteCopy;
     }
 };
 
