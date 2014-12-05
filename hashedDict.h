@@ -28,10 +28,10 @@ private:
     HsinglyNode<keyT, itemT>** _nodes;
 protected:
     void _clearDict() const;
-    
+
 public:
     void saveFile(std::string fileName ) const;
-    
+
     hashedDict(const int arSize): _numCollisions(0), _count(0), _arSize(arSize),
     _LLsize(new int[arSize]), _nodes(new HsinglyNode<keyT, itemT>*[arSize])
     {
@@ -40,7 +40,7 @@ public:
             _nodes[i] = nullptr;
             _LLsize[i] = 0;
         }
-        
+
     }
     ~hashedDict()
     {
@@ -48,7 +48,7 @@ public:
     }
     bool addNode(const keyT&, itemT, unsigned int (*)(const keyT&, const int));
     bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int));
-    
+
     // Aids for statistics for hash table
     int getCount() const;
     int getColl() const;
@@ -73,7 +73,7 @@ public:
  -Ave linked list size.
  -Max linked list size.
  -Print size of all linked lists as they result in the hash table.
- 
+
  */
 
 template <class keyT, class itemT>
@@ -132,7 +132,7 @@ int hashedDict<keyT,itemT>::getMaxLLsize() const
         {
             Max = _LLsize[i];
         }
-        
+
     }
     return Max;
 }
@@ -144,7 +144,7 @@ void hashedDict<keyT,itemT>::printLLnum() const
     for (int i=0; i<_arSize; i++)
         std::cout<< _LLsize[i] << " ";
     std::cout<<std::endl;
-    
+
 }
 /**
  Creates a node with provided item and key, obtains a hashed value using a function pointer provided,
@@ -186,7 +186,7 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
     const int Size = _arSize;
     int index = hashFuncPtr(searchKey, Size);
     bool ableToFind = false;
-    
+
     HsinglyNode<keyT, itemT>* searchPtr = _nodes[index];
     for (int i = 0; i < _LLsize[index]; i++)
     {
@@ -224,13 +224,13 @@ void hashedDict<keyT,itemT>:: printHashed(bool indent) const
         {
             if (indent)
                 std::cout<< std::right << std::setw(5);
-            std::cout << _nodes[i]->getItem()<<std::endl;
+            _nodes[i]->getItem()->print();
             HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
             while (nextNode)
             {
                 if (indent)
                     std::cout<< std::right << std::setw(20);
-                std::cout << nextNode->getItem() <<std::endl;
+                nextNode->getItem()->print();
                 nextNode = nextNode->getFwd();
             }
         }
@@ -260,19 +260,19 @@ template <class keyT, class itemT>
 void hashedDict<keyT, itemT>::saveFile(std::string fileName) const
 {
     std::ofstream outFile(fileName);
-    
+
     if (outFile)
         for(int i = 0; i < _arSize; i++)
         {
-           
-            
+
+
             if (_LLsize[i] >0)
             {
                 outFile << _nodes[i]->getItem() << std::endl;
                 HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
                 while (nextNode)
                 {
-                   
+
                     outFile << nextNode->getItem() <<std::endl;
                     nextNode = nextNode->getFwd();
                 }
