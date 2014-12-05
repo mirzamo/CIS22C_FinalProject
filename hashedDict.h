@@ -273,7 +273,7 @@ void hashedDict<keyT, itemT>::saveFile(std::string fileName) const
                 while (nextNode)
                 {
 
-                    outFile << nextNode->getItem() <<std::endl;
+                    outFile << nextNode->getItem()->getName() <<std::endl;
                     nextNode = nextNode->getFwd();
                 }
             }
