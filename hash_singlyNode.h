@@ -50,5 +50,6 @@ public:
     {
         return (_key > rhs.getKey());
     }
+   // Athlete getNode ()
 };
 #endif // HASH_SINGLY_NODE_H

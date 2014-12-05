@@ -8,8 +8,6 @@ public:
     Athlete* anAthlete;
     BST_Node *left;
     BST_Node *right;
-    bool delete_flag;
-
 
     BST_Node (Athlete* theObject): anAthlete(theObject), left(nullptr), right (nullptr) {};
     ~BST_Node () {};
