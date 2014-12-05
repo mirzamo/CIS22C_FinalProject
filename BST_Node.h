@@ -33,7 +33,6 @@ Athlete* getAthletePtr() const
     {
         return right;
     };
-
 } ;
 
 #endif

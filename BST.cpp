@@ -682,23 +682,13 @@ void BST::saveFileInOrder(std::ostream &outFile) const
 
 void BST::_saveFileInOrder(BST_Node *root , std::ostream &outFile) const
 {
-    //std::ofstream outFile(fileName);
-    
-//    if (!root)
-//    {outFile << "#"; return;}
-//    
     if (outFile)
         if (root)
         {
             _saveFileInOrder(root->left , outFile);
-           // outFile << root->getAthletePtr();
             outFile << root->anAthlete->getName() << std::endl;
-
             _saveFileInOrder(root->right , outFile);
         }
-
-    
-   // outFile.close();
 }
 
 
