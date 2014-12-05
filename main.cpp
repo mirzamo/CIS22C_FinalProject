@@ -24,8 +24,9 @@ using namespace std;
 
 //const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
 //const string FNAME = "OlympicAthletes.txt";
-const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/short version copy.txt";
+//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/short version copy.txt";
 
+const string FNAME = "short version copy.txt";
 
 //file processing functions
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
@@ -262,10 +263,9 @@ unsigned int hashMap(const string& key, const int hash_size)
     return h % hash_size;
 }
 
-bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Athlete*>* hashTable)
+bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Athlete*>* hashTable,unsigned int (*hashFuncPtr)(const std::string&, const int))
 
 {
-    unsigned int (*hashFuncPtr)(const std::string&, const int);
     bool ableToDelete = false;
     // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
 
@@ -274,8 +274,7 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Ath
     if (ableToDelete)
     {
         bst->BST_Delete(delNode);
-        //hashTable->
-        cout << " Removed successfully." << endl;
+        hashTable->deleteNode(delNode, hashFuncPtr);
     }
 
     else
@@ -324,8 +323,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 string key = " ";
                 cout << "Please enter athlete name to delete: ";
                 getline(cin, key);
-                cout<<key.size()<<endl;
-                deleteNode(key, bst, myStack , hashTable);//, hashFuncPtr);
+                deleteNode(key, bst, myStack , hashTable, hashFuncPtr);
                 break;
             }
             case '3':
@@ -376,8 +374,8 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             }
             case '9':
             {
-                
-                makeOutputFile(bst, hashTable , myStack);
+
+                //makeOutputFile(bst, hashTable , myStack);
                 inProgress = false;
 
             }
@@ -523,14 +521,14 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
     if (out_file_name_is_valid (fileName))      //check is out file name is the right format
     {
         std::ofstream outFile(fileName);
-        
+
         bst->saveFileInOrder(outFile);
        // hash->saveFile(outFile);
-        
+
         //empty stack aftersaving
         mystack->clear();
 
         outFile.close();
     }
-    
+
 }

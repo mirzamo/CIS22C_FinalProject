@@ -31,11 +31,6 @@ protected:
 
 public:
     void saveFile(std::ostream &fileName ) const;
-    
-//    Athlete searchData()
-//    {
-//        
-//    }
 
     hashedDict(const int arSize): _numCollisions(0), _count(0), _arSize(arSize),
     _LLsize(new int[arSize]), _nodes(new HsinglyNode<keyT, itemT>*[arSize])
@@ -52,7 +47,8 @@ public:
         _clearDict();
     }
     bool addNode(const keyT&, itemT, unsigned int (*)(const keyT&, const int));
-    bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int) );//, keyT &temp);
+    bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int) );
+    bool deleteNode(const keyT&, unsigned int (*)(const std::string&, const int) );
 
     // Aids for statistics for hash table
     int getCount() const;
@@ -205,6 +201,41 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
             break;
         }
     }
+//    if (!ableToFind)
+//        printErrorMsg(Error::BAD_SEARCH);
+    return ableToFind;
+}
+
+template<class keyT, class itemT>
+bool hashedDict<keyT,itemT> :: deleteNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int))
+{
+    //search for the node
+    const int Size = _arSize;
+    int index = hashFuncPtr(searchKey, Size);
+    bool ableToFind = false;
+
+    HsinglyNode<keyT, itemT>* searchPtr = _nodes[index];
+    HsinglyNode<keyT, itemT>* searchPrev = searchPtr;
+
+    for (int i = 0; i < _LLsize[index]; i++)
+    {
+        if (searchPtr->getKey() != searchKey)
+        {
+            searchPtr = searchPtr->getFwd();
+            if (i>0)
+            searchPrev = searchPrev->getFwd();
+        }
+        else
+        {
+            ableToFind = true;
+            searchPrev->setFwd(searchPtr->getFwd());
+            delete searchPtr;
+            _count--;
+            std::cout<< searchPtr->getItem()->getName() << " has been removed from the Hash Table."<<std::endl;
+            break;
+        }
+    }
+
 //    if (!ableToFind)
 //        printErrorMsg(Error::BAD_SEARCH);
     return ableToFind;
