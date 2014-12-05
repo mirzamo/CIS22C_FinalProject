@@ -46,7 +46,7 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack*
 
 bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
 void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
-                  unsigned int (*hashFuncPtr)(const std::string&, const int));
+                   unsigned int (*hashFuncPtr)(const std::string&, const int));
 
 
 
@@ -225,7 +225,7 @@ void menu()
     cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Undo delete"<<endl;
     cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Show number of nodes in data structures"<<endl;
     cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file and Quit" <<endl;
-   // cout << setw(w1) << left << "10: " <<  setw(w2) << left << "Quit" <<endl;
+    // cout << setw(w1) << left << "10: " <<  setw(w2) << left << "Quit" <<endl;
 
 }
 
@@ -258,12 +258,12 @@ unsigned int hashMap(const string& key, const int hash_size)
 
     for ( i = 0; i < len; i++ )
         h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
-        //h ^= ( h << 5 ) + ( h >> 2 ) + Key[i];
+    //h ^= ( h << 5 ) + ( h >> 2 ) + Key[i];
 
     return h % hash_size;
 }
 
-bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Athlete*>* hashTable,unsigned int (*hashFuncPtr)(const std::string&, const int))
+bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Athlete*>* hashTable,unsigned int (*hashFuncPtr)(const std::string&, const int))
 
 {
     bool ableToDelete = false;
@@ -273,6 +273,8 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Ath
 
     if (ableToDelete)
     {
+        Athlete athleteCopy = hashTable->getAthleteCopy(delNode, hashFuncPtr);
+        myStack->push(athleteCopy);
         bst->BST_Delete(delNode);
         hashTable->deleteNode(delNode, hashFuncPtr);
     }
@@ -307,78 +309,77 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
         while (!validChoice(choice));
         switch (toupper(choice[0]))
         {
-            case '0':
-            {
-                projectInfo();
-                break;
-            }
-            case '1':
-            {
-                insert_input(bst, myStack, hashTable, hashFuncPtr);
+        case '0': // works
+        {
+            projectInfo();
+            break;
+        }
+        case '1':
+        {
+            insert_input(bst, myStack, hashTable, hashFuncPtr);
+            break;
+        }
+        case '2':
+        {
+            string key = " ";
+            cout << "Please enter athlete name to delete: ";
+            getline(cin, key);
+            deleteNode(key, bst, myStack , hashTable, hashFuncPtr);
 
-                break;
-            }
-            case '2':
-            {
-                string key = " ";
-                cout << "Please enter athlete name to delete: ";
-                getline(cin, key);
-                deleteNode(key, bst, myStack , hashTable, hashFuncPtr);
+            break;
+        }
+        case '3':
+        {
+            bst->BST_Indented_List();
+            break;
+        }
+        case '4':
+        {
+            hashTable->printHashed(true);
+            break;
+        }
+        case '5':
+        {
+            Athlete anAthlete;
+            string key = " ";
+            cout << "Please enter athlete name to search: ";
+            getline(cin, key);
+            // if (!hashTable->searchNode(key,hashFuncPtr))
+            cout << key << "not found" << endl;
+            break;
+        }
 
-                break;
-            }
-            case '3':
-            {
-                bst->BST_Indented_List();
-                break;
-            }
-            case '4':
-            {
-                hashTable->printHashed(true);
-                break;
-            }
-            case '5':
-            {
-                Athlete anAthlete;
-                string key = " ";
-                cout << "Please enter athlete name to search: ";
-                getline(cin, key);
-               // if (!hashTable->searchNode(key,hashFuncPtr))
-                    cout << key << "not found" << endl;
-                break;
-            }
+        case '6':
+        {
+            cout<< "_____Hash table statistics____"<<endl;
+            cout<<"Total entries stored: " << hashTable->getCount()<<endl;
+            cout<<"Number of collisions: " << hashTable->getColl()<<endl;
+            cout<<"Load factor: " << setprecision(3)<< hashTable->getLoadFac()<<endl;
+            cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
+            cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
+            cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
+            cout<<"Number of nodes in each linked list: " << endl;;
+            break;
+        }
+        case '7':
+        {
+            undoDelete(myStack, bst);
+            break;
+        }
 
-            case '6':
-            {
-                cout<< "_____Hash table statistics____"<<endl;
-                cout<<"Total entries stored: " << hashTable->getCount()<<endl;
-                cout<<"Number of collisions: " << hashTable->getColl()<<endl;
-                cout<<"Load factor: " << setprecision(3)<< hashTable->getLoadFac()<<endl;
-                cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
-                cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
-                cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
-                cout<<"Number of nodes in each linked list: " << endl;;
-                break;
-            }
-            case '7':
-            {
-                undoDelete(myStack, bst);
-                break;
-            }
+        case '8':
+        {
+            cout<<" #Items in BST: " << bst->size()<< endl;
+            cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
+            cout<<" #Items in Stack: " << myStack->getCount() << endl;
+            break;
+        }
+        case '9':
+        {
 
-            case '8':
-            {
-                cout<<" #Items in BST: " << bst->size()<< endl;
-                cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
-                cout<<" #Items in Stack: " << myStack->getCount() << endl;
-                break;
-            }
-            case '9':
-            {
-
-                //makeOutputFile(bst, hashTable , myStack);
-                inProgress = false;
-            }
+            //makeOutputFile(bst, hashTable , myStack);
+            inProgress = false;
+        }
         }
     }
 }
@@ -410,7 +411,6 @@ int hashSize(int numAthletes)
 }
 
 
-//void insert_input(BST* bst , hashedDict<string,Athlete*>* hashTable )
 void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
@@ -419,10 +419,10 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     int medals[3] = {0};
 
     cout << "Enter Athlete's Name and family name:\t";
-   // cin.ignore();
+    // cin.ignore();
     getline (cin , name);
     //cout << "walk " << name << "?" << endl;
-    
+
     cout << "Enter Country:\t";
     //cin.ignore();
     getline (cin , country);
@@ -437,27 +437,27 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
 
     cout << "Enter date:\t";
     cin >> date;
-   // cout << "walk " << date << "?" << endl;
+    // cout << "walk " << date << "?" << endl;
 
 
     cout << "Enter Age:\t";
     cin >> age;
-   // cout << "walk " << age << "?" << endl;
+    // cout << "walk " << age << "?" << endl;
 
 
     cout << "Enter year:\t";
     cin >> year;
-   // cout << "walk " << year << "?" << endl;
+    // cout << "walk " << year << "?" << endl;
 
 
 
     cout << "Enter number of gold medals: ";
     cin >> medals[0];
-   // cout << "walk " << medals[0] << "?" << endl;
+    // cout << "walk " << medals[0] << "?" << endl;
 
     cout << "Enter number of silver medals: ";
     cin >> medals[1];
-   // cout << "walk " << medals[1] << "?" << endl;
+    // cout << "walk " << medals[1] << "?" << endl;
 
     cout << "Enter number of bronze medals: ";
     cin >> medals[2];
@@ -469,7 +469,10 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
 
     //if (hashTable->searchNode(name, hashFuncPtr))
     if (bst->Search(name))
-    {cout << "The Athlete already exists. Try entering another one." << std::endl; return;}
+    {
+        cout << "The Athlete already exists. Try entering another one." << std::endl;
+        return;
+    }
 
     //        if (bst->Search(*athlete))
     //        {cout << "Duplication!!" << std::endl; return;}
@@ -485,17 +488,17 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
 void projectInfo()
 {
     cout << "\n**********Group Info: Team #9**********" << endl
-    <<"Team Members: Mahsa M, Elena M, Kelly D, Misha Y" <<endl
-    << "Purpose: CIS 22C Fall 2014 Final Project" <<endl;
+         <<"Team Members: Mahsa M, Elena M, Kelly D, Misha Y" <<endl
+         << "Purpose: CIS 22C Fall 2014 Final Project" <<endl;
 
 
     cout << "\n**********Dataset Info**********" << endl
-    << "Dataset used: Olympic Medal Winners "<<endl
-    << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
-    << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
+         << "Dataset used: Olympic Medal Winners "<<endl
+         << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
+         << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
 
     cout << "\n**********Implementation Info**********" << endl
-    << "Data Structures Used: Stack (Linked), BST , Hash Dictionary"<<endl;
+         << "Data Structures Used: Stack (Linked), BST , Hash Dictionary"<<endl;
 }
 
 
@@ -510,14 +513,20 @@ bool out_file_name_is_valid (string name)
     string token;
 
     if (name[0] == '.')
-    {cout << "Invalid name\n";    return false;}
+    {
+        cout << "Invalid name\n";
+        return false;
+    }
 
 
     pos = name.find('.');
     name.erase(0 , pos + 1);
 
     if (name != "txt")
-    {cout << "Invalid name\n";    return false;}
+    {
+        cout << "Invalid name\n";
+        return false;
+    }
 
     return true;
 }
@@ -539,7 +548,7 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
         std::ofstream outFile(fileName);
 
         bst->saveFileInOrder(outFile);
-       // hash->saveFile(outFile);
+        // hash->saveFile(outFile);
 
         //empty stack aftersaving
         mystack->clear();

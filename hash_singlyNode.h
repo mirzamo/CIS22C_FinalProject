@@ -12,11 +12,12 @@ private:
     keyT _key;      //string
     itemT _item;        //pointer to athlete
     HsinglyNode* _fwd;
-    
+
 public:
     HsinglyNode (): _fwd(nullptr) {};
     HsinglyNode (keyT key, itemT item): _key(key), _item(item),_fwd(nullptr) {};
     ~HsinglyNode() {};
+
     void setItem(const itemT& item)
     {
         _item = item;
@@ -41,14 +42,6 @@ public:
     {
         return _fwd;
     }
-    bool operator==(const HsinglyNode<keyT, itemT>& rhs) const
-    {
-        return (_key == rhs.getKey());
-    }
-    
-    bool operator>(const HsinglyNode<keyT, itemT>& rhs) const
-    {
-        return (_key > rhs.getKey());
-    }
+
 };
 #endif // HASH_SINGLY_NODE_H

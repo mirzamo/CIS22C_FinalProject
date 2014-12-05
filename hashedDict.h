@@ -33,7 +33,7 @@ public:
     void saveFile(std::ostream &fileName ) const;
 
     hashedDict(const int arSize): _numCollisions(0), _count(0), _arSize(arSize),
-    _LLsize(new int[arSize]), _nodes(new HsinglyNode<keyT, itemT>*[arSize])
+        _LLsize(new int[arSize]), _nodes(new HsinglyNode<keyT, itemT>*[arSize])
     {
         for (int i = 0; i< arSize; i++)
         {
@@ -49,6 +49,7 @@ public:
     bool addNode(const keyT&, itemT, unsigned int (*)(const keyT&, const int));
     bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int) );
     bool deleteNode(const keyT&, unsigned int (*)(const std::string&, const int) );
+    Athlete getAthleteCopy(const keyT&, unsigned int (*)(const std::string&, const int) );
 
     // Aids for statistics for hash table
     int getCount() const;
@@ -197,7 +198,7 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
         {
             ableToFind = true;
             searchPtr->getItem()->printFull();
-           // item = searchPtr->getItem();
+            // item = searchPtr->getItem();
             break;
         }
     }
@@ -205,6 +206,36 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
 //        printErrorMsg(Error::BAD_SEARCH);
     return ableToFind;
 }
+
+template<class keyT, class itemT>
+Athlete hashedDict<keyT,itemT> ::getAthleteCopy(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int) )
+{
+    Athlete athleteCopy;
+    const int Size = _arSize;
+    int index = hashFuncPtr(searchKey, Size);
+    bool ableToFind = false;
+
+    HsinglyNode<keyT, itemT>* searchPtr = _nodes[index];
+    for (int i = 0; i < _LLsize[index]; i++)
+    {
+        if (searchPtr->getKey() != searchKey)
+        {
+            searchPtr = searchPtr->getFwd();
+            athleteCopy = searchPtr->getItem()->getAthleteCopy();
+        }
+
+        else
+        {
+            ableToFind = true;
+            searchPtr->getItem()->printFull();
+            // item = searchPtr->getItem();
+            break;
+        }
+    }
+    return athleteCopy;
+
+}
+
 
 template<class keyT, class itemT>
 bool hashedDict<keyT,itemT> :: deleteNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int))
@@ -223,7 +254,7 @@ bool hashedDict<keyT,itemT> :: deleteNode(const keyT& searchKey, unsigned int (*
         {
             searchPtr = searchPtr->getFwd();
             if (i>0)
-            searchPrev = searchPrev->getFwd();
+                searchPrev = searchPrev->getFwd();
         }
         else
         {
@@ -296,7 +327,7 @@ void hashedDict<keyT, itemT>::_clearDict() const
 template <class keyT, class itemT>
 void hashedDict<keyT, itemT>::saveFile(std::ostream &outFile) const
 {
-   // std::ofstream outFile(fileName);
+    // std::ofstream outFile(fileName);
 
     if (outFile)
         for(int i = 0; i < _arSize; i++)
@@ -315,7 +346,7 @@ void hashedDict<keyT, itemT>::saveFile(std::ostream &outFile) const
                 }
             }
         }
-   // outFile.close();
+    // outFile.close();
 }
 
 

@@ -4,18 +4,18 @@
 */
 Stack::~Stack()
 {
-   StackNode *currNode, *nextNode;
+    StackNode *currNode, *nextNode;
 
-   // Position nodePtr at the top of the stack.
-   currNode = top;
+    // Position nodePtr at the top of the stack.
+    currNode = top;
 
-   // Traverse the list deleting each node.
-   while (currNode) //while (currNode != NULL)
-   {
-      nextNode = currNode->next;
-      delete currNode;
-      currNode = nextNode;
-   }
+    // Traverse the list deleting each node.
+    while (currNode) //while (currNode != NULL)
+    {
+        nextNode = currNode->next;
+        delete currNode;
+        currNode = nextNode;
+    }
 }
 
 /*
@@ -24,17 +24,17 @@ Stack::~Stack()
 */
 bool Stack::push(Athlete item)
 {
-   StackNode *newNode = new StackNode;
+    StackNode *newNode = new StackNode;
 
-   if (!newNode)
-       return false;
-   newNode->value = item;
+    if (!newNode)
+        return false;
+    newNode->value = item;
 
-   newNode->next = top;
-   top = newNode;
-   count++;
+    newNode->next = top;
+    top = newNode;
+    count++;
 
-   return true;
+    return true;
 }
 
 
@@ -47,27 +47,27 @@ bool Stack::push(Athlete item)
 //template <class T>
 bool Stack::pop(Athlete &item)
 {
-   StackNode *temp;
+    StackNode *temp;
 
-   // empty stack
-   if (count == 0)
-       return false;
+    // empty stack
+    if (count == 0)
+        return false;
 
-   // pop value off top of stack
-   item = top->value;
-   temp = top->next;
-   delete top;
-   top = temp;
-   count--;
+    // pop value off top of stack
+    item = top->value;
+    temp = top->next;
+    delete top;
+    top = temp;
+    count--;
 
-   return true;
+    return true;
 }
 
 bool Stack::clear ()
 {
     if (count == 0)
         return true;
-    
+
     while (count != 0)
     {
         delete top;
@@ -82,7 +82,7 @@ bool Stack::clear ()
 */
 bool Stack::isEmpty()
 {
-   return count == 0;
+    return count == 0;
 }
 
 /*
@@ -91,7 +91,7 @@ bool Stack::isEmpty()
 //template <class T>
 int Stack::getCount()
 {
-	return count;
+    return count;
 }
 
 /*
@@ -101,7 +101,7 @@ int Stack::getCount()
 //template <class T>
 bool Stack::getTop(Athlete &item)
 {
-	 if( top == NULL )
+    if( top == NULL )
         return false;
 
     item = top -> value;
