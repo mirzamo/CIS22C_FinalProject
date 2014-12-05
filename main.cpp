@@ -43,9 +43,8 @@ bool out_file_name_is_valid (string name);
 
 
 
-//
-bool deleteNode(string& delNode, BST*, /*LinkedStack<Athlete>**/ Stack*, hashedDict<string,Athlete*>*,unsigned int (*)(const std::string&));
-void insert_input( BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
+bool deleteNode(string , BST* , Stack*);//, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
+void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                   unsigned int (*hashFuncPtr)(const std::string&, const int));
 
 
@@ -151,34 +150,7 @@ bool saveToFile();
  copies data into stack, deletes all pointers to node in data structures, and deletes node itself.
  */
 
-bool deleteNode(string& delNode, BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
-                unsigned int (*hashFuncPtr)(const std::string&, const int))
-{
-    
-    bool ableToDelete = false;
-    // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
-    
-    //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
-    ableToDelete = hashTable->searchNode(delNode, hashFuncPtr);
-    
-    Sport winStats(" ",0," ",0);
-    Athlete athlete(delNode , 0 , {0} , winStats);
-    myStack->push(athlete);
-    
-    
-    if (ableToDelete)
-    {
-        bst->BST_Delete(athlete);
-    }
-    
-    /**
-     Athlete* athlete = new Athlete(name, age, medals, winStats);
-     Stack->push(athlete);
-     */
-    // Mahsa: bst delete ptr
-    //Kelly: hash func delete ptr + node
-    return ableToDelete;
-}
+
 
 
 bool undoDelete(/*LinkedStack<Athlete>**/Stack *myStack, BST* bst)
@@ -291,10 +263,39 @@ unsigned int hashMap(const string& key, const int hash_size)
     return h % hash_size;
 }
 
+
+bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,Athlete*>* hashTable)
+                
+{
+    //unsigned int (*hashFuncPtr)(const std::string&, const int)
+    bool ableToDelete = false;
+    // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
+    
+    //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
+    ableToDelete = bst->Search(delNode);
+    
+    cout << "hello" << endl;
+    
+    if (ableToDelete)
+    {
+        bst->BST_Delete(delNode);
+    }
+    
+    else
+        cout << "The entered key does not exist" << endl;
+    /**
+     Athlete* athlete = new Athlete(name, age, medals, winStats);
+     Stack->push(athlete);
+     */
+    // Mahsa: bst delete ptr
+    //Kelly: hash func delete ptr + node
+    return ableToDelete;
+}
+
 /**
  Processes user command for the data entries.
  */
-void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable)
+void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable)
 {
     bool inProgress = true;
     unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
@@ -326,7 +327,8 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 string key = " ";
                 cout << "Please enter athlete name to delete: ";
                 getline(cin, key);
-                deleteNode(key, bst, myStack, hashTable, hashFuncPtr);
+
+                deleteNode(key, bst, myStack);//, hashTable, hashFuncPtr);
                 break;
             }
             case '3':
