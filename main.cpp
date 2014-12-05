@@ -6,7 +6,6 @@
  */
 
 #include <fstream>
-#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <iomanip>
@@ -25,9 +24,8 @@ using namespace std;
 
 //file name
 //const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
-const string FNAME = "OlympicAthletes.txt";
-//const string OUTPUT_FNAME = "Output.txt";
-
+//const string FNAME = "OlympicAthletes.txt";
+const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/short version copy.txt";
 
 
 //file processing functions
@@ -451,9 +449,9 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
 
     cout << "Enter number of gold medals: ";
     cin >> medals[0];
-    cout << "Enter number of gold medals: ";
+    cout << "Enter number of silver medals: ";
     cin >> medals[1];
-    cout << "Enter number of gold medals: ";
+    cout << "Enter number of bronze medals: ";
     cin >> medals[2];
 
     Sport winStats(country,year,sport,date);
