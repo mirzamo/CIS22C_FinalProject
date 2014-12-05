@@ -36,7 +36,7 @@ void projectInfo();
 unsigned int hashMap(const string&, const int);
 int getNumObjects();
 bool out_file_name_is_valid (string name);
-void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash);
+void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack*);
 
 
 
@@ -377,7 +377,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             case '9':
             {
                 
-                makeOutputFile(bst, hashTable);
+                makeOutputFile(bst, hashTable , myStack);
                 inProgress = false;
 
             }
@@ -514,7 +514,7 @@ bool out_file_name_is_valid (string name)
 //*******************
 //make output file
 //******************
-void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash)
+void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack *mystack)
 {
     string fileName;
     cout << "Enter a name for output file (followed by .txt)" << endl;
@@ -526,6 +526,9 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash)
         
         bst->saveFileInOrder(outFile);
        // hash->saveFile(outFile);
+        
+        //empty stack aftersaving
+        mystack->clear();
 
         outFile.close();
     }

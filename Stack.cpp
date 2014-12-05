@@ -63,6 +63,19 @@ bool Stack::pop(Athlete &item)
    return true;
 }
 
+bool Stack::clear ()
+{
+    if (count == 0)
+        return true;
+    
+    while (count != 0)
+    {
+        delete top;
+        count--;
+    }
+    return true;
+}
+
 /*
   Member function isEmpty returns true if the stack
   is empty, or false otherwise.
