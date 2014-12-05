@@ -5,46 +5,10 @@
 #include <iostream>
 //#include <string>
 
+
 /**~*~*
  Insert a new Node into a BST
  *~**/
-/*
-void BST::BST_insert(Athlete* anAthlete)
-{
-   BST_Node* newNode = new BST_Node(anAthlete);
-   BST_Node *pWalk;
-   BST_Node *parent;
-
-   if (!root)          // tree is empty
-       root = newNode;
-
-   //    if (_search(anAthlete->getName()))
-   //    {std::cout << "Duplication!!" << std::endl; return;}
-
-   else
-   {
-       pWalk = root;
-
-       while ( pWalk )
-       {
-           parent = pWalk;
-           if (newNode->anAthlete < pWalk->anAthlete )
-               pWalk = pWalk->left;
-           else
-               pWalk = pWalk->right;
-       }
-
-       if (newNode->anAthlete < parent->anAthlete )
-           parent->left  = newNode;
-
-       else
-           parent->right = newNode;
-   }
-
-   count++;
-}
-*/
-
 void BST::BST_insert(Athlete* newAthlete)
 {
     BST_Node* newNode = new BST_Node(newAthlete);
@@ -70,6 +34,9 @@ BST_Node* BST:: _insertNode(BST_Node* subTree, BST_Node* newNode)
 
 
 
+/**~*~*
+ Search
+ *~**/
 bool BST::Search(std::string target)
 
 {
@@ -86,8 +53,7 @@ bool BST::Search(std::string target)
 }
 
 
-//template <class T , class R>
-//BST_Node* BST::_search(std::string target)
+
 BST_Node* BST::_search(std::string target)
 
 {
@@ -112,11 +78,14 @@ BST_Node* BST::_search(std::string target)
         else
             return pWalk;      //found
     }
-
     return NULL;   //not found
 }
 
 
+
+/**~*~*
+ Indented List
+ *~**/
 void BST::BST_Indented_List()
 {
     _indentedList(root,1,0);

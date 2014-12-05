@@ -21,12 +21,8 @@
 
 using namespace std;
 
-
-//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
-//const string FNAME = "OlympicAthletes.txt";
-//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/short version copy.txt";
-
-const string FNAME = "short version copy.txt";
+const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
+//const string FNAME = "short version copy.txt";
 
 //file processing functions
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
@@ -275,6 +271,7 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
     {
         Athlete athleteCopy = hashTable->getAthleteCopy(delNode, hashFuncPtr);
         myStack->push(athleteCopy);
+        cout << endl;
         bst->BST_Delete(delNode);
         hashTable->deleteNode(delNode, hashFuncPtr);
     }
@@ -344,8 +341,11 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             string key = " ";
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
-            // if (!hashTable->searchNode(key,hashFuncPtr))
-            cout << key << "not found" << endl;
+            
+            hashTable->searchNode(key , hashFuncPtr);
+            if (!hashTable->searchNode(key , hashFuncPtr))
+            {cout << key << " not found" << endl;}
+            
             break;
         }
 
