@@ -274,11 +274,11 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,A
     //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
     ableToDelete = bst->Search(delNode);
     
-    cout << "hello" << endl;
     
     if (ableToDelete)
     {
         bst->BST_Delete(delNode);
+        cout << " removed successfully." << endl;
     }
     
     else

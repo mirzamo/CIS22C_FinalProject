@@ -172,8 +172,8 @@ void BST::_BST_Delete (BST_Node* n , std::string target)
         
         if (!found)
         {
-            std::cout << target << "not in tree." << std::endl;
-            return;
+            //std::cout << target << "does not exist" << std::endl;
+            return ;
         }
         
         
