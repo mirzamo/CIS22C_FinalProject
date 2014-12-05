@@ -269,7 +269,7 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Ath
     bool ableToDelete = false;
     // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
 
-    ableToDelete = bst->Search(delNode);
+    ableToDelete = bst->Search(delNode);    //in search it prints out the information of athlete
 
     if (ableToDelete)
     {
@@ -324,6 +324,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 cout << "Please enter athlete name to delete: ";
                 getline(cin, key);
                 deleteNode(key, bst, myStack , hashTable, hashFuncPtr);
+
                 break;
             }
             case '3':
@@ -377,11 +378,8 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
 
                 //makeOutputFile(bst, hashTable , myStack);
                 inProgress = false;
-
             }
-
         }
-
     }
 }
 
@@ -421,39 +419,57 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     int medals[3] = {0};
 
     cout << "Enter Athlete's Name and family name:\t";
-    cin.ignore();
+   // cin.ignore();
     getline (cin , name);
-
+    //cout << "walk " << name << "?" << endl;
+    
     cout << "Enter Country:\t";
-    cin.ignore();
+    //cin.ignore();
     getline (cin , country);
+    //cout << "walk " << country << "?" << endl;
+
 
     cout << "Enter Sport:\t ";
-    cin.ignore();
+    //cin.ignore();
     getline (cin , sport);
+    //cout << "walk " << sport << "?" << endl;
+
 
     cout << "Enter date:\t";
     cin >> date;
+   // cout << "walk " << date << "?" << endl;
+
 
     cout << "Enter Age:\t";
     cin >> age;
+   // cout << "walk " << age << "?" << endl;
+
 
     cout << "Enter year:\t";
     cin >> year;
+   // cout << "walk " << year << "?" << endl;
+
 
 
     cout << "Enter number of gold medals: ";
     cin >> medals[0];
+   // cout << "walk " << medals[0] << "?" << endl;
+
     cout << "Enter number of silver medals: ";
     cin >> medals[1];
+   // cout << "walk " << medals[1] << "?" << endl;
+
     cout << "Enter number of bronze medals: ";
     cin >> medals[2];
+    //cout << "walk " << medals[2] << "?" << endl;
+
 
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
 
-    if (hashTable->searchNode(name, hashFuncPtr))
-    {cout << "Duplication!!" << std::endl; return;}
+    //if (hashTable->searchNode(name, hashFuncPtr))
+    if (bst->Search(name))
+    {cout << "The Athlete already exists. Try entering another one." << std::endl; return;}
 
     //        if (bst->Search(*athlete))
     //        {cout << "Duplication!!" << std::endl; return;}
