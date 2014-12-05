@@ -11,6 +11,29 @@ public:
 
     BST_Node (Athlete* theObject): anAthlete(theObject), left(nullptr), right (nullptr) {};
     ~BST_Node () {};
+
+Athlete* getAthletePtr() const
+    {
+        return anAthlete;
+    }
+     void setLeft(BST_Node* leftNew)
+    {
+        left = leftNew;
+    };
+    void setRight(BST_Node* rightNew)
+    {
+        right = rightNew;
+    };
+
+    BST_Node* getLeft() const
+    {
+        return left;
+    };
+    BST_Node* getRight() const
+    {
+        return right;
+    };
+
 } ;
 
 #endif

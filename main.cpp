@@ -6,6 +6,7 @@
  */
 
 #include <fstream>
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <iomanip>
@@ -325,6 +326,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 string key = " ";
                 cout << "Please enter athlete name to delete: ";
                 getline(cin, key);
+                cout<<key.size()<<endl;
                 deleteNode(key, bst, myStack , hashTable);//, hashFuncPtr);
                 break;
             }
