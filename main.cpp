@@ -47,9 +47,6 @@ void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
                   unsigned int (*hashFuncPtr)(const std::string&, const int));
 
 
-
-
-
 int main()
 {
     int numObjects = getNumObjects();
