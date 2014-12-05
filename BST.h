@@ -16,8 +16,8 @@ private:
     void _BST_Indented_List(BST_Node *root , int) const;
     void _BST_Destroy(BST_Node *root);
     void _BST_Delete (BST_Node* , const std::string taregetNodePtr);
-private:
-    BST_Node* _insertNode(BST_Node* subTree, BST_Node* newNode);
+protected:
+    BST_Node* _insertNode(BST_Node*, BST_Node*);
 
 public:
 
