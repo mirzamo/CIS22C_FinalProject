@@ -23,8 +23,8 @@ using namespace std;
 
 
 //file name
-//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
-const string FNAME = "OlympicAthletes.txt";
+const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
+//const string FNAME = "OlympicAthletes.txt";
 //const string OUTPUT_FNAME = "Output.txt";
 
 
@@ -43,7 +43,7 @@ bool out_file_name_is_valid (string name);
 
 
 
-bool deleteNode(string , BST* , Stack*);//, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
+bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
 void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                   unsigned int (*hashFuncPtr)(const std::string&, const int));
 
@@ -56,13 +56,13 @@ int main()
     int numObjects = getNumObjects();
     int hash_size = hashSize(numObjects);
     BST* bst = new BST;
-
+    
     //LinkedStack<Athlete>* Stack = new LinkedStack<Athlete>;
     Stack* myStack = new Stack;
-
+    
     hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(hash_size);
     readData(hash_size, bst, hashTable);
-
+    
     processCommand(bst, myStack, hashTable);
     delete bst;
     delete myStack;
@@ -75,7 +75,7 @@ int getNumObjects()
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
-
+    
     bool ableToPopulate = fileHandle.good();
     int numObjects =0;
     if (ableToPopulate)
@@ -97,9 +97,9 @@ bool readData(int hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
 {
     ifstream fileHandle;
     fileHandle.open(FNAME);
-
+    
     bool ableToPopulate = fileHandle.good();
-
+    
     if (ableToPopulate)
     {
         unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
@@ -150,41 +150,13 @@ bool saveToFile();
  copies data into stack, deletes all pointers to node in data structures, and deletes node itself.
  */
 
-bool deleteNode(string& delNode, BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
-                unsigned int (*hashFuncPtr)(const std::string&, const int))
-{
-
-    bool ableToDelete = false;
-    // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
-
-    //Kelly: search Node from hash table, getAthlete data for constructor below - if found, turn ableToDelete to true;
-    ableToDelete = hashTable->searchNode(delNode, hashFuncPtr);
-
-    Sport winStats(" ",0," ",0);
-    Athlete athlete(delNode , 0 , {0} , winStats);
-    myStack->push(athlete);
-
-
-    if (ableToDelete)
-    {
-        bst->BST_Delete(athlete);
-    }
-
-    /**
-     Athlete* athlete = new Athlete(name, age, medals, winStats);
-     Stack->push(athlete);
-     */
-    // Mahsa: bst delete ptr
-    //Kelly: hash func delete ptr + node
-    return ableToDelete;
-}
 
 
 
 bool undoDelete(/*LinkedStack<Athlete>**/Stack *myStack, BST* bst)
 {
     bool ableToReturn = false;
-
+    
     if (!myStack->isEmpty())
     {
         Athlete oldAthlete;
@@ -282,20 +254,20 @@ unsigned int hashMap(const string& key, const int hash_size)
     unsigned len = key.size()+1;
     char Key[len];
     strcpy(Key,key.c_str());
-
+    
     unsigned h = 0, i = 0;
-
+    
     for ( i = 0; i < len; i++ )
         h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
-
+    
     return h % hash_size;
 }
 
 
-bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,Athlete*>* hashTable)
+bool deleteNode(string delNode, BST* bst, Stack *myStack , hashedDict<string,Athlete*>* hashTable)
                 
 {
-    //unsigned int (*hashFuncPtr)(const std::string&, const int)
+    unsigned int (*hashFuncPtr)(const std::string&, const int);
     bool ableToDelete = false;
     // cout<<hashTable->searchNode(delNode,hashFuncPtr)<<endl;
     
@@ -306,6 +278,7 @@ bool deleteNode(string delNode, BST* bst, Stack *myStack)//, hashedDict<string,A
     if (ableToDelete)
     {
         bst->BST_Delete(delNode);
+        //hashTable->
         cout << " removed successfully." << endl;
     }
     
@@ -347,7 +320,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             case '1':
             {
                 insert_input(bst, myStack, hashTable, hashFuncPtr);
-
+                
                 break;
             }
             case '2':
@@ -356,7 +329,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 cout << "Please enter athlete name to delete: ";
                 getline(cin, key);
 
-                deleteNode(key, bst, myStack);//, hashTable, hashFuncPtr);
+                deleteNode(key, bst, myStack , hashTable);//, hashFuncPtr);
                 break;
             }
             case '3':
@@ -378,7 +351,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                     cout << key << "not found" << endl;
                 break;
             }
-
+                
             case '6':
             {
                 cout<< "_____Hash table statistics____"<<endl;
@@ -396,7 +369,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
                 undoDelete(myStack, bst);
                 break;
             }
-
+           
             case '8':
             {
                 cout<<" #Items in BST: " << bst->size()<< endl;
@@ -407,19 +380,19 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             case '9':
             {
                 string name;
-                cout << "Enter a name for output file (followed by .txt)\t";
+                cout << "Enter a name for output file (followed by .txt)" << endl;
                 cin.ignore();
                 getline(cin , name);
-
+                
                 if (out_file_name_is_valid (name))      //check is out file name is the right format
                 { hashTable->saveFile(name);}
-
+                
                 inProgress = false;
 
             }
 
         }
-
+        
     }
 }
 
@@ -521,6 +494,23 @@ void projectInfo()
 }
 
 
+void projectInfo()
+{
+    cout << "\n**********Group Info: Team #9**********" << endl
+    <<"Team Members: Mahsa M, Elena M, Kelly D, Misha Y" <<endl
+    << "Purpose: CIS 22C Fall 2014 Final Project" <<endl;
+    
+    
+    cout << "\n**********Dataset Info**********" << endl
+    << "Dataset used: Olympic Medal Winners "<<endl
+    << "URL: http://www.tableausoftware.com/public/community/sample-data-sets" <<endl
+    << "Data Format: Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals" << endl;
+    
+    cout << "\n**********Implementation Info**********" << endl
+    << "Data Structures Used: Stack (Linked), BST , Hash Dictionary"<<endl;
+}
+
+
 
 //*******************************
 //OUTPUT FILE NAME VALIDATION
@@ -531,17 +521,17 @@ bool out_file_name_is_valid (string name)
 {
     size_t pos = 0;
     string token;
-
+    
     if (name[0] == '.')
     {cout << "Invalid name\n";    return false;}
-
-
+    
+    
     pos = name.find('.');
     name.erase(0 , pos + 1);
-
+    
     if (name != "txt")
     {cout << "Invalid name\n";    return false;}
-
+    
     return true;
 }
 
