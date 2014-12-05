@@ -23,9 +23,9 @@ using namespace std;
 
 
 //file name
-const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
+//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
 //const string FNAME = "OlympicAthletes.txt";
-
+const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/short version copy.txt";
 
 
 //file processing functions

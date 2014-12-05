@@ -68,9 +68,8 @@ BST_Node* BST:: _insertNode(BST_Node* subTree, BST_Node* newNode)
     return subTree;
 }
 
-//
-// //template <class T , class R>
-// bool BST::Search(std::string target)//, Athlete &foundedItem)
+
+
 bool BST::Search(std::string target)
 
 {
@@ -134,7 +133,7 @@ void BST::BST_Indented_List() const
 
 void BST::_BST_Indented_List(BST_Node *root , int i) const
 {
-    if (root && i<100)
+    if (root)
     {
         std::cout << std::right << std::setw(i) << i << ".  ";
 
