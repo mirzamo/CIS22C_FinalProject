@@ -22,7 +22,6 @@
 using namespace std;
 
 
-//file name
 //const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
 //const string FNAME = "OlympicAthletes.txt";
 const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/short version copy.txt";
@@ -338,6 +337,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             }
             case '5':
             {
+                Athlete anAthlete;
                 string key = " ";
                 cout << "Please enter athlete name to search: ";
                 getline(cin, key);

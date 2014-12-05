@@ -9,8 +9,8 @@ template <class keyT, class itemT>
 class HsinglyNode
 {
 private:
-    keyT _key;
-    itemT _item;
+    keyT _key;      //string
+    itemT _item;        //pointer to athlete
     HsinglyNode* _fwd;
     
 public:
@@ -50,6 +50,5 @@ public:
     {
         return (_key > rhs.getKey());
     }
-   // Athlete getNode ()
 };
 #endif // HASH_SINGLY_NODE_H

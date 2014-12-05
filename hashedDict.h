@@ -31,6 +31,11 @@ protected:
 
 public:
     void saveFile(std::string fileName ) const;
+    
+//    Athlete searchData()
+//    {
+//        
+//    }
 
     hashedDict(const int arSize): _numCollisions(0), _count(0), _arSize(arSize),
     _LLsize(new int[arSize]), _nodes(new HsinglyNode<keyT, itemT>*[arSize])
@@ -47,7 +52,7 @@ public:
         _clearDict();
     }
     bool addNode(const keyT&, itemT, unsigned int (*)(const keyT&, const int));
-    bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int));
+    bool searchNode(const keyT&, unsigned int (*)(const std::string&, const int) , keyT &temp);
 
     // Aids for statistics for hash table
     int getCount() const;
@@ -181,7 +186,7 @@ bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsign
  Returns true if item is found, false otherwise.
  */
 template<class keyT, class itemT>
-bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int))
+bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int) , keyT &item)
 {
     const int Size = _arSize;
     int index = hashFuncPtr(searchKey, Size);
@@ -196,6 +201,7 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
         {
             ableToFind = true;
             searchPtr->getItem()->printFull();
+            item = searchPtr->getItem();
             break;
         }
     }
