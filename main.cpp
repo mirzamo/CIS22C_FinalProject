@@ -32,7 +32,7 @@ const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/Olymp
 //file processing functions
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
-void processCommand(BST*, /*LinkedStack<Athlete>**/ Stack *,hashedDict<string,Athlete*>*);
+void processCommand(BST*, Stack *,hashedDict<string,Athlete*>*);
 int hashSize(int);
 void projectInfo();
 unsigned int hashMap(const string&, const int);
@@ -253,8 +253,8 @@ void menu()
     cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Show hash table statistics"<< endl;
     cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Undo delete"<<endl;
     cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Show number of nodes in data structures"<<endl;
-    cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file" <<endl;
-    cout << setw(w1) << left << "10: " <<  setw(w2) << left << "Quit" <<endl;
+    cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file and Quit" <<endl;
+   // cout << setw(w1) << left << "10: " <<  setw(w2) << left << "Quit" <<endl;
 
 }
 
@@ -383,12 +383,11 @@ void processCommand(BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, has
                 
                 if (out_file_name_is_valid (name))      //check is out file name is the right format
                 { hashTable->saveFile(name);}
-                break;
-            }
-            case '10':
-            {
+                
                 inProgress = false;
+
             }
+
         }
         
     }
@@ -460,7 +459,7 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
-        
+    
     if (hashTable->searchNode(name, hashFuncPtr))
     {cout << "Duplication!!" << std::endl; return;}
     
@@ -515,3 +514,4 @@ bool out_file_name_is_valid (string name)
     
     return true;
 }
+
