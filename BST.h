@@ -12,10 +12,10 @@ private:
     BST_Node *root;
     int count;
 
-    BST_Node*_search(Athlete );
+    BST_Node*_search(std::string );
     void _BST_Indented_List(BST_Node *root , int) const;
     void _BST_Destroy(BST_Node *root);
-    void _BST_Delete (BST_Node* , const Athlete taregetNodePtr);
+    void _BST_Delete (BST_Node* , const std::string taregetNodePtr);
 
 
 public:
@@ -24,8 +24,8 @@ public:
 
     // Binary Tree operations
     void BST_insert(Athlete* dataIn);
-    bool Search(Athlete anathlete);
-    void BST_Delete (const Athlete anEntry);
+    bool Search(std::string anathlete);
+    void BST_Delete (const std::string anEntry);
     void BST_Indented_List() const;
     bool isEmpty() const	{return count == 0;}
     int size() const	    {return count;}
