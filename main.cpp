@@ -294,7 +294,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
         while (!validChoice(choice));
         switch (toupper(choice[0]))
         {
-        case '0': // works
+        case '0':
         {
             projectInfo();
             break;
@@ -302,7 +302,6 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
         case '1':
         {
             insert_input(bst, myStack, hashTable, hashFuncPtr);
-            cin.ignore();
             break;
         }
         case '2':
@@ -421,12 +420,10 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     cout << "Enter Athlete's First and Last Name:\t";
     getline(cin , name);
 
-    bool isSynonym = hashTable->searchNode(name, hashFuncPtr);
+    bool alreadyExists = hashTable->searchNode(name, hashFuncPtr);
 
-    if (!isSynonym)
+    if (!alreadyExists)
     {
-        cout << "Enter Country:\t";
-
         cout << "Enter Country:\t";
         getline (cin , country);
 
