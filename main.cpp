@@ -21,7 +21,7 @@
 using namespace std;
 
 //const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
-const string FNAME = "short version copy.txt";
+const string FNAME = "OlympicAthletes.txt";
 
 
 /*****
