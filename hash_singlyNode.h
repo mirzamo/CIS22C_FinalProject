@@ -9,8 +9,8 @@ template <class keyT, class itemT>
 class HsinglyNode
 {
 private:
-    keyT _key;      //string
-    itemT _item;        //pointer to athlete
+    keyT _key;
+    itemT _item;        
     HsinglyNode* _fwd;
 
 public:

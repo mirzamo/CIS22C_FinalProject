@@ -12,7 +12,6 @@
 #include <iostream>
 #include "Athlete.h"
 #include "BST.h"
-//#include "LinkedStack.h"
 #include "hashedDict.h"
 #include "validation.h"
 #include <vector>
@@ -24,7 +23,10 @@ using namespace std;
 //const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
 const string FNAME = "short version copy.txt";
 
-//file processing functions
+
+/*****
+file processing functions
+******/
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
 void processCommand(BST*, Stack *,hashedDict<string,Athlete*>*);
@@ -36,14 +38,9 @@ bool out_file_name_is_valid (string name);
 void makeOutputFile(BST*, hashedDict<std::string , Athlete*>* , Stack*);
 
 
-
-
-
-
 bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
 void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int));
-
 
 
 int main()
@@ -66,6 +63,9 @@ int main()
 }
 
 
+/*****
+ get number of datas in input file
+ ******/
 int getNumObjects()
 {
     ifstream fileHandle;
@@ -82,6 +82,8 @@ int getNumObjects()
     }
     return numObjects;
 }
+
+
 
 /**
  Returns true if able to read (non-corrupt) file, else returns false.
@@ -136,6 +138,7 @@ bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* has
 }
 
 
+
 /**
  Function that cuts up inputted line read from file into chunks and changes correct values by reference.
  */
@@ -164,6 +167,8 @@ void parseInput(string& line, string& name, string& country, string& sport, stri
     medals[2] = stoi(line.substr(4,5));
 }
 
+
+
 /**
  Prints out error message based on an error message table.
  */
@@ -171,6 +176,8 @@ void printErrorMsg(Error msg)
 {
     cout << ErrorTable[static_cast<int>(msg)] << endl;
 }
+
+
 
 /**
  Displays the menu for user.
@@ -189,9 +196,9 @@ void menu()
     cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Undo delete"<<endl;
     cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Show number of nodes in data structures"<<endl;
     cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file and Quit" <<endl;
-    // cout << setw(w1) << left << "10: " <<  setw(w2) << left << "Quit" <<endl;
-
 }
+
+
 
 /**
  Validated whether user input is valid.
@@ -208,6 +215,8 @@ bool validChoice(string choice)
         return false;
     }
 }
+
+
 
 /**
  Hash function set by user
@@ -230,12 +239,14 @@ unsigned int hashMap(const string& key, const int hash_size)
     return h % hash_size;
 }
 
+
+/*****
+ delete a node from both hash table and tree
+ *****/
 bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Athlete*>* hashTable,unsigned int (*hashFuncPtr)(const std::string&, const int))
 
 {
     bool ableToDelete = false;
-
-    // ableToDelete = bst->Search(delNode);    //in search it prints out the information of athlete
 
     ableToDelete = hashTable->searchNode(delNode , hashFuncPtr);
 
@@ -244,15 +255,21 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
         Athlete athleteCopy = hashTable->getAthleteCopy(delNode, hashFuncPtr);
         myStack->push(athleteCopy);
         cout << endl;
+
         bst->BST_Delete(delNode);
         hashTable->deleteNode(delNode, hashFuncPtr);
     }
 
     else
         cout << " Athlete cannot be removed because it does not exist" << endl;
-
+    /**
+     Athlete* athlete = new Athlete(name, age, medals, winStats);
+     Stack->push(athlete);
+     */
     return ableToDelete;
 }
+
+
 
 /**
  Processes user command for the data entries.
@@ -310,13 +327,8 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
 
-            hashTable->searchNode(key , hashFuncPtr);
-            if (!hashTable->searchNode(key , hashFuncPtr))
-            {
-                cout << key << " not found" << endl;
-            }
-
-            break;
+            if (!hashTable->searchNode(key,hashFuncPtr))
+                printErrorMsg(Error::BAD_SEARCH);
         }
 
         case '6':
@@ -354,6 +366,9 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
 }
 
 
+/*****
+ checks if a given number is prime
+ ****/
 bool isPrime (int num)
 {
     if (num <= 1)
@@ -371,6 +386,12 @@ bool isPrime (int num)
     }
 }
 
+
+/*****
+ Ddetermine hash size : gets number
+ of datas, multiply
+ by 2, find the next prime number
+ *****/
 int hashSize(int numAthletes)
 {
     int hashSize = numAthletes * 2+1;
@@ -380,6 +401,12 @@ int hashSize(int numAthletes)
 }
 
 
+
+/******
+ get information of an athlete and
+ inserts in tree and hash table.
+ Error if the athlete already exists
+ *****/
 void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
@@ -387,67 +414,57 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     int age =0, year=0;
     int medals[3] = {0};
 
-
     cout << "Enter Athlete's First and Last Name:\t";
-    getline (cin , name);
-    cout << "Enter Country:\t";
+    getline(cin , name);
+
     bool isSynonym = hashTable->searchNode(name, hashFuncPtr);
+
     cout<<isSynonym<<endl;
+
     if (!isSynonym)
     {
         cout << "Enter Country:\t";
-        getline (cin , country);
-        cout << "Enter Sport:\t ";
-        getline (cin , sport);
-        cout << "Enter Athlete's Name and family name:\t";
-        getline (cin , name);
-        cout << "Enter Country:\t";
-        getline (cin , country);
-        cout << "Enter Sport:\t ";
-        getline (cin , sport);
 
-        cout << "Enter date:\t";
-        cin >> date;
+    cout << "Enter Country:\t";
+    getline (cin , country);
 
-        cout << "Enter Age:\t";
-        cin >> age;
+    cout << "Enter Sport:\t ";
+    getline (cin , sport);
 
-        cout << "Enter year:\t";
-        cin >> year;
+    cout << "Enter date:\t";
+    cin >> date;
 
-        cout << "Enter number of gold medals: ";
-        cin >> medals[0];
+    cout << "Enter Age:\t";
+    cin >> age;
 
-        cout << "Enter number of silver medals: ";
-        cin >> medals[1];
+    cout << "Enter year:\t";
+    cin >> year;
 
-        cout << "Enter number of bronze medals: ";
-        cin >> medals[2];
+    cout << "Enter number of gold medals: ";
+    cin >> medals[0];
 
+    cout << "Enter number of silver medals: ";
+    cin >> medals[1];
 
-        Sport winStats(country,year,sport,date);
-        Athlete* athlete = new Athlete(name, age, medals, winStats);
+    cout << "Enter number of bronze medals: ";
+    cin >> medals[2];
 
-        if (hashTable->searchNode(name , hashFuncPtr))
-            // if (bst->Search(name))
+    Sport winStats(country,year,sport,date);
+    Athlete* athlete = new Athlete(name, age, medals, winStats);
 
-            cout << "The Athlete already exists. Try entering another one." << std::endl;
+    bst->BST_insert(athlete);
+    hashTable->addNode(name, athlete, hashFuncPtr);
 
-
-        //        if (bst->Search(*athlete))
-        //        {cout << "Duplication!!" << std::endl; return;}
-        //
-
-        bst->BST_insert(athlete);
-        hashTable->addNode(name, athlete, hashFuncPtr);
-
-        cout << athlete->getName() << " added successfully." << endl;
-//    else
-        //  cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;
+    cout << athlete->getName() << " added successfully." << endl;
     }
+    else
+        cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;
 }
 
 
+/****
+ Displays project info
+ ***/
 void projectInfo()
 {
     cout << "\n**********Group Info: Team #9**********" << endl
@@ -496,7 +513,6 @@ bool out_file_name_is_valid (string name)
 
 
 
-
 //*******************
 //make output file
 //******************
@@ -510,10 +526,7 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
     {
         std::ofstream outFile(fileName);
         bst->saveFileInOrder(outFile);
-        // hash->saveFile(outFile);
 
-        //empty stack aftersaving
-        //mystack->clear();
         cout<<" Output is saved in file called " <<fileName<<endl;
         outFile.close();
     }

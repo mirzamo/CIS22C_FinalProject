@@ -18,6 +18,7 @@ Stack::~Stack()
     }
 }
 
+
 /*
   Member function push pushes the argument onto
   the stack.
@@ -105,6 +106,7 @@ bool Stack::clear ()
     return isEmpty();
 }
 
+
 /*
   Member function isEmpty returns true if the stack
   is empty, or false otherwise.
@@ -113,6 +115,7 @@ bool Stack::isEmpty()
 {
     return count == 0;
 }
+
 
 /*
   Member function getcount returns the count in the stack.
@@ -123,11 +126,11 @@ int Stack::getCount()
     return count;
 }
 
+
 /*
   Member function getTop returns true and copies its top value to an argement.
   return false if the stack is empty.
 */
-//template <class T>
 bool Stack::getTop(Athlete &item)
 {
     if( top == NULL )
