@@ -133,7 +133,6 @@ bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* has
         bst->BST_insert(athleteNew);
         hashTable->addNode(athleteNew->getName(), athleteNew, hashFuncPtr);
         cout<< athleteNew->getName() <<" is returned to dataset." << endl;
-        //cout<<hashTable->searchNode(athleteNew->getName(),hashFuncPtr)<<endl;
     }
     else
         printErrorMsg(Error::EMPTY_STACK);
@@ -226,7 +225,10 @@ unsigned int hashMap(const string& key, const int hash_size)
     unsigned h = 0, i = 0;
 
     for ( i = 0; i < len; i++ )
-        h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
+        h ^= Key[i];
+    //h = 33 * h + Key[i];
+    //h = ( h * 16777619 ) ^ Key[i];
+    // h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
     //h ^= ( h << 5 ) + ( h >> 2 ) + Key[i];
 
     return h % hash_size;
@@ -306,14 +308,13 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             hashTable->printHashed(true);
             break;
         }
-        case '5':
+        case '5': // works
         {
             Athlete anAthlete;
             string key = " ";
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
-            // if (!hashTable->searchNode(key,hashFuncPtr))
-            cout << key << "not found" << endl;
+            hashTable->searchNode(key,hashFuncPtr);
             break;
         }
 
@@ -326,7 +327,6 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
             cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
             cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
-            cout<<"Number of nodes in each linked list: " << endl;;
             break;
         }
         case '7':
@@ -386,65 +386,33 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     int age =0, year=0;
     int medals[3] = {0};
 
-    cout << "Enter Athlete's Name and family name:\t";
-    // cin.ignore();
+    cout << "Enter Athlete's First and Last Name:\t";
     getline (cin , name);
-    //cout << "walk " << name << "?" << endl;
-
     cout << "Enter Country:\t";
-    //cin.ignore();
     getline (cin , country);
-    //cout << "walk " << country << "?" << endl;
-
-
     cout << "Enter Sport:\t ";
-    //cin.ignore();
     getline (cin , sport);
-    //cout << "walk " << sport << "?" << endl;
-
-
     cout << "Enter date:\t";
     cin >> date;
-    // cout << "walk " << date << "?" << endl;
-
-
     cout << "Enter Age:\t";
     cin >> age;
-    // cout << "walk " << age << "?" << endl;
-
-
     cout << "Enter year:\t";
     cin >> year;
-    // cout << "walk " << year << "?" << endl;
-
-
-
     cout << "Enter number of gold medals: ";
     cin >> medals[0];
-    // cout << "walk " << medals[0] << "?" << endl;
-
     cout << "Enter number of silver medals: ";
     cin >> medals[1];
-    // cout << "walk " << medals[1] << "?" << endl;
-
     cout << "Enter number of bronze medals: ";
     cin >> medals[2];
-    //cout << "walk " << medals[2] << "?" << endl;
-
 
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
 
-    //if (hashTable->searchNode(name, hashFuncPtr))
-    if (bst->Search(name))
+    if (hashTable->searchNode(name, hashFuncPtr))
     {
-        cout << "The Athlete already exists. Try entering another one." << std::endl;
+        cout << "Error: The Athlete already exists in the dataset. " << std::endl;
         return;
     }
-
-    //        if (bst->Search(*athlete))
-    //        {cout << "Duplication!!" << std::endl; return;}
-    //
 
     bst->BST_insert(athlete);
     hashTable->addNode(name, athlete, hashFuncPtr);
@@ -520,7 +488,7 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
 
         //empty stack aftersaving
         //mystack->clear();
-    cout<<" Output is saved in file called " <<fileName<<endl;
+        cout<<" Output is saved in file called " <<fileName<<endl;
         outFile.close();
     }
 
