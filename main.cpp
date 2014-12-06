@@ -423,8 +423,6 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
 
     bool isSynonym = hashTable->searchNode(name, hashFuncPtr);
 
-    cout<<isSynonym<<endl;
-
     if (!isSynonym)
     {
         cout << "Enter Country:\t";
