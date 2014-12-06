@@ -10,6 +10,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include "Athlete.h"
 #include "hash_singlyNode.h"
 #include "validation.h"
 
