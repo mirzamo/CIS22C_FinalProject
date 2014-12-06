@@ -421,6 +421,19 @@ int hashSize(int numAthletes)
 }
 
 
+bool hasSpace(string name)
+{
+    bool hasSpaces = false;
+    for (int i=0; i<name.size(); i++)
+    {
+        if ( isspace(name[i]))
+        {
+            hasSpaces = true;
+            break;
+        }
+    }
+    return hasSpaces;
+}
 
 /******
  get information of an athlete and
@@ -434,8 +447,13 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     int age =0, year=0;
     int medals[3] = {0};
 
-    cout << "Enter Athlete's First and Last Name:\t";
-    getline(cin , name);
+
+    do
+    {
+        cout << "Enter Athlete's First and Last Name ('Space' between them):\t";
+        getline(cin , name);
+    }
+    while (!hasSpace(name));
 
     bool alreadyExists = hashTable->searchNode(name, hashFuncPtr);
 
