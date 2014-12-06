@@ -10,7 +10,6 @@
 
 #include <iomanip>
 #include <iostream>
-#include "Athlete.h"
 #include "hash_singlyNode.h"
 #include "validation.h"
 
@@ -220,9 +219,7 @@ Athlete hashedDict<keyT,itemT> ::getAthleteCopy(const keyT& searchKey, unsigned 
 
         else
         {
-            searchPtr->getItem()->printFull();
             athleteCopy = searchPtr->getItem()->getAthlete();
-
             break;
         }
     }
@@ -351,15 +348,15 @@ void hashedDict<keyT, itemT>::saveFile(std::ostream &outFile) const
 
             if (_LLsize[i] >0)
             {
-                outFile << _nodes[i]->getItem() << std::endl;
-                HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
-                while (nextNode)
-                {
+            outFile << _nodes[i]->getItem() << std::endl;
+            HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
+            while (nextNode)
+            {
 
-                    outFile << nextNode->getItem()->getName() <<std::endl;
-                    nextNode = nextNode->getFwd();
-                }
+                outFile << nextNode->getItem()->getName() <<std::endl;
+                nextNode = nextNode->getFwd();
             }
         }
+    }
 }
 #endif // HASHED_DICT_H

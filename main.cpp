@@ -239,7 +239,6 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
         Athlete athleteCopy = hashTable->getAthleteCopy(delNode, hashFuncPtr);
         myStack->push(athleteCopy);
         cout << endl;
-
         bst->BST_Delete(delNode);
         hashTable->deleteNode(delNode, hashFuncPtr);
     }
