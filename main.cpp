@@ -479,10 +479,9 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
     cout << "Enter a name for output file (followed by .txt):\t";
     getline(cin , fileName);
 
-    if (out_file_name_is_valid (fileName))      //check is out file name is the right format
+    if (out_file_name_is_valid (fileName))
     {
         std::ofstream outFile(fileName);
-
         bst->saveFileInOrder(outFile);
         // hash->saveFile(outFile);
 
