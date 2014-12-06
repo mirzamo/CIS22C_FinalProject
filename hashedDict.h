@@ -9,7 +9,6 @@
 #define HASHED_DICT_H
 
 #include <iomanip>
-#include <fstream>
 #include <iostream>
 #include "hash_singlyNode.h"
 #include "validation.h"
