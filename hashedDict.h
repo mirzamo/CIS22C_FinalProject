@@ -171,8 +171,8 @@ bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsign
         newNode->setFwd(_nodes[hashIndex]); // add newNode to front of LL
         _nodes[hashIndex] = newNode;
         _numCollisions++;
+         _LLsize[hashIndex]++;
     }
-    _LLsize[hashIndex]++;
     _count++;
     return ableToHash;
 }
@@ -292,12 +292,15 @@ void hashedDict<keyT,itemT>:: printHashed(bool indent) const
                 std::cout<< std::right << std::setw(5);
             _nodes[i]->getItem()->print();
             HsinglyNode<keyT,itemT>* nextNode = _nodes[i]->getFwd();
-            while (nextNode)
+            int i = _LLsize[i];
+            while (nextNode && i>0)
             {
+                std::cout<<nextNode->getItem()->getName()<<std::endl;
                 if (indent)
                     std::cout<< std::right << std::setw(20);
                 nextNode->getItem()->print();
                 nextNode = nextNode->getFwd();
+                i--;
             }
         }
     }

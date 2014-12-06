@@ -130,8 +130,6 @@ bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* has
         Athlete oldAthlete;
         myStack->pop(oldAthlete);
         Athlete* athleteNew = new Athlete(oldAthlete);
-        oldAthlete.printFull();
-        athleteNew->printFull();
         bst->BST_insert(athleteNew);
         hashTable->addNode(athleteNew->getName(), athleteNew, hashFuncPtr);
         cout<< athleteNew->getName() <<" is returned to dataset." << endl;
