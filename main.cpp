@@ -380,7 +380,7 @@ int hashSize(int numAthletes)
 }
 
 
-void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
+void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
     string name = " ", country = " ", sport = " ", date = " ";
@@ -419,7 +419,7 @@ cout<<isSynonym<<endl;
     cout << athlete->getName() << " added successfully." << endl;
     }
     else
-        cout << "Error: The Athlete already exists in the dataset. " << std::endl;
+        cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;
 }
 
 
