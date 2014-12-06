@@ -171,8 +171,7 @@ bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsign
         newNode->setFwd(_nodes[hashIndex]); // add newNode to front of LL
         _nodes[hashIndex] = newNode;
         _numCollisions++;
-        _LLsize[hashIndex]++;
-    }
+    } _LLsize[hashIndex]++;
     _count++;
     return ableToHash;
 }
@@ -188,7 +187,6 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
     const int Size = _arSize;
     int index = hashFuncPtr(searchKey, Size);
     bool ableToFind = false;
-
     HsinglyNode<keyT, itemT>* searchPtr = _nodes[index];
     for (int i = 0; i < _LLsize[index]; i++)
     {
@@ -197,13 +195,10 @@ bool hashedDict<keyT,itemT> :: searchNode(const keyT& searchKey, unsigned int (*
         else
         {
             ableToFind = true;
-            std::cout<<"\nAthlete is found in dataset.\n"<<std::endl;
             searchPtr->getItem()->printFull();
             break;
         }
     }
-    if (!ableToFind)
-        printErrorMsg(Error::BAD_SEARCH);
     return ableToFind;
 }
 
@@ -299,6 +294,7 @@ void hashedDict<keyT,itemT>:: printHashed(bool indent) const
                 if (indent)
                     std::cout<< std::right << std::setw(20);
                 nextNode->getItem()->print();
+                 //std::cout<<"OMG: "<<nextNode->getItem()->getName().size()<<std::endl;
                 nextNode = nextNode->getFwd();
                 i--;
             }

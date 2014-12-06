@@ -308,13 +308,14 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             hashTable->printHashed(true);
             break;
         }
-        case '5': // works
+        case '5':
         {
             Athlete anAthlete;
             string key = " ";
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
-            hashTable->searchNode(key,hashFuncPtr);
+            if (!hashTable->searchNode(key,hashFuncPtr))
+                printErrorMsg(Error::BAD_SEARCH);
             break;
         }
 
@@ -388,7 +389,11 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
 
     cout << "Enter Athlete's First and Last Name:\t";
     getline (cin , name);
-    cout << "Enter Country:\t";
+    bool isSynonym = hashTable->searchNode(name, hashFuncPtr);
+cout<<isSynonym<<endl;
+    if (!isSynonym)
+    {
+        cout << "Enter Country:\t";
     getline (cin , country);
     cout << "Enter Sport:\t ";
     getline (cin , sport);
@@ -408,16 +413,13 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
 
-    if (hashTable->searchNode(name, hashFuncPtr))
-    {
-        cout << "Error: The Athlete already exists in the dataset. " << std::endl;
-        return;
-    }
-
     bst->BST_insert(athlete);
     hashTable->addNode(name, athlete, hashFuncPtr);
 
     cout << athlete->getName() << " added successfully." << endl;
+    }
+    else
+        cout << "Error: The Athlete already exists in the dataset. " << std::endl;
 }
 
 
