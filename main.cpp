@@ -5,16 +5,23 @@
  Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals
  */
 
+/**
+    C++ libraries
+*/
 #include <fstream>
 #include <cmath>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <string>
+
+/**
+    ADT headers and other helper header files.
+*/
 #include "Athlete.h"
 #include "BST.h"
 #include "hashedDict.h"
 #include "validation.h"
-#include <string>
 #include "Stack.h"
 
 using namespace std;
@@ -26,49 +33,13 @@ const string FNAME = "OlympicAthletes.txt";
 /*****
 file processing functions
 ******/
-bool readData(int, BST*,hashedDict<string,Athlete*>*);
 void parseInput(string&, string&, string&, string&, string&, int&, int*, int&);
 void processCommand(BST*, Stack *,hashedDict<string,Athlete*>*);
-int hashSize(int);
-void projectInfo();
 unsigned int hashMap(const string&, const int);
-int getNumObjects();
-bool out_file_name_is_valid (string name);
-void makeOutputFile(BST*, hashedDict<std::string , Athlete*>* , Stack*);
-
-
-bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned int (*)(const std::string&));
-void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
-                   unsigned int (*hashFuncPtr)(const std::string&, const int));
-
-/**
-    Main function reads in the athlete data into hash table and binary search tree.
-    It builds an empty stack as well.
-    It presents user with a menu of options, and at the program exit it frees all memory.
-*/
-
-
-int main()
-{
-    int numObjects = getNumObjects();
-    int hash_size = hashSize(numObjects);
-    BST* bst = new BST;
-
-    Stack* myStack = new Stack;
-
-    hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(hash_size);
-    readData(hash_size, bst, hashTable);
-
-    processCommand(bst, myStack, hashTable);
-    delete bst;
-    delete myStack;
-    delete hashTable;
-    return 0;
-}
 
 
 /*****
- get number of datas in input file
+ get number of data in input file
  ******/
 int getNumObjects()
 {
@@ -86,8 +57,6 @@ int getNumObjects()
     }
     return numObjects;
 }
-
-
 
 /**
  Returns true if able to read (non-corrupt) file, else returns false.
@@ -122,6 +91,11 @@ bool readData(int hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
     return ableToPopulate;
 }
 
+/**
+    Undo delete pops a stores athlete copy off the stack, makes a new node, and inputs it into the other data structures:
+    the hash table and BST. If the stack is not empty, it will return true and put the nodes back into the data.
+    When stack is empty, undo delete cannot undo and will return false.
+*/
 bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* hashTable,
                 unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
@@ -141,15 +115,13 @@ bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* has
     return ableToReturn;
 }
 
-
-
 /**
  Function that cuts up inputted line read from file into chunks and changes correct values by reference.
+ This does not require input file checking since it is assumed that the input file is correct.
  */
 
 void parseInput(string& line, string& name, string& country, string& sport, string& date, int& age, int* medals, int& year)
 {
-    //Athlete-Age-Country-Year-Closing Ceremony Date-Sport-Gold Medals-Silver Medals-Bronze Medals
     unsigned int cut = line.find_first_of("1234567890");
     name = line.substr(0,cut-1);
     line = line.substr(cut);
@@ -171,8 +143,6 @@ void parseInput(string& line, string& name, string& country, string& sport, stri
     medals[2] = stoi(line.substr(4,5));
 }
 
-
-
 /**
  Prints out error message based on an error message table.
  */
@@ -180,8 +150,6 @@ void printErrorMsg(Error msg)
 {
     cout << ErrorTable[static_cast<int>(msg)] << endl;
 }
-
-
 
 /**
  Displays the menu for user.
@@ -201,8 +169,6 @@ void menu()
     cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Save to a file"<<endl;
     cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file and Quit" <<endl;
 }
-
-
 
 /**
  Validated whether user input is valid.
@@ -247,19 +213,19 @@ unsigned int hashMap(const string& key, const int hash_size)
 
     unsigned h = 0, i = 0;
 
-    for ( i = 0; i < len; i++ )
+    for ( i = 0; i < len; i++ ) // below is a collection of other hash functions that did a decent job, in case of new dataset
         h ^= Key[i];
     //h = 33 * h + Key[i];
     //h = ( h * 16777619 ) ^ Key[i];
     // h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
     //h ^= ( h << 5 ) + ( h >> 2 ) + Key[i];
-
     return h % hash_size;
 }
 
 
 /*****
- delete a node from both hash table and tree
+ Delete a node from both hash table and tree. Returns if the node exists, after which it attempts to delete it from
+ the data set. Prior to the delete, it makes a copy of the Athlete and pushed a new stack node into the stack.
  *****/
 bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Athlete*>* hashTable,unsigned int (*hashFuncPtr)(const std::string&, const int))
 
@@ -280,114 +246,11 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
 
     else
         cout << " Athlete cannot be removed because it does not exist" << endl;
-    /**
-     Athlete* athlete = new Athlete(name, age, medals, winStats);
-     Stack->push(athlete);
-     */
     return ableToDelete;
 }
 
-
-
-/**
- Processes user command for the data entries.
- */
-void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable)
-{
-    bool inProgress = true;
-    unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
-    while (inProgress)
-    {
-        menu();
-        string choice;
-        do
-        {
-            cout<<" >> ";
-            getline(cin, choice);
-        }
-        while (!validChoice(choice));
-        switch (toupper(choice[0]))
-        {
-        case '0':
-        {
-            projectInfo();
-            break;
-        }
-        case '1':
-        {
-            insert_input(bst, myStack, hashTable, hashFuncPtr);
-            break;
-        }
-        case '2':
-        {
-            string key = " ";
-            cout << "Please enter athlete name to delete: ";
-            getline(cin, key);
-            deleteNode(key, bst, myStack , hashTable, hashFuncPtr);
-
-            break;
-        }
-        case '3':
-        {
-            bst->BST_Indented_List();
-            break;
-        }
-        case '4':
-        {
-            hashTable->printHashed(true);
-            break;
-        }
-        case '5':
-        {
-            Athlete anAthlete;
-            string key = " ";
-            cout << "Please enter athlete name to search: ";
-            getline(cin, key);
-
-            if (!hashTable->searchNode(key,hashFuncPtr))
-                printErrorMsg(Error::BAD_SEARCH);
-        }
-
-        case '6':
-        {
-            cout<< "_____Hash table statistics____"<<endl;
-            cout<<"Total entries stored: " << hashTable->getCount()<<endl;
-            cout<<"Number of collisions: " << hashTable->getColl()<<endl;
-            cout<<"Load factor: " << setprecision(3)<< hashTable->getLoadFac()<<endl;
-            cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
-            cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
-            cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
-
-            cout<< "\n_____Number of Nodes in All Data Structures____"<<endl;
-            cout<<" #Items in BST: " << bst->size()<< endl;
-            cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
-            cout<<" #Items in Stack: " << myStack->getCount() << endl;
-            break;
-        }
-        case '7':
-        {
-            undoDelete(myStack, bst, hashTable, hashFuncPtr);
-            break;
-        }
-
-        case '8':
-        {
-            makeOutputFile(bst, hashTable , myStack);
-            break;
-        }
-        case '9':
-        {
-
-            makeOutputFile(bst, hashTable , myStack);
-            inProgress = false;
-        }
-        }
-    }
-}
-
-
 /*****
- checks if a given number is prime
+ checks if a given number is prime, finds the next prime number to have a prime hash table size
  ****/
 bool isPrime (int num)
 {
@@ -408,9 +271,7 @@ bool isPrime (int num)
 
 
 /*****
- Ddetermine hash size : gets number
- of datas, multiply
- by 2, find the next prime number
+ Determine hash size : gets number of data, multiply by 2, find the next prime number
  *****/
 int hashSize(int numAthletes)
 {
@@ -420,7 +281,9 @@ int hashSize(int numAthletes)
     return hashSize;
 }
 
-
+/**
+    Input validation for the user inputting new values into dataset. Returns true if a space is present, false otherwise.
+*/
 bool hasSpace(string name)
 {
     bool hasSpaces = false;
@@ -541,10 +404,10 @@ void projectInfo()
 }
 
 
-//*******************************
+/*******************************
 //OUTPUT FILE NAME VALIDATION
-//if the neame is not followed by .txt, it is invalid
-//**************************
+//if the name is not followed by .txt, it is invalid
+*/
 
 bool out_file_name_is_valid (string name)
 {
@@ -591,4 +454,123 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
         outFile.close();
     }
 
+}
+
+/**
+ Processes user command for the data entries.
+ */
+void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable)
+{
+    bool inProgress = true;
+    unsigned int (*hashFuncPtr)(const string&, const int) = hashMap;
+    while (inProgress)
+    {
+        menu();
+        string choice;
+        do
+        {
+            cout<<" >> ";
+            getline(cin, choice);
+        }
+        while (!validChoice(choice));
+        switch (toupper(choice[0]))
+        {
+        case '0':
+        {
+            projectInfo();
+            break;
+        }
+        case '1':
+        {
+            insert_input(bst, myStack, hashTable, hashFuncPtr);
+            break;
+        }
+        case '2':
+        {
+            string key = " ";
+            cout << "Please enter athlete name to delete: ";
+            getline(cin, key);
+            deleteNode(key, bst, myStack , hashTable, hashFuncPtr);
+
+            break;
+        }
+        case '3':
+        {
+            bst->BST_Indented_List();
+            break;
+        }
+        case '4':
+        {
+            hashTable->printHashed(true);
+            break;
+        }
+        case '5':
+        {
+            Athlete anAthlete;
+            string key = " ";
+            cout << "Please enter athlete name to search: ";
+            getline(cin, key);
+
+            if (!hashTable->searchNode(key,hashFuncPtr))
+                printErrorMsg(Error::BAD_SEARCH);
+        }
+
+        case '6':
+        {
+            cout<< "_____Hash table statistics____"<<endl;
+            cout<<"Total entries stored: " << hashTable->getCount()<<endl;
+            cout<<"Number of collisions: " << hashTable->getColl()<<endl;
+            cout<<"Load factor: " << setprecision(3)<< hashTable->getLoadFac()<<endl;
+            cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
+            cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
+            cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
+
+            cout<< "\n_____Number of Nodes in All Data Structures____"<<endl;
+            cout<<" #Items in BST: " << bst->size()<< endl;
+            cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
+            cout<<" #Items in Stack: " << myStack->getCount() << endl;
+            break;
+        }
+        case '7':
+        {
+            undoDelete(myStack, bst, hashTable, hashFuncPtr);
+            break;
+        }
+
+        case '8':
+        {
+            makeOutputFile(bst, hashTable , myStack);
+            break;
+        }
+        case '9':
+        {
+
+            makeOutputFile(bst, hashTable , myStack);
+            inProgress = false;
+        }
+        }
+    }
+}
+
+/**
+    Main function reads in the athlete data into hash table and binary search tree.
+    It builds an empty stack as well.
+    It presents user with a menu of options, and at the program exit it frees all memory.
+*/
+int main()
+{
+    int numObjects = getNumObjects();
+    int hash_size = hashSize(numObjects);
+    BST* bst = new BST;
+
+    Stack* myStack = new Stack;
+
+    hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(hash_size);
+    readData(hash_size, bst, hashTable);
+
+    processCommand(bst, myStack, hashTable);
+    delete bst;
+    delete myStack;
+    delete hashTable;
+    return 0;
 }
