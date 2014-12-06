@@ -567,6 +567,7 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
     {
         std::ofstream outFile(fileName);
         bst->saveFileInOrder(outFile);
+        mystack->clearStack();
 
         cout<<" Output is saved in file called " <<fileName<<endl;
         outFile.close();

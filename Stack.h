@@ -34,7 +34,7 @@ public:
     bool isEmpty();
     int getCount();
     bool getTop(Athlete &);
-    bool clear();
+    bool clearStack();
 };
 
 #endif

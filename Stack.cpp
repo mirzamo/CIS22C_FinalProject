@@ -69,12 +69,13 @@ bool Stack::pop()
     return true;
 }
 
-bool Stack::clear ()
+
+
+
+bool Stack::clearStack()
 {
-    while(count)
-    {
-        pop ();
-    }
+    while (!isEmpty())
+        pop();
     return isEmpty();
 }
 
