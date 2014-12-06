@@ -8,7 +8,9 @@ public:
     Athlete* anAthlete;
     BST_Node *left;
     BST_Node *right;
-
+    
+    
+    BST_Node () {left = nullptr; right = nullptr;}
     BST_Node (Athlete* theObject): anAthlete(theObject), left(nullptr), right (nullptr) {};
     ~BST_Node () {};
 

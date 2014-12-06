@@ -92,8 +92,6 @@ void BST::BST_Indented_List()
 }
 
 
-
-
 /**~*~*
  This function calls a recursive function to traverse the
  tree as an indentent list
@@ -105,7 +103,9 @@ void BST::_indentedList(BST_Node* subTree, int level =1, int indent =0)
         std::cout << std::setw(indent) << ' ';
         level++;
     }
+    
     std::cout <<level<<". " << subTree->getAthletePtr()->getName() <<"\n ";
+    
     if(subTree != nullptr)
     {
         if(subTree->getLeft())
@@ -241,26 +241,6 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
         return ;
     }
 
-
-    //        if (target < pWalk->anAthlete->getName())
-    //        {
-    //            std::cout << pWalk->anAthlete->getName();
-    //
-    //            parent = pWalk;
-    //
-    //            pWalk = pWalk->left;
-    //        }
-    //
-    //        else if (target > pWalk->anAthlete->getName())
-    //        {
-    //            parent = pWalk;
-    //
-    //            pWalk = pWalk->right;
-    //        }
-    //
-    //        else
-    //            return pWalk;    //  found
-
     // CASE 1: leaf
     if(!pWalk->left && !pWalk->right)
     {
@@ -276,7 +256,6 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
         std::cout << target <<" has been removed from the Tree."<<std::endl;
         return;
     }
-
 
 
     // CASE 2: has one child
@@ -312,10 +291,8 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
             {
                 parent->right = pWalk->left;
                 //   myStack.push(*pWalk->anAthlete);
-
             }
         }
-
         std::cout << target << " has been removed from the Tree." << std::endl;
         pWalk->anAthlete = nullptr;
         delete pWalk;
@@ -325,47 +302,52 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
 
 
 
-
-
-
     // CASE 3: Node has two children
     // Replace Node with smallest value in right subtree
     if (pWalk->left && pWalk->right)
     {
-        BST_Node* smallest = pWalk->right;
+        BST_Node* smallest = new BST_Node;
+        smallest = pWalk->right;
+        
 
+        if (smallest->right == nullptr && smallest->left == nullptr)
+        {
+            pWalk->anAthlete = smallest->anAthlete;
+            pWalk->right = nullptr;
+        }
+        
+        if (smallest->right != nullptr && smallest->left == nullptr)
+        {
+            pWalk->anAthlete = smallest->anAthlete;
+            pWalk->right = smallest->right;
+        }
+        
+        else {
         //go to smallest node in right subtree
         while (smallest->left)
         {
             parent = smallest;
             smallest = smallest->left;
         }
-
-        //Athlete* temp = new Athlete;
-//        BST_Node *temp;
-//        temp = smallest;//->anAthlete;
-//        smallest = pWalk;
-//        pWalk->anAthlete = temp;
         pWalk->anAthlete = smallest->anAthlete;
-        // delete temp;
 
         if(smallest->right == nullptr)
         {
             parent->left = nullptr;
-//            delete pWalk;
-//            count--;
         }
 
         else
         {
             parent->left = smallest->right;
-
         }
-
+        }
         std::cout << target << " has been removed from the Tree." << std::endl;
+        
         smallest->anAthlete = nullptr;
         smallest->right = nullptr;
+        smallest->left = nullptr;
         delete smallest;
+        
         count--;
         return;
 

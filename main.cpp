@@ -12,7 +12,6 @@
 #include <iostream>
 #include "Athlete.h"
 #include "BST.h"
-//#include "LinkedStack.h"
 #include "hashedDict.h"
 #include "validation.h"
 #include <vector>
@@ -21,8 +20,8 @@
 
 using namespace std;
 
-const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
-//const string FNAME = "short version copy.txt";
+//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
+const string FNAME = "short version copy.txt";
 
 //file processing functions
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
@@ -244,6 +243,7 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
         Athlete athleteCopy = hashTable->getAthleteCopy(delNode, hashFuncPtr);
         myStack->push(athleteCopy);
         cout << endl;
+
         bst->BST_Delete(delNode);
         hashTable->deleteNode(delNode, hashFuncPtr);
     }
@@ -315,11 +315,8 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
             
-            hashTable->searchNode(key , hashFuncPtr);
-            if (!hashTable->searchNode(key , hashFuncPtr))
-            {cout << key << " not found" << endl;}
-            
-            break;
+            if (!hashTable->searchNode(key,hashFuncPtr))
+                printErrorMsg(Error::BAD_SEARCH);
         }
 
         case '6':
@@ -389,9 +386,17 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     string name = " ", country = " ", sport = " ", date = " ";
     int age =0, year=0;
     int medals[3] = {0};
+    
+    cout << "Enter Athlete's First and Last Name:\t";
+    getline(cin , name);
 
-    cout << "Enter Athlete's Name and family name:\t";
-    getline (cin , name);
+    bool isSynonym = hashTable->searchNode(name, hashFuncPtr);
+    
+    cout<<isSynonym<<endl;
+    
+    if (!isSynonym)
+    {
+        cout << "Enter Country:\t";
 
     cout << "Enter Country:\t";
     getline (cin , country);
@@ -417,20 +422,15 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     cout << "Enter number of bronze medals: ";
     cin >> medals[2];
 
-
     Sport winStats(country,year,sport,date);
     Athlete* athlete = new Athlete(name, age, medals, winStats);
 
-    if (hashTable->searchNode(name , hashFuncPtr))
-   // if (bst->Search(name))
-    {
-        cout << "The Athlete already exists. Try entering another one." << std::endl;
-        return;
-    }
-
-    //        if (bst->Search(*athlete))
-    //        {cout << "Duplication!!" << std::endl; return;}
-    //
+//    if (hashTable->searchNode(name , hashFuncPtr))
+//   // if (bst->Search(name))
+//    {
+//        cout << "The Athlete already exists. Try entering another one." << std::endl;
+//        return;
+//    }
 
     bst->BST_insert(athlete);
     hashTable->addNode(name, athlete, hashFuncPtr);
