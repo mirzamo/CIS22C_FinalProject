@@ -288,12 +288,8 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
             // If parent's left tree equals Node
             if (parent->left == pWalk)
             {
-                // then parent's left tree becomes n's right tree
-                // and delete n
                 parent->left = pWalk->right;
                 // myStack.push(*pWalk->anAthlete);
-
-                // delete pWalk;
             }
             // If parent's right tree equals Node n
             else
@@ -302,9 +298,6 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
                 // and delete n
                 parent->right = pWalk->right;
                 // myStack.push(*pWalk->anAthlete);
-                //delete pWalk;
-                //pWalk=nullptr;
-
             }
         }
 
@@ -314,19 +307,12 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
             {
                 parent->left = pWalk->left;
                 //   myStack.push(*pWalk->anAthlete);
-
-                //delete pWalk;
-                //count--;
-                // pWalk=nullptr;
             }
             else
             {
                 parent->right = pWalk->left;
                 //   myStack.push(*pWalk->anAthlete);
 
-                //delete pWalk;
-                // count--;
-                //pWalk=nullptr;
             }
         }
 
@@ -346,9 +332,7 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
     // Replace Node with smallest value in right subtree
     if (pWalk->left && pWalk->right)
     {
-        //BST_Node* check = pWalk->right;
         BST_Node* smallest = pWalk->right;
-
 
         //go to smallest node in right subtree
         while (smallest->left)
@@ -357,14 +341,15 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
             smallest = smallest->left;
         }
 
-        Athlete* temp = new Athlete;
-        temp = smallest->anAthlete;
-        smallest = pWalk;
-        pWalk->anAthlete = temp;
+        //Athlete* temp = new Athlete;
+//        BST_Node *temp;
+//        temp = smallest;//->anAthlete;
+//        smallest = pWalk;
+//        pWalk->anAthlete = temp;
+        pWalk->anAthlete = smallest->anAthlete;
+        // delete temp;
 
-        delete temp;
-
-        if(!pWalk->right)
+        if(smallest->right == nullptr)
         {
             parent->left = nullptr;
 //            delete pWalk;
@@ -373,13 +358,14 @@ void BST::_BST_Delete (BST_Node* root , std::string target)
 
         else
         {
-            parent = pWalk->right;
+            parent->left = smallest->right;
 
         }
 
         std::cout << target << " has been removed from the Tree." << std::endl;
-        pWalk->anAthlete = nullptr;
-        delete pWalk;
+        smallest->anAthlete = nullptr;
+        smallest->right = nullptr;
+        delete smallest;
         count--;
         return;
 

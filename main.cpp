@@ -314,6 +314,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
         case '1':
         {
             insert_input(bst, myStack, hashTable, hashFuncPtr);
+            cin.ignore();
             break;
         }
         case '2':
