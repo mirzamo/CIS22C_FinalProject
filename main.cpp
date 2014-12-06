@@ -196,9 +196,9 @@ void menu()
     cout << setw(w1) << left << "3: " <<  setw(w2) << left << "Display entries in an indented list in bst"<< endl;
     cout << setw(w1) << left << "4: " <<  setw(w2) << left << "Display entries in hash table"<< endl;
     cout << setw(w1) << left << "5: " <<  setw(w2) << left << "Search for an entry"<< endl;
-    cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Show hash table statistics"<< endl;
+    cout << setw(w1) << left << "6: " <<  setw(w2) << left << "Show hash table statistics & number of nodes in data structures"<< endl;
     cout << setw(w1) << left << "7: " <<  setw(w2) << left << "Undo delete"<<endl;
-    cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Show number of nodes in data structures"<<endl;
+    cout << setw(w1) << left << "8: " <<  setw(w2) << left << "Save to a file"<<endl;
     cout << setw(w1) << left << "9: " <<  setw(w2) << left << "Save to a file and Quit" <<endl;
 }
 
@@ -357,6 +357,11 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
             cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
             cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
+
+            cout<< "\n_____Number of Nodes in All Data Structures____"<<endl;
+            cout<<" #Items in BST: " << bst->size()<< endl;
+            cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
+            cout<<" #Items in Stack: " << myStack->getCount() << endl;
             break;
         }
         case '7':
@@ -367,9 +372,7 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
 
         case '8':
         {
-            cout<<" #Items in BST: " << bst->size()<< endl;
-            cout<<" #Items in Hash Table: " << hashTable->getCount() << endl;
-            cout<<" #Items in Stack: " << myStack->getCount() << endl;
+            makeOutputFile(bst, hashTable , myStack);
             break;
         }
         case '9':
