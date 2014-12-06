@@ -14,7 +14,6 @@
 #include "BST.h"
 #include "hashedDict.h"
 #include "validation.h"
-#include <vector>
 #include <string>
 #include "Stack.h"
 
@@ -42,6 +41,12 @@ bool deleteNode(string , BST* , Stack*, hashedDict<string,Athlete*>* ,unsigned i
 void insert_input( BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int));
 
+/**
+    Main function reads in the athlete data into hash table and binary search tree.
+    It builds an empty stack as well.
+    It presents user with a menu of options, and at the program exit it frees all memory.
+*/
+
 
 int main()
 {
@@ -49,7 +54,6 @@ int main()
     int hash_size = hashSize(numObjects);
     BST* bst = new BST;
 
-    //LinkedStack<Athlete>* Stack = new LinkedStack<Athlete>;
     Stack* myStack = new Stack;
 
     hashedDict<string,Athlete*>* hashTable = new hashedDict<string,Athlete*>(hash_size);
@@ -425,37 +429,37 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     {
         cout << "Enter Country:\t";
 
-    cout << "Enter Country:\t";
-    getline (cin , country);
+        cout << "Enter Country:\t";
+        getline (cin , country);
 
-    cout << "Enter Sport:\t ";
-    getline (cin , sport);
+        cout << "Enter Sport:\t ";
+        getline (cin , sport);
 
-    cout << "Enter date:\t";
-    cin >> date;
+        cout << "Enter date:\t";
+        cin >> date;
 
-    cout << "Enter Age:\t";
-    cin >> age;
+        cout << "Enter Age:\t";
+        cin >> age;
 
-    cout << "Enter year:\t";
-    cin >> year;
+        cout << "Enter year:\t";
+        cin >> year;
 
-    cout << "Enter number of gold medals: ";
-    cin >> medals[0];
+        cout << "Enter number of gold medals: ";
+        cin >> medals[0];
 
-    cout << "Enter number of silver medals: ";
-    cin >> medals[1];
+        cout << "Enter number of silver medals: ";
+        cin >> medals[1];
 
-    cout << "Enter number of bronze medals: ";
-    cin >> medals[2];
+        cout << "Enter number of bronze medals: ";
+        cin >> medals[2];
 
-    Sport winStats(country,year,sport,date);
-    Athlete* athlete = new Athlete(name, age, medals, winStats);
+        Sport winStats(country,year,sport,date);
+        Athlete* athlete = new Athlete(name, age, medals, winStats);
 
-    bst->BST_insert(athlete);
-    hashTable->addNode(name, athlete, hashFuncPtr);
+        bst->BST_insert(athlete);
+        hashTable->addNode(name, athlete, hashFuncPtr);
 
-    cout << athlete->getName() << " added successfully." << endl;
+        cout << athlete->getName() << " added successfully." << endl;
     }
     else
         cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;

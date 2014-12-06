@@ -1,3 +1,7 @@
+/**
+    Node for the use of the BST tree. All fields are public in this code revision.
+*/
+
 #ifndef DataStructure_TeamProject_BST_Node_h
 #define DataStructure_TeamProject_BST_Node_h
 
@@ -8,9 +12,13 @@ public:
     Athlete* anAthlete;
     BST_Node *left;
     BST_Node *right;
-    
-    
-    BST_Node () {left = nullptr; right = nullptr;}
+
+
+    BST_Node ()
+    {
+        left = nullptr;
+        right = nullptr;
+    }
     BST_Node (Athlete* theObject): anAthlete(theObject), left(nullptr), right (nullptr) {};
     ~BST_Node () {};
 

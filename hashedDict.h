@@ -229,6 +229,10 @@ Athlete hashedDict<keyT,itemT> ::getAthleteCopy(const keyT& searchKey, unsigned 
 
 }
 
+/**
+    Returns true if node was present and deleted, false otherwise.
+    Searches for the node requested, re-points necessary pointers of linked lists, and frees memory.
+*/
 
 template<class keyT, class itemT>
 bool hashedDict<keyT,itemT> :: deleteNode(const keyT& searchKey, unsigned int (*hashFuncPtr)(const std::string&, const int))
@@ -260,8 +264,6 @@ bool hashedDict<keyT,itemT> :: deleteNode(const keyT& searchKey, unsigned int (*
         }
     }
 
-//    if (!ableToFind)
-//        printErrorMsg(Error::BAD_SEARCH);
     return ableToFind;
 }
 
@@ -321,7 +323,7 @@ void hashedDict<keyT, itemT>::_clearDict() const
             while (walkPtr->getFwd())
             {
                 walkPrev = walkPtr;
-            walkPtr = walkPtr->getFwd();
+                walkPtr = walkPtr->getFwd();
             }
         }
         delete walkPtr;
@@ -332,10 +334,9 @@ void hashedDict<keyT, itemT>::_clearDict() const
 
 
 
-
 //*************************
 /* SAVE the updated text  *
- to an putput file        *
+ to an output file        *
  ************************/
 template <class keyT, class itemT>
 void hashedDict<keyT, itemT>::saveFile(std::ostream &outFile) const
@@ -359,8 +360,5 @@ void hashedDict<keyT, itemT>::saveFile(std::ostream &outFile) const
                 }
             }
         }
-    // outFile.close();
 }
-
-
 #endif // HASHED_DICT_H
