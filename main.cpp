@@ -210,7 +210,7 @@ void menu()
 bool validChoice(string choice)
 {
     string allowable = "0123456789";
-    if (choice.size()==1 && (allowable.find(toupper(choice[0])) != std::string::npos))
+    if (choice.size()==1 && (allowable.find(choice[0]) != std::string::npos))
         return true;
     else
     {
@@ -220,6 +220,20 @@ bool validChoice(string choice)
     }
 }
 
+/**
+    Ensures that all numbers are digits.
+ */
+bool validChoiceDigits(string choice)
+{
+    string allowable = "0123456789";
+    if ((allowable.find(choice[0]) != std::string::npos))
+        return true;
+    else
+    {
+        printErrorMsg(Error::BAD_INPUT);
+        return false;
+    }
+}
 
 
 /**
@@ -413,7 +427,7 @@ int hashSize(int numAthletes)
 void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
-    string name = " ", country = " ", sport = " ", date = " ";
+    string name = " ", country = " ", sport = " ", date = " ", num = " ";
     int age =0, year=0;
     int medals[3] = {0};
 
@@ -431,22 +445,47 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
         getline (cin , sport);
 
         cout << "Enter date:\t";
-        cin >> date;
+        getline (cin, date);
 
-        cout << "Enter Age:\t";
-        cin >> age;
+        do
+        {
+            cout << "Enter age: ";
+            getline(cin, num);
+        }
+        while (!validChoiceDigits(num));
+        age = stoi(num);
 
-        cout << "Enter year:\t";
-        cin >> year;
+        do
+        {
+            cout << "Enter year: ";
+            getline(cin, num);
+        }
+        while (!validChoiceDigits(num));
+        year = stoi(num);
 
-        cout << "Enter number of gold medals: ";
-        cin >> medals[0];
+        do
+        {
+            cout << "Enter number of gold medals: ";
+            getline(cin, num);
+        }
+        while (!validChoiceDigits(num));
+        medals[2] = stoi(num);
 
-        cout << "Enter number of silver medals: ";
-        cin >> medals[1];
+        do
+        {
+            cout << "Enter number of silver medals: ";
+            getline(cin, num);
+        }
+        while (!validChoiceDigits(num));
+        medals[2] = stoi(num);
 
-        cout << "Enter number of bronze medals: ";
-        cin >> medals[2];
+        do
+        {
+            cout << "Enter number of bronze medals: ";
+            getline(cin, num);
+        }
+        while (!validChoiceDigits(num));
+        medals[2] = stoi(num);
 
         Sport winStats(country,year,sport,date);
         Athlete* athlete = new Athlete(name, age, medals, winStats);
