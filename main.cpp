@@ -21,8 +21,8 @@
 
 using namespace std;
 
-const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
-//const string FNAME = "short version copy.txt";
+//const string FNAME = "/Users/Mahsa/Desktop/yyyyy/yyyyy/CIS22C_FinalProject/OlympicAthletes.txt";
+const string FNAME = "short version copy.txt";
 
 //file processing functions
 bool readData(int, BST*,hashedDict<string,Athlete*>*);
@@ -235,7 +235,7 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
 {
     bool ableToDelete = false;
 
-   // ableToDelete = bst->Search(delNode);    //in search it prints out the information of athlete
+    // ableToDelete = bst->Search(delNode);    //in search it prints out the information of athlete
 
     ableToDelete = hashTable->searchNode(delNode , hashFuncPtr);
 
@@ -250,12 +250,7 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
 
     else
         cout << " Athlete cannot be removed because it does not exist" << endl;
-    /**
-     Athlete* athlete = new Athlete(name, age, medals, winStats);
-     Stack->push(athlete);
-     */
-    // Mahsa: bst delete ptr
-    //Kelly: hash func delete ptr + node
+
     return ableToDelete;
 }
 
@@ -314,11 +309,13 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             string key = " ";
             cout << "Please enter athlete name to search: ";
             getline(cin, key);
-            
+
             hashTable->searchNode(key , hashFuncPtr);
             if (!hashTable->searchNode(key , hashFuncPtr))
-            {cout << key << " not found" << endl;}
-            
+            {
+                cout << key << " not found" << endl;
+            }
+
             break;
         }
 
@@ -390,55 +387,64 @@ void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTa
     int age =0, year=0;
     int medals[3] = {0};
 
-    cout << "Enter Athlete's Name and family name:\t";
+
+    cout << "Enter Athlete's First and Last Name:\t";
     getline (cin , name);
-
     cout << "Enter Country:\t";
-    getline (cin , country);
-
-    cout << "Enter Sport:\t ";
-    getline (cin , sport);
-
-    cout << "Enter date:\t";
-    cin >> date;
-
-    cout << "Enter Age:\t";
-    cin >> age;
-
-    cout << "Enter year:\t";
-    cin >> year;
-
-    cout << "Enter number of gold medals: ";
-    cin >> medals[0];
-
-    cout << "Enter number of silver medals: ";
-    cin >> medals[1];
-
-    cout << "Enter number of bronze medals: ";
-    cin >> medals[2];
-
-
-    Sport winStats(country,year,sport,date);
-    Athlete* athlete = new Athlete(name, age, medals, winStats);
-
-    if (hashTable->searchNode(name , hashFuncPtr))
-   // if (bst->Search(name))
+    bool isSynonym = hashTable->searchNode(name, hashFuncPtr);
+    cout<<isSynonym<<endl;
+    if (!isSynonym)
     {
-        cout << "The Athlete already exists. Try entering another one." << std::endl;
-        return;
+        cout << "Enter Country:\t";
+        getline (cin , country);
+        cout << "Enter Sport:\t ";
+        getline (cin , sport);
+        cout << "Enter Athlete's Name and family name:\t";
+        getline (cin , name);
+        cout << "Enter Country:\t";
+        getline (cin , country);
+        cout << "Enter Sport:\t ";
+        getline (cin , sport);
+
+        cout << "Enter date:\t";
+        cin >> date;
+
+        cout << "Enter Age:\t";
+        cin >> age;
+
+        cout << "Enter year:\t";
+        cin >> year;
+
+        cout << "Enter number of gold medals: ";
+        cin >> medals[0];
+
+        cout << "Enter number of silver medals: ";
+        cin >> medals[1];
+
+        cout << "Enter number of bronze medals: ";
+        cin >> medals[2];
+
+
+        Sport winStats(country,year,sport,date);
+        Athlete* athlete = new Athlete(name, age, medals, winStats);
+
+        if (hashTable->searchNode(name , hashFuncPtr))
+            // if (bst->Search(name))
+
+            cout << "The Athlete already exists. Try entering another one." << std::endl;
+
+
+        //        if (bst->Search(*athlete))
+        //        {cout << "Duplication!!" << std::endl; return;}
+        //
+
+        bst->BST_insert(athlete);
+        hashTable->addNode(name, athlete, hashFuncPtr);
+
+        cout << athlete->getName() << " added successfully." << endl;
+//    else
+        //  cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;
     }
-
-    //        if (bst->Search(*athlete))
-    //        {cout << "Duplication!!" << std::endl; return;}
-    //
-
-    bst->BST_insert(athlete);
-    hashTable->addNode(name, athlete, hashFuncPtr);
-
-    cout << athlete->getName() << " added successfully." << endl;
-    }
-    else
-        cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;
 }
 
 

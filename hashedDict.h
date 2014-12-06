@@ -171,7 +171,8 @@ bool hashedDict<keyT, itemT>::addNode (const keyT& newKey, itemT newItem, unsign
         newNode->setFwd(_nodes[hashIndex]); // add newNode to front of LL
         _nodes[hashIndex] = newNode;
         _numCollisions++;
-    } _LLsize[hashIndex]++;
+    }
+    _LLsize[hashIndex]++;
     _count++;
     return ableToHash;
 }
@@ -294,7 +295,7 @@ void hashedDict<keyT,itemT>:: printHashed(bool indent) const
                 if (indent)
                     std::cout<< std::right << std::setw(20);
                 nextNode->getItem()->print();
-                 //std::cout<<"OMG: "<<nextNode->getItem()->getName().size()<<std::endl;
+                //std::cout<<"OMG: "<<nextNode->getItem()->getName().size()<<std::endl;
                 nextNode = nextNode->getFwd();
                 i--;
             }
@@ -305,13 +306,29 @@ void hashedDict<keyT,itemT>:: printHashed(bool indent) const
 /**
  Function that clears hash table and associated linked lists.
  This protected method can be called only by destructor.
+ This will work only for trees of maximum 2 nodes in a linked list, which is our case.
  */
 
 template <class keyT, class itemT>
 void hashedDict<keyT, itemT>::_clearDict() const
 {
-    for (int i =0; i< getCount(); i++)
-        delete _nodes[i];
+    HsinglyNode<keyT, itemT>* walkPtr = _nodes[0];
+    HsinglyNode<keyT, itemT>* walkPrev = walkPtr;
+
+    for (int i = 0; i < _arSize; i++)
+    {
+        if (walkPtr)
+        {
+            while (walkPtr->getFwd())
+            {
+                walkPrev = walkPtr;
+            walkPtr = walkPtr->getFwd();
+            }
+        }
+        delete walkPtr;
+        delete walkPrev;
+    }
+
 }
 
 
