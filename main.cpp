@@ -424,7 +424,7 @@ int hashSize(int numAthletes)
 bool hasSpace(string name)
 {
     bool hasSpaces = false;
-    for (int i=0; i<name.size(); i++)
+    for (unsigned int i=0; i<name.size(); i++)
     {
         if ( isspace(name[i]))
         {
