@@ -627,11 +627,15 @@ void BST::_saveFileInOrder(BST_Node *root , std::ostream &outFile) const
         if (root)
         {
             _saveFileInOrder(root->left , outFile);
-            outFile << root->anAthlete->getName() << std::endl;
+            Athlete* tmp = root->anAthlete;
+
+            outFile << tmp->getName()<< " "<< tmp->getAge()<<" "<<tmp->getWinStats()._country<<" " <<
+            tmp->getWinStats()._year<<" " <<tmp->getWinStats()._ceremonyDate<<" " <<" " <<
+            tmp->getWinStats()._sportType<<" " <<tmp->getMedalCount(Medal::GOLD)<<" " <<
+            tmp->getMedalCount(Medal::SILVER)<<" " <<tmp->getMedalCount(Medal::BRONZE)<< std::endl;
             _saveFileInOrder(root->right , outFile);
         }
 }
-
 
 
 

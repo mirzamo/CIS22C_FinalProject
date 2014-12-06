@@ -33,7 +33,7 @@ void projectInfo();
 unsigned int hashMap(const string&, const int);
 int getNumObjects();
 bool out_file_name_is_valid (string name);
-void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack*);
+void makeOutputFile(BST*, hashedDict<std::string , Athlete*>* , Stack*);
 
 
 
@@ -116,51 +116,19 @@ bool readData(int hashSi, BST* bst, hashedDict<string,Athlete*>* hashTable)
     return ableToPopulate;
 }
 
-/**
- MISHA:
- Function asks user to input name of an Athlete to delete,
- searches bst for whether that athlete is present, displays error message if not found
- returns true/false depending on whether found
- changes delNode by reference
- */
-bool getUserNode(string& userNode);
-
-/**
- MISHA:
- Function will allow user to input a new Athlete into the database.
- Feel free to write this and any other validation functions to validate that user input from keyboard is valid.
- */
-bool insertUserNode();
-
-/**
- Misha:
- Function will save all the nodes present to a file.
- */
-bool saveToFile();
-
-
-/**
- Mahsa, Kelly :
- Searches bst to see if node is found (thus returning bool on whether its found or not),
- copies data into stack, deletes all pointers to node in data structures, and deletes node itself.
- */
-
-
-
-
-bool undoDelete(/*LinkedStack<Athlete>**/Stack *myStack, BST* bst)
+bool undoDelete(Stack *myStack, BST* bst,hashedDict<std::string , Athlete*>* hashTable,
+                unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
-    bool ableToReturn = false;
+    bool ableToReturn = !myStack->isEmpty();
 
-    if (!myStack->isEmpty())
+    if (ableToReturn)
     {
         Athlete oldAthlete;
         myStack->pop(oldAthlete);
-        cout<< oldAthlete.getName() <<" is returned to dataset." << endl;
         Athlete* athleteNew = new Athlete(oldAthlete);
         bst->BST_insert(athleteNew);
-        //Kelly: hash table insert
-        ableToReturn = true; // should fix this bool
+        hashTable->addNode(athleteNew->getName(), athleteNew, hashFuncPtr);
+        cout<< athleteNew->getName() <<" is returned to dataset." << endl;
     }
     else
         printErrorMsg(Error::EMPTY_STACK);
@@ -253,7 +221,10 @@ unsigned int hashMap(const string& key, const int hash_size)
     unsigned h = 0, i = 0;
 
     for ( i = 0; i < len; i++ )
-        h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
+        h ^= Key[i];
+    //h = 33 * h + Key[i];
+    //h = ( h * 16777619 ) ^ Key[i];
+    // h = ( h << 4 ) ^ ( h >> 28 ) ^ Key[i]*3;
     //h ^= ( h << 5 ) + ( h >> 2 ) + Key[i];
 
     return h % hash_size;
@@ -278,7 +249,7 @@ bool deleteNode(string delNode, BST* bst, Stack* myStack , hashedDict<string,Ath
     }
 
     else
-        cout << " cannot be removed because it does not exist" << endl;
+        cout << " Athlete cannot be removed because it does not exist" << endl;
     /**
      Athlete* athlete = new Athlete(name, age, medals, winStats);
      Stack->push(athlete);
@@ -360,12 +331,11 @@ void processCommand(BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashT
             cout << "Number of linked lists: " << hashTable->getNumLL()<<endl;
             cout<<"Length of longest linked list: " << hashTable->getMaxLLsize()<<endl;
             cout<<"Ave number of nodes stored in linked list: " << hashTable->getAveLLsize()<<endl;
-            cout<<"Number of nodes in each linked list: " << endl;;
             break;
         }
         case '7':
         {
-            undoDelete(myStack, bst);
+            undoDelete(myStack, bst, hashTable, hashFuncPtr);
             break;
         }
 
@@ -413,7 +383,7 @@ int hashSize(int numAthletes)
 }
 
 
-void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hashedDict<string,Athlete*>* hashTable,
+void insert_input (BST* bst, Stack *myStack, hashedDict<string,Athlete*>* hashTable,
                    unsigned int (*hashFuncPtr)(const std::string&, const int))
 {
     string name = " ", country = " ", sport = " ", date = " ";
@@ -466,6 +436,9 @@ void insert_input (BST* bst, /*LinkedStack<Athlete>* Stack*/Stack *myStack, hash
     hashTable->addNode(name, athlete, hashFuncPtr);
 
     cout << athlete->getName() << " added successfully." << endl;
+    }
+    else
+        cout << "\nError: The Athlete already exists in the dataset.\n" << std::endl;
 }
 
 
@@ -527,16 +500,15 @@ void makeOutputFile(BST *bst , hashedDict<std::string , Athlete*> *hash , Stack 
     cout << "Enter a name for output file (followed by .txt):\t";
     getline(cin , fileName);
 
-    if (out_file_name_is_valid (fileName))      //check is out file name is the right format
+    if (out_file_name_is_valid (fileName))
     {
         std::ofstream outFile(fileName);
-
         bst->saveFileInOrder(outFile);
         // hash->saveFile(outFile);
 
         //empty stack aftersaving
         //mystack->clear();
-    cout<<" Output is saved in file called " <<fileName<<endl;
+        cout<<" Output is saved in file called " <<fileName<<endl;
         outFile.close();
     }
 

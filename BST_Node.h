@@ -12,11 +12,11 @@ public:
     BST_Node (Athlete* theObject): anAthlete(theObject), left(nullptr), right (nullptr) {};
     ~BST_Node () {};
 
-Athlete* getAthletePtr() const
+    Athlete* getAthletePtr() const
     {
         return anAthlete;
     }
-     void setLeft(BST_Node* leftNew)
+    void setLeft(BST_Node* leftNew)
     {
         left = leftNew;
     };

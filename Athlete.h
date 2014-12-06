@@ -66,7 +66,7 @@ public:
     }
     void print()
     {
-        std::cout<< _name << " from " << _winStats._country<< " for " << _winStats._sportType<< std::endl;
+        std::cout<< _name << " from " << _winStats._country<< " for " << _winStats._sportType<<std::endl;
     }
 //    std::string printFull()
 //    {
@@ -103,7 +103,7 @@ public:
 
     ~Athlete() {};
 
-    Athlete getAthleteCopy()
+    Athlete getAthlete()
     {
         Athlete AthleteCopy(_name,_age,_medals,_winStats);
         return AthleteCopy;
